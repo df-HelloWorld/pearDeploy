@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xn.manager.dao.PrPlatformGewayCodeDao">
+    <!-- 属性映射 -->
+    <resultMap id="dataMap" type="com.xn.manager.model.PrPlatformGewayCodeModel" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="code_name" property="codeName" jdbcType="VARCHAR" />
+        <result column="pf_geway_code" property="pfGewayCode" jdbcType="VARCHAR" />
+        <result column="service_charge_type" property="serviceChargeType" jdbcType="BIT" />
+        <result column="service_charge" property="serviceCharge" jdbcType="VARCHAR" />
+        <result column="extra_service_charge" property="extraServiceCharge" jdbcType="VARCHAR" />
+        <result column="pf_geway_code_type" property="pfGewayCodeType" jdbcType="BIT" />
+        <result column="money_range" property="moneyRange" jdbcType="VARCHAR" />
+        <result column="is_jump" property="isJump" jdbcType="BIT" />
+        <result column="jump_ads" property="jumpAds" jdbcType="VARCHAR" />
+        <result column="redis_time" property="redisTime" jdbcType="BIGINT" />
+        <result column="is_enable" property="isEnable" jdbcType="BIT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="ts_time" property="tsTime" jdbcType="TIMESTAMP" />
+        <result column="yn" property="yn" jdbcType="BIT" />
+    </resultMap>
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+        a.id, a.code_name, a.pf_geway_code, a.service_charge_type, a.service_charge, a.extra_service_charge,
+        a.pf_geway_code_type, a.money_range, a.is_jump, a.jump_ads, a.redis_time, a.is_enable, a.create_time, a.update_time, a.ts_time, a.yn
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            <if test="codeName != null and codeName != '' " >
+                and a.code_name = #{codeName}
+            </if>
+            <if test="pfGewayCode != null and pfGewayCode != '' " >
+                and a.pf_geway_code = #{pfGewayCode}
+            </if>
+            <if test="idList != null and idList.size()>0">
+                and a.id not in
+                <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="notId != 0 and notId >0 " >
+                and a.id != #{notId}
+            </if>
+            <if test="isJump != 0 and isJump >0 " >
+                and a.is_jump = #{isJump}
+            </if>
+            and a.yn = 0
+        </trim>
+    </sql>
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            <if test="idList != null and idList.size()>0">
+                and a.id not in
+                <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and a.yn = 0
+        </trim>
+    </sql>
+
+    <!-- 查询总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from tb_pr_platform_geway_code a
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 查询分页列表 -->
+    <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_platform_geway_code a
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 查询列表-无分页-有条件/有条件 -->
+    <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_platform_geway_code a
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+    </select>
+
+    <!-- 根据id查询记录 -->
+    <select id="queryById"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_platform_geway_code a
+        <include refid="Example_Where_Clause_id"/>
+    </select>
+
+    <!-- 根据条件查询记录 -->
+    <select id="queryByCondition"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_platform_geway_code a
+        <include refid="Example_Where_Clause"/>
+        limit 1
+    </select>
+
+    <!-- 添加记录 -->
+    <insert id="add" parameterType="Object" >
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        insert into tb_pr_platform_geway_code
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="codeName != null" >
+                code_name,
+            </if>
+            <if test="pfGewayCode != null" >
+                pf_geway_code,
+            </if>
+            <if test="serviceChargeType != null" >
+                service_charge_type,
+            </if>
+            <if test="serviceCharge != null" >
+                service_charge,
+            </if>
+            <if test="extraServiceCharge != null" >
+                extra_service_charge,
+            </if>
+            <if test="pfGewayCodeType != null" >
+                pf_geway_code_type,
+            </if>
+            <if test="moneyRange != null" >
+                money_range,
+            </if>
+            <if test="isJump != null" >
+                is_jump,
+            </if>
+            <if test="jumpAds != null" >
+                jump_ads,
+            </if>
+            <if test="redisTime != null" >
+                redis_time,
+            </if>
+            <if test="isEnable != null" >
+                is_enable,
+            </if>
+            create_time,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="codeName != null" >
+                #{codeName,jdbcType=VARCHAR},
+            </if>
+            <if test="pfGewayCode != null" >
+                #{pfGewayCode,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceChargeType != null" >
+                #{serviceChargeType,jdbcType=BIT},
+            </if>
+            <if test="serviceCharge != null" >
+                #{serviceCharge,jdbcType=VARCHAR},
+            </if>
+            <if test="extraServiceCharge != null" >
+                #{extraServiceCharge,jdbcType=VARCHAR},
+            </if>
+            <if test="pfGewayCodeType != null" >
+                #{pfGewayCodeType,jdbcType=BIT},
+            </if>
+            <if test="moneyRange != null" >
+                #{moneyRange,jdbcType=VARCHAR},
+            </if>
+            <if test="isJump != null" >
+                #{isJump,jdbcType=BIT},
+            </if>
+            <if test="jumpAds != null" >
+                #{jumpAds,jdbcType=VARCHAR},
+            </if>
+            <if test="redisTime != null" >
+                #{redisTime,jdbcType=BIGINT},
+            </if>
+            <if test="isEnable != null" >
+                #{isEnable,jdbcType=BIT},
+            </if>
+            <![CDATA[  NOW(), ]]>
+        </trim>
+    </insert>
+
+
+    <!-- 更新记录 -->
+    <update id="update" parameterType="Object">
+        UPDATE tb_pr_platform_geway_code a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="codeName != null" >
+                code_name = #{codeName,jdbcType=VARCHAR},
+            </if>
+            <if test="pfGewayCode != null" >
+                pf_geway_code = #{pfGewayCode,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceChargeType != null" >
+                service_charge_type = #{serviceChargeType,jdbcType=BIT},
+            </if>
+            <if test="serviceCharge != null" >
+                service_charge = #{serviceCharge,jdbcType=VARCHAR},
+            </if>
+            <if test="extraServiceCharge != null" >
+                extra_service_charge = #{extraServiceCharge,jdbcType=VARCHAR},
+            </if>
+            <if test="pfGewayCodeType != null" >
+                pf_geway_code_type = #{pfGewayCodeType,jdbcType=BIT},
+            </if>
+            <if test="moneyRange != null" >
+                money_range = #{moneyRange,jdbcType=VARCHAR},
+            </if>
+            <if test="isJump != null" >
+                is_jump = #{isJump,jdbcType=BIT},
+            </if>
+            jump_ads = #{jumpAds,jdbcType=VARCHAR},
+            redis_time = #{redisTime,jdbcType=BIGINT},
+            <if test="isEnable != null" >
+                is_enable = #{isEnable,jdbcType=BIT},
+            </if>
+            a.update_time = NOW()
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+
+    <!-- 主要作用1.逻辑删除，2更新状态 -->
+    <update id="manyOperation" parameterType="Object">
+        update tb_pr_platform_geway_code a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="isEnable != 0 and isEnable >0 " >
+                a.is_enable=#{isEnable},
+            </if>
+            a.update_time=NOW()
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+    <!--逻辑删除数据 -->
+    <update id="delete" parameterType="java.lang.Long">
+        UPDATE tb_pr_platform_geway_code a set a.yn = 1,
+        a.update_time = now()
+        where 1=1
+        and a.id =#{id}
+        and a.yn=0
+    </update>
+
+</mapper>

@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xn.manager.dao.PrPlatformGewayCodeLinkDao">
+    <!-- 属性映射 -->
+    <resultMap id="BaseResultMap" type="com.xn.manager.model.PrPlatformGewayCodeLinkModel" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="alias" property="alias" jdbcType="VARCHAR" />
+        <result column="pf_geway_code_id" property="pfGewayCodeId" jdbcType="BIGINT" />
+        <result column="pf_geway_code_name" property="pfGewayCodeNames" jdbcType="BIGINT" />
+        <result column="code_name" property="codeNames" jdbcType="BIGINT" />
+        <result column="code_name" property="codeName" jdbcType="BIGINT" />
+
+        <result column="geway_name" property="gewayName" jdbcType="VARCHAR" />
+        <result column="geway_code_name" property="gewayCodeNames" jdbcType="BIGINT" />
+        <result column="my_geway_code" property="myGewayCode" jdbcType="BIGINT" />
+        <result column="geway_code_id" property="gewayCodeId" jdbcType="BIGINT" />
+        <result column="ratio" property="ratio" jdbcType="INTEGER" />
+        <result column="is_enable" property="isEnable" jdbcType="BIT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="ts_time" property="tsTime" jdbcType="TIMESTAMP" />
+        <result column="yn" property="yn" jdbcType="BIT" />
+    </resultMap>
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+         a.id,a.relation_type_id, a.alias, a.pf_geway_code_id,a.geway_code_id,c.geway_code_name,b.code_name
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            <if test="relationTypeId != 0 and relationTypeId >0 " >
+                and a.relation_type_id = #{relationTypeId}
+            </if>
+            <if test="pfGewayCodeId != 0 and pfGewayCodeId >0 " >
+                and a.pf_geway_code_id = #{pfGewayCodeId}
+            </if>
+            <if test="gewayCodeId != 0 and gewayCodeId >0 " >
+                and a.geway_code_id = #{gewayCodeId}
+            </if>
+
+            and a.yn = 0
+        </trim>
+    </sql>
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            <if test="relationTypeId != 0 and relationTypeId >0 " >
+                and a.relation_type_id = #{relationTypeId}
+            </if>
+            <!--<if test="gewayName != null and gewayName != '' " >-->
+                <!--and a.geway_name = #{gewayName}-->
+            <!--</if>-->
+            <!--<if test="secretKey != null and secretKey != '' " >-->
+                <!--and a.secret_key = #{secretKey}-->
+            <!--</if>-->
+            <!--<if test="payId != null and payId != '' " >-->
+                <!--and a.pay_id = #{payId}-->
+            <!--</if>-->
+            <!--<if test="attributeType != 0 and attributeType >0 " >-->
+                <!--and a.attribute_type = #{attributeType}-->
+            <!--</if>-->
+            and a.yn = 0
+        </trim>
+    </sql>
+
+    <!-- 查询总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from tb_pr_platform_geway_code_link a
+        left join  tb_pr_platform_geway_code  b
+        on  a.pf_geway_code_id=b.id
+        left join   tb_pr_geway_code  c
+        on   a.geway_code_id=c.id
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 查询分页列表 -->
+    <select id="queryByList" resultMap="BaseResultMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_platform_geway_code_link a
+        left join  tb_pr_platform_geway_code  b
+        on  a.pf_geway_code_id=b.id
+        left join   tb_pr_geway_code  c
+        on   a.geway_code_id=c.id
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 查询列表-无分页-有条件/有条件 -->
+    <select id="queryAllList" resultMap="BaseResultMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_platform_geway_code_link a
+        left join  tb_pr_platform_geway_code  b
+        on  a.pf_geway_code_id=b.id
+        and  b.yn=0
+        left join   tb_pr_geway_code  c
+        on   a.geway_code_id=c.id
+        and  c.yn=0
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+    </select>
+
+    <!-- 根据id查询记录 -->
+    <select id="queryById"  resultMap="BaseResultMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_platform_geway_code_link a
+        left join  tb_pr_platform_geway_code  b
+        on  a.pf_geway_code_id=b.id
+        left join   tb_pr_geway_code  c
+        on   a.geway_code_id=c.id
+        <include refid="Example_Where_Clause_id"/>
+        and  b.yn=0
+        and  c.yn=0
+    </select>
+
+
+    <!-- 根据id查询记录 -->
+    <select id="queryPfGewayCodeId"  resultMap="BaseResultMap" parameterType="Object">
+        select
+        distinct  pf_geway_code_id
+        from tb_pr_platform_geway_code_link a
+        <include refid="Example_Where_Clause_id"/>
+
+    </select>
+
+
+    <!-- 根据id查询记录 -->
+    <select id="queryGewayCodeId"  resultMap="BaseResultMap" parameterType="Object">
+        SELECT
+        c.geway_code_name,c.my_geway_code,a.id,a.geway_code_id,a.ratio,b.geway_name
+        FROM tb_pr_platform_geway_code_link a
+        LEFT JOIN   tb_pr_geway_code  c
+
+        ON   a.geway_code_id=c.id
+        LEFT JOIN tb_pr_geway  b
+        ON    b.id= c.geway_id
+        <include refid="Example_Where_Clause_id"/>
+        and c.yn=0
+    </select>
+
+    <!-- 根据条件查询记录 -->
+    <select id="queryByCondition"  resultMap="BaseResultMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_platform_geway_code_link a
+        left join  tb_pr_platform_geway_code  b
+        on  a.pf_geway_code_id=b.id
+        left join   tb_pr_geway_code  c
+        on   a.geway_code_id=c.id
+        <include refid="Example_Where_Clause"/>
+        limit 1
+    </select>
+
+    <!-- 添加记录 -->
+    <insert id="add" parameterType="Object" >
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        insert into tb_pr_platform_geway_code_link
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="alias != null" >
+                alias,
+            </if>
+            <if test="pfGewayCodeId != null" >
+                pf_geway_code_id,
+            </if>
+            <if test="gewayCodeId != null" >
+                geway_code_id,
+            </if>
+            <if test="ratio != null" >
+                ratio,
+            </if>
+            <if test="pfGewayCodeName != null" >
+                pf_geway_code_name,
+            </if>
+            <if test="gewayCodeName != null" >
+                geway_code_name,
+            </if>
+            <if test="relationTypeId != null" >
+                relation_type_id,
+            </if>
+            <if test="isEnable != null" >
+                is_enable,
+            </if>
+            create_time,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="alias != null" >
+                #{alias,jdbcType=VARCHAR},
+            </if>
+            <if test="pfGewayCodeId != null" >
+                #{pfGewayCodeId,jdbcType=BIGINT},
+            </if>
+            <if test="gewayCodeId != null" >
+                #{gewayCodeId,jdbcType=BIGINT},
+            </if>
+            <if test="ratio != null" >
+                #{ratio,jdbcType=INTEGER},
+            </if>
+            <if test="pfGewayCodeName != null" >
+                #{pfGewayCodeName,jdbcType=VARCHAR},
+            </if>
+            <if test="gewayCodeName != null" >
+                #{gewayCodeName,jdbcType=VARCHAR},
+            </if>
+            <if test="relationTypeId != null" >
+                #{relationTypeId,jdbcType=BIGINT},
+            </if>
+            <if test="isEnable != null" >
+                #{isEnable,jdbcType=BIT},
+            </if>
+            <![CDATA[  NOW(), ]]>
+        </trim>
+    </insert>
+
+
+    <!-- 更新记录 -->
+    <update id="update" parameterType="Object">
+        UPDATE tb_pr_platform_geway_code_link a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="alias != null" >
+                alias = #{alias,jdbcType=VARCHAR},
+            </if>
+            <if test="pfGewayCodeId != null" >
+                pf_geway_code_id = #{pfGewayCodeId,jdbcType=BIGINT},
+            </if>
+            <if test="gewayCodeId != null" >
+                geway_code_id = #{gewayCodeId,jdbcType=BIGINT},
+            </if>
+            <if test="ratio != null" >
+                ratio = #{ratio,jdbcType=INTEGER},
+            </if>
+            <if test="pfGewayCodeName != null" >
+                pf_geway_code_name = #{pfGewayCodeName,jdbcType=VARCHAR},
+            </if>
+            <if test="gewayCodeName != null" >
+                geway_code_name = #{gewayCodeName,jdbcType=VARCHAR},
+            </if>
+            <if test="relationTypeId != null" >
+                relation_type_id = #{relationTypeId,jdbcType=BIGINT},
+            </if>
+            <if test="isEnable != null" >
+                is_enable = #{isEnable,jdbcType=BIT},
+            </if>
+            a.update_time = NOW()
+        </trim>
+        <include refid="Example_Where_Clause_id"/>
+    </update>
+
+
+    <!-- 主要作用1.逻辑删除，2更新状态 -->
+    <update id="manyOperation" parameterType="Object">
+        update tb_pr_platform_geway_code_link a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="isEnable != 0 and isEnable >0 " >
+                a.is_enable=#{isEnable},
+            </if>
+            a.yn=#{yn},
+            a.update_time=NOW()
+        </trim>
+        <include refid="Example_Where_Clause_id"/>
+    </update>
+
+
+    <!--逻辑删除数据 -->
+    <update id="delete" parameterType="java.lang.Long">
+        UPDATE tb_pr_platform_geway_code_link a set a.yn = 1,
+        a.update_time = now()
+        where 1=1
+        and a.id =#{id}
+        and a.yn=0
+    </update>
+
+    <!--逻辑删除数据 -->
+    <update id="deleteRelationType" parameterType="java.lang.Long">
+        UPDATE tb_pr_platform_geway_code_link a set a.yn = 1,
+        a.update_time = now()
+        where 1=1
+        and a.relation_type_id =#{relationTypeId}
+        and a.yn=0
+    </update>
+
+</mapper>

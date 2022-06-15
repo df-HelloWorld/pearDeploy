@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xn.manager.dao.NotifyFieldDao">
+    <!-- 属性映射 -->
+    <resultMap type="com.xn.manager.model.template.NotifyFieldModel" id="dataMap">
+        <id column="id" property="id"/>
+        <result property="notifyTemplateId" column="notify_template_id" />
+        <result property="fieldName" column="field_name" />
+        <result property="parameterName" column="parameter_name" />
+        <result property="parameterValue" column="parameter_value" />
+        <result property="parameterValueType" column="parameter_value_type" />
+        <result property="fieldType" column="field_type" />
+        <result property="seat" column="seat" />
+        <result property="remark" column="remark" />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+        <result column="yn" property="yn"/>
+        <result property="template" column="template" />
+    </resultMap>
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+        a.id, a.notify_template_id, a.field_name, a.parameter_name, a.parameter_value,
+        a.parameter_value_type, a.field_type, a.seat, a.remark,
+        a.create_time, a.update_time, a.yn,
+        b.template
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            <if test="notifyTemplateId != 0 and notifyTemplateId >0 " >
+                and a.notify_template_id = #{notifyTemplateId}
+            </if>
+            <if test="fieldName != null and fieldName != '' " >
+                and a.field_name = #{fieldName}
+            </if>
+            <if test="parameterName != null and parameterName != '' " >
+                and a.parameter_name = #{parameterName}
+            </if>
+            and a.yn = 0
+        </trim>
+    </sql>
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            and a.yn = 0
+        </trim>
+    </sql>
+
+    <!-- 查询总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from tb_pr_notify_field a left join tb_pr_return_template b on a.notify_template_id = b.id
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 查询分页列表 -->
+    <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_notify_field a left join tb_pr_return_template b on a.notify_template_id = b.id
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 查询列表-无分页-有条件/有条件 -->
+    <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_notify_field a left join tb_pr_return_template b on a.notify_template_id = b.id
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+    </select>
+
+    <!-- 根据id查询记录 -->
+    <select id="queryById"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_notify_field a left join tb_pr_return_template b on a.notify_template_id = b.id
+        <include refid="Example_Where_Clause_id"/>
+    </select>
+
+    <!-- 根据条件查询记录 -->
+    <select id="queryByCondition"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_notify_field a left join tb_pr_return_template b on a.notify_template_id = b.id
+        <include refid="Example_Where_Clause"/>
+        limit 1
+    </select>
+
+    <!-- 添加记录 -->
+    <insert id="add" parameterType="Object" >
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        insert into tb_pr_notify_field
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="notifyTemplateId != 0 and notifyTemplateId >0 " >
+                notify_template_id,
+            </if>
+            <if test="fieldName != null and fieldName != ''" >
+                field_name,
+            </if>
+            <if test="parameterName != null and parameterName != ''" >
+                parameter_name,
+            </if>
+            <if test="parameterValue != null and parameterValue != ''"  >
+                parameter_value,
+            </if>
+            <if test="parameterValueType != 0 and parameterValueType >0 " >
+                parameter_value_type,
+            </if>
+            <if test="fieldType != 0 and fieldType >0 " >
+                field_type,
+            </if>
+            <if test="seat != 0 and seat >0 " >
+                seat,
+            </if>
+            <if test="remark != null and remark != '' " >
+                remark,
+            </if>
+            create_time,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="notifyTemplateId != 0 and notifyTemplateId >0 " >
+                <![CDATA[  #{notifyTemplateId}, ]]>
+            </if>
+            <if test="fieldName != null and fieldName != '' " >
+                <![CDATA[  #{fieldName}, ]]>
+            </if>
+            <if test="parameterName != null and parameterName != ''" >
+                <![CDATA[  #{parameterName}, ]]>
+            </if>
+            <if test="parameterValue != null and parameterValue != ''"  >
+                <![CDATA[  #{parameterValue}, ]]>
+            </if>
+            <if test="parameterValueType != 0 and parameterValueType >0 " >
+                <![CDATA[  #{parameterValueType}, ]]>
+            </if>
+            <if test="fieldType != 0 and fieldType >0 " >
+                <![CDATA[  #{fieldType}, ]]>
+            </if>
+            <if test="seat != 0 and seat >0 " >
+                <![CDATA[  #{seat}, ]]>
+            </if>
+            <if test="remark != null and remark != ''" >
+                <![CDATA[  #{remark}, ]]>
+            </if>
+            <![CDATA[  NOW(), ]]>
+        </trim>
+    </insert>
+
+
+    <!-- 更新记录 -->
+    <update id="update" parameterType="Object">
+        UPDATE tb_pr_notify_field a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="notifyTemplateId != 0 and notifyTemplateId >0 " >
+                a.notify_template_id = #{notifyTemplateId},
+            </if>
+            <if test="fieldName != null and fieldName != ''" >
+                a.field_name = #{fieldName},
+            </if>
+            <if test="parameterName != null and parameterName != ''" >
+                a.parameter_name = #{parameterName},
+            </if>
+            <!--<if test="parameterValue != null and parameterValue != '' "  >-->
+                <!--a.parameter_value = #{parameterValue},-->
+            <!--</if>-->
+            a.parameter_value = #{parameterValue},
+            <if test="parameterValueType != 0 and parameterValueType >0 " >
+                a.parameter_value_type = #{parameterValueType},
+            </if>
+            <if test="fieldType != 0 and fieldType >0 " >
+                a.field_type = #{fieldType},
+            </if>
+            <if test="seat != 0 and seat >0 " >
+                a.seat = #{seat},
+            </if>
+            <if test="remark != null and remark != ''" >
+                a.remark = #{remark},
+            </if>
+            a.update_time = NOW(),
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+
+    <!-- 主要作用1.逻辑删除，2更新状态 -->
+    <update id="manyOperation" parameterType="Object">
+        update tb_pr_notify_field a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="isEnable != 0 and isEnable >0 " >
+                a.is_enable = #{isEnable},
+            </if>
+            <if test="yn != 0 and yn >0 " >
+                a.yn=#{yn},
+            </if>
+            a.update_time=NOW()
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+    <!--逻辑删除数据 -->
+    <update id="delete" parameterType="java.lang.Long">
+        UPDATE tb_pr_notify_field a set a.yn = 1,
+        a.update_time = now()
+        where 1=1
+        and a.id =#{id}
+        and a.yn=0
+    </update>
+
+</mapper>

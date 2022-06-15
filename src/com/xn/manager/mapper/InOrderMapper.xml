@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xn.manager.dao.InOrderDao">
+
+
+    <!-- 属性映射 -->
+    <resultMap type="com.xn.manager.model.inorder.InOrderModel" id="dataMap">
+        <id property="id" column="id" />
+        <result property="myTradeNo" column="my_trade_no" />
+        <result property="outTradeNo" column="out_trade_no" />
+        <result property="tradeNo" column="trade_no" />
+        <result property="channelId" column="channel_id" />
+        <result property="channelName" column="channel_name" />
+        <result property="pfGewayCodeId" column="pf_geway_code_id" />
+        <result property="pfGewayCode" column="pf_geway_code" />
+        <result property="codeName" column="code_name" />
+        <result property="gewayId" column="geway_id" />
+        <result property="gewayName" column="geway_name" />
+        <result property="gewayCodeId" column="geway_code_id" />
+        <result property="gewayCode" column="geway_code" />
+        <result property="gewayCodeName" column="geway_code_name" />
+        <result property="channel" column="channel" />
+        <result property="totalAmount" column="total_amount" />
+        <result property="serviceCharge" column="service_charge" />
+        <result property="actualMoney" column="actual_money" />
+        <result property="orderStatus" column="order_status" />
+        <result property="pullOrderStatus" column="pull_order_status" />
+        <result property="pullOrderCodeType" column="pull_order_code_type" />
+        <result property="notifyUrl" column="notify_url" />
+        <result property="myNotifyUrl" column="my_notify_url" />
+        <result property="interfaceVer" column="interface_ver" />
+        <result property="returnUrl" column="return_url" />
+        <result property="extraReturnParam" column="extra_return_param" />
+        <result property="serviceIp" column="service_ip" />
+        <result property="clientIp" column="client_ip" />
+        <result property="sign" column="sign" />
+        <result property="subTime" column="sub_time" />
+        <result property="productName" column="product_name" />
+        <result property="productCode" column="product_code" />
+        <result property="tradeTime" column="trade_time" />
+        <result property="replenishType" column="replenish_type" />
+        <result property="isProfit" column="is_profit" />
+        <result property="dataExplain" column="data_explain" />
+        <result property="curday" column="curday" />
+        <result property="curday" column="curday" />
+        <result property="curhour" column="curhour" />
+        <result property="curminute" column="curminute" />
+        <result property="runNum" column="run_num" />
+        <result property="runStatus" column="run_status" />
+        <result property="sendNum" column="send_num" />
+        <result property="sendStatus" column="send_status" />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+        <result property="yn" column="yn" />
+
+        <result property="totalMoney" column="total_money" />
+        <result property="totalSucMoney" column="total_suc_money" />
+        <result property="totalMoneyRatio" column="total_money_ratio" />
+        <result property="totalActualMoney" column="total_actual_money" />
+        <result property="totalSucActualMoney" column="total_suc_actual_money" />
+        <result property="totalActualServiceCharge" column="total_actual_service_charge" />
+        <result property="totalActualRatio" column="total_actual_aatio" />
+        <result property="totalNum" column="total_num" />
+        <result property="totalSucNum" column="total_suc_num" />
+        <result property="totalNumRatio" column="total_num_ratio" />
+
+    </resultMap>
+
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+        a.id,a.my_trade_no,a.out_trade_no,a.trade_no,a.channel_id,a.channel_name,a.pf_geway_code_id,a.pf_geway_code,a.code_name,
+        a.geway_id,a.geway_name,a.geway_code_id,a.geway_code,a.geway_code_name,a.channel,a.total_amount,a.service_charge,a.actual_money,
+        a.order_status,a.pull_order_status,a.pull_order_code_type,a.notify_url,a.my_notify_url,a.interface_ver,a.return_url,a.extra_return_param,
+        a.service_ip,a.client_ip,a.sign,a.sub_time,a.product_name,a.product_code,a.trade_time,a.replenish_type,a.is_profit,a.data_explain,
+        a.curday,a.curhour,a.curminute,a.run_num,a.run_status,a.send_num,a.send_status,
+        a.create_time,a.update_time,a.yn
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            <if test="myTradeNo != null and myTradeNo != '' " >
+                and a.my_trade_no = #{myTradeNo}
+            </if>
+            <if test="outTradeNo != null and outTradeNo != '' " >
+                and a.out_trade_no = #{outTradeNo}
+            </if>
+            <if test="tradeNo != null and tradeNo != '' " >
+                and a.trade_no = #{tradeNo}
+            </if>
+            <if test="channelId != 0 and channelId >0 " >
+                and a.channel_id = #{channelId}
+            </if>
+            <if test="pfGewayCodeId != 0 and pfGewayCodeId >0 " >
+                and a.pf_geway_code_id = #{pfGewayCodeId}
+            </if>
+            <if test="pfGewayCode != null and pfGewayCode != '' " >
+                and a.pf_geway_code = #{pfGewayCode}
+            </if>
+            <if test="codeName != null and codeName != '' " >
+                and a.code_name = #{codeName}
+            </if>
+            <if test="gewayId != 0 and gewayId >0 " >
+                and a.geway_id = #{gewayId}
+            </if>
+            <if test="gewayName != null and gewayName != '' " >
+                and a.geway_name = #{gewayName}
+            </if>
+            <if test="gewayCodeId != 0 and gewayCodeId >0 " >
+                and a.geway_code_id = #{gewayCodeId}
+            </if>
+            <if test="gewayCode != null and gewayCode != '' " >
+                and a.geway_code = #{gewayCode}
+            </if>
+            <if test="gewayCodeName != null and gewayCodeName != '' " >
+                and a.geway_code_name = #{gewayCodeName}
+            </if>
+            <if test="channel != null and channel != '' " >
+                and a.channel = #{channel}
+            </if>
+            <if test="orderStatus != 0 and orderStatus >0 " >
+                and a.order_status = #{orderStatus}
+            </if>
+            <if test="pullOrderStatus != 0 and pullOrderStatus >0 " >
+                and a.pull_order_status = #{pullOrderStatus}
+            </if>
+            <if test="pullOrderCodeType != 0 and pullOrderCodeType >0 " >
+                and a.pull_order_code_type = #{pullOrderCodeType}
+            </if>
+            <if test="replenishType != 0 and replenishType >0 " >
+                and a.replenish_type = #{replenishType}
+            </if>
+            <if test="isProfit != 0 and isProfit >0 " >
+                and a.is_profit = #{isProfit}
+            </if>
+            <if test="sendStatus != 0 and sendStatus >0 " >
+                and a.send_status = #{sendStatus}
+            </if>
+            <if test="curdayStart != 0 and curdayStart >0 and curdayEnd != 0 and curdayEnd >0 " >
+                and a.curday >= #{curdayStart} and a.curday &lt;= #{curdayEnd}
+            </if>
+            and a.yn = 0
+
+        </trim>
+    </sql>
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            and a.yn =  0
+        </trim>
+    </sql>
+
+
+    <!-- 查询总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from tb_pr_in_order a
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 查询分页列表 -->
+    <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_in_order a
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 查询列表-无分页-有条件/有条件 -->
+    <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_in_order a
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+    </select>
+
+    <!-- 根据id查询记录 -->
+    <select id="queryById"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_in_order a
+        <include refid="Example_Where_Clause_id"/>
+    </select>
+
+    <!-- 根据条件查询记录 -->
+    <select id="queryByCondition"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_in_order a
+        <include refid="Example_Where_Clause"/>
+        limit 1
+    </select>
+
+
+    <!-- 主要作用1.逻辑删除，2更新状态 -->
+    <update id="manyOperation" parameterType="Object">
+        UPDATE tb_pr_in_order a set a.send_num = 0, a.send_status =0
+        where 1=1
+        and a.id =#{id}
+        <if test="channelId != 0 and channelId >0 " >
+            and a.channel_id = #{channelId}
+        </if>
+        and a.yn=0
+    </update>
+
+
+    <!-- 获取订单的total信息 -->
+    <select id="getTotalData"  resultMap="dataMap" parameterType="Object">
+        select a1.total_money,a1.total_actual_money,a1.total_num,
+        a2.total_suc_money,a2.total_actual_service_charge,a2.total_suc_actual_money,a2.total_suc_num,
+        ifnull(convert(a2.total_suc_money/a1.total_money,decimal(19,4)) * 100, '0.0000') as total_money_ratio,
+        ifnull(convert(a2.total_suc_actual_money/a1.total_actual_money,decimal(19,4)) * 100, '0.0000') as total_actual_aatio,
+        ifnull(convert(a2.total_suc_num/a1.total_num,decimal(19,4)) * 100, '0.0000') as total_num_ratio
+        from (
+        select
+        '1' as id,
+        ifnull(sum(convert(a.total_amount,decimal(19,4))), '0.0000') as total_money,
+        ifnull(sum(convert(a.actual_money,decimal(19,4))),'0.0000') as total_actual_money,
+        ifnull(count(a.id), 0) as total_num
+        from tb_pr_in_order a
+        <include refid="Example_Where_Clause"/>
+        ) a1
+        left join
+        (
+        select
+        '1' as id,
+        ifnull(sum(convert(a.total_amount,decimal(19,4))), '0.0000') as total_suc_money,
+        convert(ifnull(sum(a.total_amount), '0.0000') - ifnull(sum(a.actual_money), '0.0000'),decimal(19,4)) as total_actual_service_charge,
+        ifnull(sum(convert(a.actual_money,decimal(19,4))),'0.0000') as total_suc_actual_money,
+        ifnull(count(a.id), 0) as total_suc_num
+        from tb_pr_in_order a
+        <include refid="Example_Where_Clause"/>
+        and a.order_status=4
+        ) a2
+        on a1.id = a2.id
+    </select>
+
+
+
+
+</mapper>

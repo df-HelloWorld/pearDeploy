@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xn.manager.dao.StrategyDao">
+    <!-- 属性映射 -->
+    <resultMap type="com.xn.manager.model.strategy.StrategyModel" id="dataMap">
+        <id property="id" column="id" />
+        <result property="stgName" column="stg_name" />
+        <result property="stgType" column="stg_type" />
+        <result property="stgKey" column="stg_key" />
+        <result property="stgNumValue" column="stg_num_value" />
+        <result property="stgValue" column="stg_value" />
+        <result property="stgBigValue" column="stg_big_value" />
+        <result property="dataType" column="data_type" />
+        <result property="stgExplain" column="stg_explain" />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+        <result property="yn" column="yn" />
+    </resultMap>
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+        a.id,a.stg_name,a.stg_type,a.stg_key,a.stg_num_value,a.stg_value,a.stg_big_value,a.data_type,a.stg_explain,
+        a.create_time,a.update_time,a.yn
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            <if test="stgType != 0 and stgType >0 " >
+                and a.stg_type = #{stgType}
+            </if>
+            <if test="stgKey != null and stgKey != '' " >
+                and a.stg_key = #{stgKey}
+            </if>
+            <if test="stgName != null and stgName != '' " >
+                and a.stg_name = #{stgName}
+            </if>
+            and a.yn = 0
+        </trim>
+    </sql>
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            and a.yn = 0
+        </trim>
+    </sql>
+
+    <!-- 查询总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from tb_pr_strategy a
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 查询分页列表 -->
+    <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_strategy a
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 查询列表-无分页-有条件/有条件 -->
+    <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_strategy a
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+    </select>
+
+    <!-- 根据id查询记录 -->
+    <select id="queryById"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_strategy a
+        <include refid="Example_Where_Clause_id"/>
+    </select>
+
+    <!-- 根据条件查询记录 -->
+    <select id="queryByCondition"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_strategy a
+        <include refid="Example_Where_Clause"/>
+        limit 1
+    </select>
+
+    <!-- 添加记录 -->
+    <insert id="add" parameterType="Object" >
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        insert into tb_pr_strategy
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="stgName != null and stgName != '' " >
+                stg_name,
+            </if>
+            <if test="stgType != 0 and stgType >0 " >
+                stg_type,
+            </if>
+            <if test="stgKey != null and stgKey != '' " >
+                stg_key,
+            </if>
+            <if test="stgNumValue != 0 and stgNumValue >0 " >
+                stg_num_value,
+            </if>
+            <if test="stgValue != null and stgValue != '' " >
+                stg_value,
+            </if>
+            <if test="stgBigValue != null and stgBigValue != '' " >
+                stg_big_value,
+            </if>
+            <if test="dataType != 0 and dataType >0 " >
+                data_type,
+            </if>
+            <if test="stgExplain != null and stgExplain != '' " >
+                stg_explain,
+            </if>
+            create_time,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="stgName != null and stgName != '' " >
+                <![CDATA[  #{stgName}, ]]>
+            </if>
+            <if test="stgType != 0 and stgType >0 " >
+                <![CDATA[  #{stgType}, ]]>
+            </if>
+            <if test="stgKey != null and stgKey != '' " >
+                <![CDATA[  #{stgKey}, ]]>
+            </if>
+            <if test="stgNumValue != 0 and stgNumValue >0 " >
+                <![CDATA[  #{stgNumValue}, ]]>
+            </if>
+            <if test="stgValue != null and stgValue != '' " >
+                <![CDATA[  #{stgValue}, ]]>
+            </if>
+            <if test="stgBigValue != null and stgBigValue != '' " >
+                <![CDATA[  #{stgBigValue}, ]]>
+            </if>
+            <if test="dataType != 0 and dataType >0 " >
+                <![CDATA[  #{dataType}, ]]>
+            </if>
+            <if test="stgExplain != null and stgExplain != '' " >
+                <![CDATA[  #{stgExplain}, ]]>
+            </if>
+            <![CDATA[  NOW(), ]]>
+        </trim>
+    </insert>
+
+
+    <!-- 更新记录 -->
+    <update id="update" parameterType="Object">
+        UPDATE tb_pr_strategy a
+        <trim prefix="set" suffixOverrides=",">
+            a.stg_name = #{stgName},
+            a.stg_type = #{stgType},
+            a.stg_key = #{stgKey},
+            a.stg_num_value = #{stgNumValue},
+            a.stg_value = #{stgValue},
+            a.stg_big_value = #{stgBigValue},
+            a.data_type = #{dataType},
+            a.stg_explain = #{stgExplain},
+            a.update_time = NOW(),
+        </trim>
+        <include refid="Example_Where_Clause_id"/>
+    </update>
+
+
+    <!-- 主要作用1.逻辑删除，2更新状态 -->
+    <update id="manyOperation" parameterType="Object">
+        update tb_pr_strategy a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="isEnable != 0 and isEnable >0 " >
+                a.is_enable=#{isEnable},
+            </if>
+            a.yn=#{yn},
+            a.update_time=NOW()
+        </trim>
+        <include refid="Example_Where_Clause_id"/>
+    </update>
+
+    <!--逻辑删除数据 -->
+    <update id="delete" parameterType="java.lang.Long">
+        UPDATE tb_pr_strategy a set a.yn = 1,
+        a.update_time = now()
+        where 1=1
+        and a.id =#{id}
+        and a.yn=0
+    </update>
+
+</mapper>

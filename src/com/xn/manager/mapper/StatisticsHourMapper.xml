@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xn.manager.dao.StatisticsHourDao">
+
+
+    <!-- 属性映射 -->
+    <resultMap type="com.xn.manager.model.statistics.StatisticsHourModel" id="dataMap">
+        <id property="id" column="id" />
+        <result property="channelId" column="channel_id" />
+        <result property="gewayCodeId" column="geway_code_id" />
+        <result property="curday" column="curday" />
+        <result property="curhour" column="curhour" />
+        <result property="isProfit" column="is_profit" />
+        <result property="gewayCodeName" column="geway_code_name" />
+        <result property="gewayName" column="geway_name" />
+        <result property="orderNum" column="order_num" />
+        <result property="orderMoney" column="order_money" />
+        <result property="sucOrderNum" column="suc_order_num" />
+        <result property="sucOrderMoney" column="suc_order_money" />
+        <result property="sucOrderNumRatio" column="suc_order_num_ratio" />
+        <result property="sucOrderMoneyRatio" column="suc_order_money_ratio" />
+
+
+        <result property="totalNum" column="total_num" />
+        <result property="totalSucNum" column="total_suc_num" />
+        <result property="totalNumRatio" column="total_num_ratio" />
+        <result property="totalMoney" column="total_money" />
+        <result property="totalSucMoney" column="total_suc_money" />
+        <result property="totalMoneyRatio" column="total_money_ratio" />
+
+    </resultMap>
+
+
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="channelId != 0 and channelId >0 " >
+                and a.channel_id = #{channelId}
+            </if>
+            <if test="gewayCodeId != 0 and gewayCodeId >0 " >
+                and a.geway_code_id = #{gewayCodeId}
+            </if>
+            <if test="curday != 0 and curday >0 " >
+                and a.curday = #{curday}
+            </if>
+            <if test="curhour != 0 and curhour >0 " >
+                and a.curhour = #{curhour}
+            </if>
+            <if test="isProfit != 0 and isProfit >0 " >
+                and a.is_profit = #{isProfit}
+            </if>
+            and a.yn = 0
+        </trim>
+    </sql>
+
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            and a.yn =  0
+        </trim>
+    </sql>
+
+    <!-- 排序条件 -->
+    <sql id="Example_Order_By">
+        order by a.create_time desc
+    </sql>
+
+
+    <!-- 查询总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from (
+            select a1.curhour,a1.geway_code_id,a1.geway_code_name,a1.geway_name,a1.order_num,a1.order_money,
+            ifnull(a2.suc_order_num, 0) as suc_order_num,
+            ifnull(a2.suc_order_money, '0.0000') as suc_order_money,
+            concat(ifnull(convert(a2.suc_order_num/a1.order_num,decimal(19,4)) * 100, '0.0000'),'%') as suc_order_num_ratio,
+            concat(ifnull(convert(a2.suc_order_money/a1.order_money,decimal(19,4)) * 100, '0.0000'),'%') as suc_order_money_ratio
+            from(
+                select a.curhour,a.geway_code_id,a.geway_code_name,a.geway_name,
+                ifnull(count(a.id), 0) as order_num,
+                ifnull(sum(convert(a.total_amount,decimal(19,4))), '0.0000') as order_money
+                from tb_pr_in_order a
+                <include refid="Example_Where_Clause"/>
+                group by a.geway_code_id,a.curhour
+        )a1
+        left join (
+            select a.curhour,a.geway_code_id,a.geway_code_name,a.geway_name,
+            ifnull(count(a.id), 0) as suc_order_num,
+            ifnull(sum(convert(a.total_amount,decimal(19,4))), '0.0000') as suc_order_money
+            from tb_pr_in_order a
+            <include refid="Example_Where_Clause"/>
+            and a.order_status = 4
+            group by a.geway_code_id,a.curhour
+        )a2
+        on a1.curhour = a2.curhour and a1.geway_code_id = a2.geway_code_id
+        ) a3
+        order by a3.curhour desc
+    </select>
+
+    <!-- 查询分页列表 -->
+    <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+        select a3.curhour,a3.geway_code_id,a3.geway_code_name,a3.geway_name,a3.order_num,a3.order_money,
+        a3.suc_order_num,a3.suc_order_money,a3.suc_order_num_ratio,a3.suc_order_money_ratio
+        from (
+            select a1.curhour,a1.geway_code_id,a1.geway_code_name,a1.geway_name,a1.order_num,a1.order_money,
+            ifnull(a2.suc_order_num, 0) as suc_order_num,
+            ifnull(a2.suc_order_money, '0.0000') as suc_order_money,
+            concat(ifnull(convert(a2.suc_order_num/a1.order_num,decimal(19,4)) * 100, '0.0000'),'%') as suc_order_num_ratio,
+            concat(ifnull(convert(a2.suc_order_money/a1.order_money,decimal(19,4)) * 100, '0.0000'),'%') as suc_order_money_ratio
+            from(
+                select a.curhour,a.geway_code_id,a.geway_code_name,a.geway_name,
+                ifnull(count(a.id), 0) as order_num,
+                ifnull(sum(convert(a.total_amount,decimal(19,4))), '0.0000') as order_money
+                from tb_pr_in_order a
+                <include refid="Example_Where_Clause"/>
+                group by a.geway_code_id,a.curhour
+        )a1
+        left join (
+            select a.curhour,a.geway_code_id,a.geway_code_name,a.geway_name,
+            ifnull(count(a.id), 0) as suc_order_num,
+            ifnull(sum(convert(a.total_amount,decimal(19,4))), '0.0000') as suc_order_money
+            from tb_pr_in_order a
+            <include refid="Example_Where_Clause"/>
+            and a.order_status = 4
+            group by a.geway_code_id,a.curhour
+        )a2
+        on a1.curhour = a2.curhour and a1.geway_code_id = a2.geway_code_id
+        ) a3
+        order by a3.curhour desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+
+
+
+    <!-- 获取订单的total信息 -->
+    <select id="getTotalData"  resultMap="dataMap" parameterType="Object">
+        select a1.id,a1.total_num,a1.total_money,a2.total_suc_num,a2.total_suc_money,
+        concat(ifnull(convert(a2.total_suc_num/a1.total_num,decimal(19,4)) * 100, '0.0000'),'%') as total_num_ratio,
+        concat(ifnull(convert(a2.total_suc_money/a1.total_money,decimal(19,4)) * 100, '0.0000'),'%') as total_money_ratio
+        from(
+            select
+            '1' as id,ifnull(count(a.id), 0) as total_num,
+            ifnull(sum(convert(a.total_amount,decimal(19,4))), '0.0000') as total_money
+            from tb_pr_in_order a
+            <include refid="Example_Where_Clause"/>
+        )a1
+        left join (
+            select
+            '1' as id,ifnull(count(a.id), 0) as total_suc_num,
+            ifnull(sum(convert(a.total_amount,decimal(19,4))), '0.0000') as total_suc_money
+            from tb_pr_in_order a
+            <include refid="Example_Where_Clause"/>
+            and a.order_status =4
+        )a2 on a1.id = a2.id
+    </select>
+
+
+
+
+</mapper>

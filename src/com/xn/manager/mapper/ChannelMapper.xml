@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xn.manager.dao.ChannelDao">
+    <!-- 属性映射 -->
+    <resultMap type="com.xn.manager.model.channel.ChannelModel" id="dataMap">
+        <id property="id" column="id" />
+        <result property="accountNum" column="account_num" />
+        <result property="passWd" column="pass_wd" />
+        <result property="withdrawPassWd" column="withdraw_pass_wd" />
+        <result property="channelName" column="channel_name" />
+        <result property="channel" column="channel" />
+        <result property="companyName" column="company_name" />
+        <result property="contacts" column="contacts" />
+        <result property="phoneNum" column="phone_num" />
+        <result property="totalMoney" column="total_money" />
+        <result property="balance" column="balance" />
+        <result property="secretKey" column="secret_key" />
+        <result property="isGoogle" column="is_google" />
+        <result property="googleKey" column="google_key" />
+        <result property="lowerUrl" column="lower_url" />
+        <result property="lockMoney" column="lock_money" />
+        <result property="lowerSuc" column="lower_suc" />
+        <result property="whiteListIp" column="white_list_ip" />
+        <result property="isSynchro" column="is_synchro" />
+        <result property="sendDataType" column="send_data_type" />
+        <result property="withdrawType" column="withdraw_type" />
+        <result property="channelType" column="channel_type" />
+        <result property="roleId" column="role_id" />
+        <result property="isEnable" column="is_enable" />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+        <result property="yn" column="yn" />
+        <result property="roleName" column="role_name" />
+    </resultMap>
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+        a.id,a.account_num,a.pass_wd,a.withdraw_pass_wd,a.channel_name,a.channel,a.company_name,a.contacts,a.phone_num,a.total_money,a.balance,a.secret_key,a.is_google,a.google_key,
+        a.lower_url,a.lower_suc,a.white_list_ip,a.is_synchro,a.send_data_type,a.withdraw_type,a.channel_type,a.role_id,a.is_enable,a.lock_money,
+        a.create_time,a.update_time,a.yn,
+        b.role_name
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            <if test="accountNum != null and accountNum != '' " >
+                and a.account_num = #{accountNum}
+            </if>
+            <if test="passWd != null and passWd != '' " >
+                and a.pass_wd = #{passWd}
+            </if>
+            <if test="withdrawPassWd != null and withdrawPassWd != '' " >
+                and a.withdraw_pass_wd = #{withdrawPassWd}
+            </if>
+            <if test="roleId != 0 and roleId >0 " >
+                and a.role_id = #{roleId}
+            </if>
+            <if test="withdrawType != 0 and withdrawType >0 " >
+                and a.withdraw_type = #{withdrawType}
+            </if>
+            <if test="channelType != 0 and channelType >0 " >
+                and a.channel_type = #{channelType}
+            </if>
+            <if test="channelName != null and channelName != '' " >
+                and a.channel_name = #{channelName}
+            </if>
+            <if test="isEnable != 0 and isEnable >0 " >
+                and a.is_enable = #{isEnable}
+            </if>
+            and a.yn =  0
+        </trim>
+    </sql>
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            and a.yn =  0
+        </trim>
+    </sql>
+
+    <!-- 查询总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from tb_pr_channel a
+        left join tb_pr_sys_role b on a.role_id = b.role_id
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 查询分页列表 -->
+    <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_channel a left join tb_pr_sys_role b on a.role_id = b.role_id
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 查询列表-无分页-有条件/有条件 -->
+    <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_channel a left join tb_pr_sys_role b on a.role_id = b.role_id
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+    </select>
+
+    <!-- 根据id查询记录 -->
+    <select id="queryById"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_channel a left join tb_pr_sys_role b on a.role_id = b.role_id
+        <include refid="Example_Where_Clause_id"/>
+    </select>
+
+    <!-- 根据条件查询记录 -->
+    <select id="queryByCondition"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_channel a left join tb_pr_sys_role b on a.role_id = b.role_id
+        <include refid="Example_Where_Clause"/>
+        limit 1
+    </select>
+
+    <!-- 添加记录 -->
+    <insert id="add" parameterType="Object" >
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        insert into tb_pr_channel
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="accountNum != null and accountNum != '' " >
+                account_num,
+            </if>
+            <if test="passWd != null and passWd != '' " >
+                pass_wd,
+            </if>
+            <if test="withdrawPassWd != null and withdrawPassWd != '' " >
+                withdraw_pass_wd,
+            </if>
+            <if test="roleId != 0 and roleId >0 " >
+                role_id,
+            </if>
+            <if test="channelName != null and channelName != '' " >
+                channel_name,
+            </if>
+            <if test="channel != null and channel != '' " >
+                channel,
+            </if>
+            <if test="companyName != null and companyName != '' " >
+                company_name,
+            </if>
+            <if test="contacts != null and contacts != '' " >
+                contacts,
+            </if>
+            <if test="phoneNum != null and phoneNum != '' " >
+                phone_num,
+            </if>
+            <if test="secretKey != null and secretKey != '' " >
+                secret_key,
+            </if>
+            <if test="isGoogle != 0 and isGoogle >0 " >
+                is_google,
+            </if>
+            <if test="googleKey != null and googleKey != '' " >
+                google_key,
+            </if>
+            <if test="lowerUrl != null and lowerUrl != '' " >
+                lower_url,
+            </if>
+            <if test="lowerSuc != null and lowerSuc != '' " >
+                lower_suc,
+            </if>
+            <if test="whiteListIp != null and whiteListIp != '' " >
+                white_list_ip,
+            </if>
+            <if test="isSynchro != 0 and isSynchro >0 " >
+                is_synchro,
+            </if>
+            <if test="sendDataType != 0 and sendDataType >0 " >
+                send_data_type,
+            </if>
+            <if test="withdrawType != 0 and withdrawType >0 " >
+                withdraw_type,
+            </if>
+            <if test="channelType != 0 and channelType >0 " >
+                channel_type,
+            </if>
+            <if test="isEnable != 0 and isEnable >0 " >
+                is_enable,
+            </if>
+            create_time,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="accountNum != null and accountNum != '' " >
+                <![CDATA[  #{accountNum}, ]]>
+            </if>
+            <if test="passWd != null and passWd != '' " >
+                <![CDATA[  #{passWd}, ]]>
+            </if>
+            <if test="withdrawPassWd != null and withdrawPassWd != '' " >
+                <![CDATA[  #{withdrawPassWd}, ]]>
+            </if>
+            <if test="roleId != 0 and roleId >0 " >
+                <![CDATA[  #{roleId}, ]]>
+            </if>
+            <if test="channelName != null and channelName != '' " >
+                <![CDATA[  #{channelName}, ]]>
+            </if>
+            <if test="channel != null and channel != '' " >
+                <![CDATA[  #{channel}, ]]>
+            </if>
+            <if test="companyName != null and companyName != '' " >
+                <![CDATA[  #{companyName}, ]]>
+            </if>
+            <if test="contacts != null and contacts != '' " >
+                <![CDATA[  #{contacts}, ]]>
+            </if>
+            <if test="phoneNum != null and phoneNum != '' " >
+                <![CDATA[  #{phoneNum}, ]]>
+            </if>
+            <if test="secretKey != null and secretKey != '' " >
+                <![CDATA[  #{secretKey}, ]]>
+            </if>
+            <if test="isGoogle != 0 and isGoogle >0 " >
+                <![CDATA[  #{isGoogle}, ]]>
+            </if>
+            <if test="googleKey != null and googleKey != '' " >
+                <![CDATA[  #{googleKey}, ]]>
+            </if>
+            <if test="lowerUrl != null and lowerUrl != '' " >
+                <![CDATA[  #{lowerUrl}, ]]>
+            </if>
+            <if test="lowerSuc != null and lowerSuc != '' " >
+                <![CDATA[  #{lowerSuc}, ]]>
+            </if>
+            <if test="whiteListIp != null and whiteListIp != '' " >
+                <![CDATA[  #{whiteListIp}, ]]>
+            </if>
+            <if test="isSynchro != 0 and isSynchro >0 " >
+                <![CDATA[  #{isSynchro}, ]]>
+            </if>
+            <if test="sendDataType != 0 and sendDataType >0 " >
+                <![CDATA[  #{sendDataType}, ]]>
+            </if>
+            <if test="withdrawType != 0 and withdrawType >0 " >
+                <![CDATA[  #{withdrawType}, ]]>
+            </if>
+            <if test="channelType != 0 and channelType >0 " >
+                <![CDATA[  #{channelType}, ]]>
+            </if>
+            <if test="isEnable != 0 and isEnable >0 " >
+                <![CDATA[  #{isEnable}, ]]>
+            </if>
+            <![CDATA[  NOW(), ]]>
+        </trim>
+    </insert>
+
+
+    <!-- 更新记录 -->
+    <update id="update" parameterType="Object">
+        UPDATE tb_pr_channel a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="accountNum != null and accountNum != '' " >
+                a.account_num = #{accountNum},
+            </if>
+            <if test="passWd != null and passWd != '' " >
+                a.pass_wd = #{passWd},
+            </if>
+            <if test="withdrawPassWd != null and withdrawPassWd != '' " >
+                a.withdraw_pass_wd = #{withdrawPassWd},
+            </if>
+            <if test="roleId != 0 and roleId >0 " >
+                a.role_id = #{roleId},
+            </if>
+            <if test="channelName != null and channelName != '' " >
+                a.channel_name = #{channelName},
+            </if>
+            <if test="channel != null and channel != '' " >
+                a.channel = #{channel},
+            </if>
+            <if test="companyName != null and companyName != '' " >
+                a.company_name = #{companyName},
+            </if>
+            <if test="contacts != null and contacts != '' " >
+                a.contacts = #{contacts},
+            </if>
+            <if test="phoneNum != null and phoneNum != '' " >
+                a.phone_num = #{phoneNum},
+            </if>
+            <if test="isGoogle != 0  and isGoogle >0 " >
+                a.is_google = #{isGoogle},
+            </if>
+            <if test="lowerUrl != null and lowerUrl != '' " >
+                a.lower_url = #{lowerUrl},
+            </if>
+            <if test="lowerSuc != null and lowerSuc != '' " >
+                a.lower_suc = #{lowerSuc},
+            </if>
+            a.white_list_ip = #{whiteListIp},
+            <if test="isSynchro != 0  and isSynchro >0 " >
+                a.is_synchro = #{isSynchro},
+            </if>
+            <if test="sendDataType != 0 and sendDataType >0 " >
+                a.send_data_type = #{sendDataType},
+            </if>
+            <if test="withdrawType != 0 and withdrawType >0 " >
+                a.withdraw_type = #{withdrawType},
+            </if>
+            <if test="channelType != 0 and channelType >0 " >
+                a.channel_type = #{channelType},
+            </if>
+            <if test="isEnable != 0  and isEnable >0 " >
+                a.is_enable = #{isEnable},
+            </if>
+            a.update_time = NOW(),
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+
+    <!-- 主要作用1.逻辑删除，2更新状态 -->
+    <update id="manyOperation" parameterType="Object">
+        update tb_pr_channel a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="isEnable != 0 and isEnable >0 " >
+                a.is_enable=#{isEnable},
+            </if>
+            a.update_time=NOW()
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+    <!--逻辑删除数据 -->
+    <update id="delete" parameterType="java.lang.Long">
+        UPDATE tb_pr_channel a set a.yn = 1,
+        a.update_time = now()
+        where 1=1
+        and a.id =#{id}
+        and a.yn=0
+    </update>
+
+
+    <!-- 更新渠道的余额 -->
+    <update id="updateBalance" parameterType="Object">
+        UPDATE tb_pr_channel a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="addBalance != null and addBalance != '' " >
+                a.balance = a.balance + #{orderMoney},
+            </if>
+            <if test="subtractBalance != null and subtractBalance != '' " >
+                a.balance = a.balance - #{orderMoney},
+            </if>
+            a.update_time = NOW(),
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+
+    <!-- 更新用户的密码 -->
+    <update id="updatePassWd" parameterType="Object">
+        UPDATE tb_pr_channel a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="resetPassWd != null and resetPassWd != '' " >
+                a.pass_wd = #{resetPassWd},
+            </if>
+            <if test="resetWithdrawPassWd != null and resetWithdrawPassWd != '' " >
+                a.withdraw_pass_wd = #{resetWithdrawPassWd},
+            </if>
+            a.update_time = NOW(),
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+</mapper>

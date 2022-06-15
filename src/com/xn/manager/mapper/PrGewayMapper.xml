@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xn.manager.dao.PrGewayDao">
+    <!-- 属性映射 -->
+    <resultMap id="dataMap" type="com.xn.manager.model.PrGewayModel" >
+        <id column="id" property="id" />
+        <result column="geway_name" property="gewayName" />
+        <result column="secret_key" property="secretKey" />
+        <result column="pay_id" property="payId" />
+        <result column="attribute_type" property="attributeType" />
+        <result column="total_money" property="totalMoney" />
+        <result column="least_money" property="leastMoney" />
+        <result column="balance" property="balance" />
+        <result column="lock_money" property="lockMoney" />
+        <result column="geway_type" property="gewayType" />
+        <result column="is_enable" property="isEnable" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="ts_time" property="tsTime" />
+        <result column="yn" property="yn" />
+    </resultMap>
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+        a.id, a.geway_name, a.secret_key, a.pay_id, a.attribute_type, a.total_money, a.least_money, a.balance,
+        a.lock_money, a.geway_type, a.is_enable, a.create_time, a.update_time, a.ts_time, a.yn
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            <if test="gewayName != null and gewayName != '' " >
+                and a.geway_name = #{gewayName}
+            </if>
+            <if test="secretKey != null and secretKey != '' " >
+                and a.secret_key = #{secretKey}
+            </if>
+            <if test="payId != null and payId != '' " >
+                and a.pay_id = #{payId}
+            </if>
+            <if test="attributeType != 0 and attributeType >0 " >
+                and a.attribute_type = #{attributeType}
+            </if>
+            and a.yn = 0
+        </trim>
+    </sql>
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            and a.yn = 0
+        </trim>
+    </sql>
+
+    <!-- 查询总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from tb_pr_geway a
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 查询分页列表 -->
+    <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_geway a
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 查询列表-无分页-有条件/有条件 -->
+    <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_geway a
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+    </select>
+
+    <!-- 根据id查询记录 -->
+    <select id="queryById"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_geway a
+        <include refid="Example_Where_Clause_id"/>
+    </select>
+
+    <!-- 根据条件查询记录 -->
+    <select id="queryByCondition"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_geway a
+        <include refid="Example_Where_Clause"/>
+        limit 1
+    </select>
+
+    <!-- 添加记录 -->
+    <insert id="add" parameterType="Object" >
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        insert into tb_pr_geway
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                id,
+            </if>
+            <if test="gewayName != null and gewayName != '' " >
+                geway_name,
+            </if>
+            <if test="secretKey != null and secretKey != '' " >
+                secret_key,
+            </if>
+            <if test="payId != null and payId != '' " >
+                pay_id,
+            </if>
+            <if test="attributeType != 0 and attributeType >0 " >
+                attribute_type,
+            </if>
+            <if test="totalMoney != null and totalMoney != '' " >
+                total_money,
+            </if>
+            <if test="leastMoney != null and leastMoney != '' " >
+                least_money,
+            </if>
+            <if test="balance != null and balance != ''" >
+                balance,
+            </if>
+            <if test="lockMoney != null and lockMoney != '' " >
+                lock_money,
+            </if>
+            <if test="gewayType != 0 and gewayType >0 " >
+                geway_type,
+            </if>
+            <if test="isEnable != 0 and isEnable >0 " >
+                is_enable,
+            </if>
+            create_time,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                <![CDATA[  #{id}, ]]>
+            </if>
+            <if test="gewayName != null and gewayName != '' " >
+                <![CDATA[  #{gewayName}, ]]>
+            </if>
+            <if test="secretKey != null and secretKey != '' " >
+                <![CDATA[  #{secretKey}, ]]>
+            </if>
+            <if test="payId != null and payId != '' " >
+                <![CDATA[  #{payId}, ]]>
+            </if>
+            <if test="attributeType != 0 and attributeType >0 " >
+                <![CDATA[  #{attributeType}, ]]>
+            </if>
+            <if test="totalMoney != null and totalMoney != '' " >
+                <![CDATA[  #{totalMoney}, ]]>
+            </if>
+            <if test="leastMoney != null and leastMoney != '' " >
+                <![CDATA[  #{leastMoney}, ]]>
+            </if>
+            <if test="balance != null and balance != ''" >
+                <![CDATA[  #{balance}, ]]>
+            </if>
+            <if test="lockMoney != null and lockMoney != '' " >
+                <![CDATA[  #{lockMoney}, ]]>
+            </if>
+            <if test="gewayType != 0 and gewayType >0 " >
+                <![CDATA[  #{gewayType}, ]]>
+            </if>
+            <if test="isEnable != 0 and isEnable >0 " >
+                <![CDATA[  #{isEnable}, ]]>
+            </if>
+            <![CDATA[  NOW(), ]]>
+        </trim>
+    </insert>
+
+
+    <!-- 更新记录 -->
+    <update id="update" parameterType="Object">
+        UPDATE tb_pr_geway a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="gewayName != null and gewayName != '' " >
+                a.geway_name = #{gewayName},
+            </if>
+            a.secret_key = #{secretKey},
+            a.pay_id = #{payId},
+            <if test="attributeType != 0 and attributeType >0 " >
+                a.attribute_type = #{attributeType},
+            </if>
+            <if test="totalMoney != null and totalMoney != '' " >
+                a.total_money = #{totalMoney},
+            </if>
+            <if test="leastMoney != null and leastMoney != '' " >
+                a.least_money = #{leastMoney},
+            </if>
+            <if test="balance != null and balance != ''" >
+                a.balance = #{balance},
+            </if>
+            <if test="lockMoney != null and lockMoney != '' " >
+                a.lock_money = #{lockMoney},
+            </if>
+            <if test="gewayType != 0 and gewayType >0 " >
+                a.geway_type = #{gewayType},
+            </if>
+            <if test="isEnable != 0 and isEnable >0 " >
+                a.is_enable = #{isEnable},
+            </if>
+            a.update_time = NOW()
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+
+    <!-- 主要作用1.逻辑删除，2更新状态 -->
+    <update id="manyOperation" parameterType="Object">
+        update tb_pr_geway a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="isEnable != 0 and isEnable >0 " >
+                a.is_enable = #{isEnable},
+            </if>
+            a.update_time = NOW()
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+    <!--逻辑删除数据 -->
+    <update id="delete" parameterType="java.lang.Long">
+        UPDATE tb_pr_geway a set a.yn = 1,
+        a.update_time = now()
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+</mapper>

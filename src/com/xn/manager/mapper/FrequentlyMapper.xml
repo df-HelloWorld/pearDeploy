@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xn.manager.dao.FrequentlyDao">
+
+
+
+    <!-- 属性映射 -->
+    <resultMap type="com.xn.manager.model.frequently.FrequentlyModel" id="dataMap">
+        <id property="id" column="id" />
+        <result property="channelId" column="channel_id" />
+        <result property="channelName" column="channel_name" />
+        <result property="channel" column="channel" />
+        <result property="clientIp" column="client_ip" />
+        <result property="serviceIp" column="service_ip" />
+        <result property="jsonData" column="json_data" />
+        <result property="lockRedisKey" column="lock_redis_key" />
+        <result property="lockTime" column="lock_time" />
+        <result property="lockType" column="lock_type" />
+        <result property="fromInterface" column="from_interface" />
+        <result property="isLock" column="is_lock" />
+        <result property="curday" column="curday" />
+        <result property="curday" column="curday" />
+        <result property="curhour" column="curhour" />
+        <result property="curminute" column="curminute" />
+        <result property="runNum" column="run_num" />
+        <result property="runStatus" column="run_status" />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+        <result property="yn" column="yn" />
+        <result property="invalidStatus" column="invalid_status" />
+        <result property="invalidStr" column="invalid_str" />
+
+
+
+    </resultMap>
+
+
+
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+        a.id,a.channel,a.client_ip,a.service_ip,a.json_data,a.lock_redis_key,a.lock_time,
+        case
+        when a.lock_time > now() then
+        '未失效'
+        when a.lock_time &lt;= now() then
+        '已失效'
+        end as invalid_str,
+        case
+        when a.lock_time > now() then
+        1
+        when a.lock_time &lt;= now() then
+        2
+        end as invalid_status,
+        a.lock_type,a.from_interface,a.is_lock,a.data_explain,
+        a.curday,a.curhour,a.curminute,a.run_num,a.run_status,
+        a.create_time,a.update_time,a.yn,
+        b.channel,b.channel_name
+    </sql>
+
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            <if test="channelId != 0 and channelId >0 " >
+                and b.id = #{channelId}
+            </if>
+            <if test="channelName != null and channelName != '' " >
+                and b.channel_name = #{channelName}
+            </if>
+            <if test="clientIp != null and clientIp != '' " >
+                and a.client_ip = #{clientIp}
+            </if>
+            <if test="serviceIp != null and serviceIp != '' " >
+                and a.service_ip = #{serviceIp}
+            </if>
+            <if test="lockRedisKey != null and lockRedisKey != '' " >
+                and a.lock_redis_key = #{lockRedisKey}
+            </if>
+            <if test="lockType != 0 and lockType >0 " >
+                and a.lock_type = #{lockType}
+            </if>
+            <if test="isLock != 0 and isLock >0 " >
+                and a.is_lock = #{isLock}
+            </if>
+            <if test="curday != 0 and curday >0 " >
+                and a.curday = #{curday}
+            </if>
+            <if test="curdayStart != 0 and curdayStart >0 and curdayEnd != 0 and curdayEnd >0 " >
+                and a.curday >= #{curdayStart} and a.curday &lt;= #{curdayEnd}
+            </if>
+            <choose>
+                <when test="invalidStatus == 1">
+                    and lock_time > now()
+                </when>
+                <when test="invalidStatus == 2">
+                    and a.lock_time &lt;= now()
+                </when>
+                <otherwise>
+                    and a.lock_time is not null
+                </otherwise>
+            </choose>
+            and a.yn = 0
+        </trim>
+    </sql>
+
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            and a.yn = 0
+        </trim>
+    </sql>
+
+
+    <!-- 排序条件 -->
+    <sql id="Example_Order_By">
+        order by a.create_time asc
+    </sql>
+
+    <!-- 查询总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from tb_pr_frequently a left join tb_pr_channel b on a.channel = b.channel
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 查询分页列表 -->
+    <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_frequently a left join tb_pr_channel b on a.channel = b.channel
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 查询列表-无分页-有条件/有条件 -->
+    <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_frequently a left join tb_pr_channel b on a.channel = b.channel
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+    </select>
+
+    <!-- 根据id查询记录 -->
+    <select id="queryById"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_frequently a left join tb_pr_channel b on a.channel = b.channel
+        <include refid="Example_Where_Clause_id"/>
+    </select>
+
+    <!-- 根据条件查询记录 -->
+    <select id="queryByCondition"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_frequently a left join tb_pr_channel b on a.channel = b.channel
+        <include refid="Example_Where_Clause"/>
+        limit 1
+    </select>
+
+
+    <!-- 添加基本信息 -->
+    <insert id="add" parameterType="Object" >
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        insert into tb_pr_frequently
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="channelId != 0 and channelId >0 " >
+                channel_id,
+            </if>
+            <if test="channelName != null and channelName != '' " >
+                channel_name,
+            </if>
+            <if test="channel != null and channel != '' " >
+                channel,
+            </if>
+            <if test="clientIp != null and clientIp != '' " >
+                client_ip,
+            </if>
+            <if test="serviceIp != null and serviceIp != '' " >
+                service_ip,
+            </if>
+            <if test="jsonData != null and jsonData != '' " >
+                json_data,
+            </if>
+            <if test="lockRedisKey != null and lockRedisKey != '' " >
+                lock_redis_key,
+            </if>
+            <if test="lockTime != null and lockTime != '' " >
+                lock_time,
+            </if>
+            <if test="lockType != 0 and lockType >0 " >
+                lock_type,
+            </if>
+            <if test="fromInterface != null and fromInterface != '' " >
+                from_interface,
+            </if>
+            <if test="isLock != 0 and isLock >0 " >
+                is_lock,
+            </if>
+            <if test="dataExplain != null and dataExplain != '' " >
+                data_explain,
+            </if>
+            <if test="curday != 0 and curday >0 " >
+                curday,
+            </if>
+            <if test="curhour != 0 and curhour >0 " >
+                curhour,
+            </if>
+            <if test="curminute != 0 and curminute >0 " >
+                curminute,
+            </if>
+            create_time,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="channelId != 0 and channelId >0 " >
+                <![CDATA[  #{channelId}, ]]>
+            </if>
+            <if test="channelName != null and channelName != '' " >
+                <![CDATA[  #{channelName}, ]]>
+            </if>
+            <if test="channel != null and channel != '' " >
+                <![CDATA[  #{channel}, ]]>
+            </if>
+            <if test="clientIp != null and clientIp != '' " >
+                <![CDATA[  #{clientIp}, ]]>
+            </if>
+            <if test="serviceIp != null and serviceIp != '' " >
+                <![CDATA[  #{serviceIp}, ]]>
+            </if>
+            <if test="jsonData != null and jsonData != '' " >
+                <![CDATA[  #{jsonData}, ]]>
+            </if>
+            <if test="lockRedisKey != null and lockRedisKey != '' " >
+                <![CDATA[  #{lockRedisKey}, ]]>
+            </if>
+            <if test="lockTime != null and lockTime != '' " >
+                <![CDATA[  #{lockTime}, ]]>
+            </if>
+            <if test="lockType != 0 and lockType >0 " >
+                <![CDATA[  #{lockType}, ]]>
+            </if>
+            <if test="fromInterface != null and fromInterface != '' " >
+                <![CDATA[  #{fromInterface}, ]]>
+            </if>
+            <if test="isLock != 0 and isLock >0 " >
+                <![CDATA[  #{isLock}, ]]>
+            </if>
+            <if test="dataExplain != null and dataExplain != '' " >
+                <![CDATA[  #{dataExplain}, ]]>
+            </if>
+            <if test="curday != 0 and curday >0 " >
+                <![CDATA[  #{curday}, ]]>
+            </if>
+            <if test="curhour != 0 and curhour >0 " >
+                <![CDATA[  #{curhour}, ]]>
+            </if>
+            <if test="curminute != 0 and curminute >0 " >
+                <![CDATA[  #{curminute}, ]]>
+            </if>
+            NOW(),
+        </trim>
+    </insert>
+
+    <!-- 更新基本信息 -->
+    <update id="update" parameterType="Object">
+        UPDATE tb_pr_frequently a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="channelId != 0 and channelId >0 " >
+                a.channel_id = #{channelId},
+            </if>
+            <if test="channelName != null and channelName != '' " >
+                a.channel_name = #{channelName},
+            </if>
+            <if test="channel != null and channel != '' " >
+                a.channel = #{channel},
+            </if>
+            <if test="clientIp != null and clientIp != '' " >
+                a.client_ip = #{clientIp},
+            </if>
+            <if test="serviceIp != null and serviceIp != '' " >
+                a.service_ip = #{serviceIp},
+            </if>
+            <if test="jsonData != null and jsonData != '' " >
+                a.json_data = #{jsonData},
+            </if>
+            <if test="lockRedisKey != null and lockRedisKey != '' " >
+                a.lock_redis_key = #{lockRedisKey},
+            </if>
+            <if test="lockTime != null and lockTime != '' " >
+                a.lock_time = #{lockTime},
+            </if>
+            <if test="lockType != 0 and lockType >0 " >
+                a.lock_type = #{lockType},
+            </if>
+            <if test="fromInterface != null and fromInterface != '' " >
+                a.from_interface = #{fromInterface},
+            </if>
+            <if test="isLock != 0 and isLock >0 " >
+                a.is_lock = #{isLock},
+            </if>
+            <if test="dataExplain != null and dataExplain != '' " >
+                a.data_explain = #{dataExplain},
+            </if>
+            a.update_time = NOW(),
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+    <!-- 主要作用1.逻辑删除，2更新状态 -->
+    <update id="manyOperation" parameterType="Object">
+        update tb_pr_frequently a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="isLock != 0 and isLock >0 " >
+                a.is_lock = #{isLock},
+            </if>
+            <if test="yn != 0 and yn >0 " >
+                a.yn = #{yn},
+            </if>
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+    <!--逻辑删除数据 -->
+    <update id="delete" parameterType="java.lang.Long">
+        UPDATE tb_pr_frequently a set a.yn = 1,
+        a.update_time = now()
+        where 1=1
+        and a.id =#{id}
+        and a.yn=0
+    </update>
+
+
+</mapper>

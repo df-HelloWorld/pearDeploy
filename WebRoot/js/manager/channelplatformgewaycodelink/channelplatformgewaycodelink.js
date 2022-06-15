@@ -1,0 +1,175 @@
+
+var datatable;
+var basePath = $("#excDataHid").val();
+var account = {
+    //地址
+    url:{
+        list_url : ctx + '/channelplatformgewaycodelink/list.do',
+        dataList_url : ctx + "/channelplatformgewaycodelink/dataList.do",
+        add_url : ctx+ "/channelplatformgewaycodelink/add.do",
+        update_url : ctx+ "/channelplatformgewaycodelink/update.do",
+        queryId_url: ctx+ "/channelplatformgewaycodelink/getId.do",
+        delete_url: ctx+ "/channelplatformgewaycodelink/delete.do",
+        manyOperation_url: ctx+ "/channelplatformgewaycodelink/manyOperation.do"
+    },
+    //列表显示参数
+    list:[
+        {"data":"alias",},
+        {"data":"channelName",},
+        {"data":"codeName",},
+        {"data":"pfGewayCode",
+            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                var html="";
+                html += '<span><font color="red">'+ oData.pfGewayCode +'</font></span>';
+                $(nTd).html(html);
+            }
+        },
+        {"data":"serviceCharge",
+            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                var html="";
+                html += '<span><font color="red">'+ oData.serviceCharge +'</font></span>';
+                $(nTd).html(html);
+            }
+        },
+        // {"data":"extraServiceCharge",},
+        {"data":"isEnable",
+            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                var html="";
+                if(oData.isEnable==1){
+                    html='<span><font color="red">禁用</font></span>';
+                }else if(oData.isEnable==2){
+                    html='<span>启用</span>';
+                }
+                $(nTd).html(html);
+            }
+        },
+        {"data":"createTime",},
+        {"data":"id",
+            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                var html = '';
+                html += '<a class = "dataTableBtn dataTableResetBtn " href="'+ctx+'/channelplatformgewaycodelink/jumpUpdate.do?id='+oData.id+'"> 编辑 </a>';
+                if (oData.isEnable == 1){
+                    html += '<a class = "dataTableBtn dataTableEnableBtn"  directkey="'+oData.id+'"  directValue="2" href = "javascript:void(0);"> 启用 </a>';
+                }else {
+                    html += '<a class = "dataTableBtn dataTableEnableBtn"  directkey="'+oData.id+'"  directValue="1" href = "javascript:void(0);"> 禁用 </a>';
+                }
+                html += ' <a class = "dataTableBtn dataTableDeleteBtn"  directkey="' + oData.id + '" href = "javascript:void(0);">删除 </a>';
+                $(nTd).html(html);
+            }
+        }
+    ],
+    // 查询条件，aoData是必要的。其他的就是对应的实体类字段名，因为条件查询是把数据封装在实体类中的。
+    condJsonData : {
+        alias:null,
+        channelId:0,
+        pfGewayCodeId:0,
+        isEnable:0,
+        pfGewayCode:null
+
+    },
+    //页面加载
+    indexInit : function (){
+        //url同步
+        common.updateUrl(this.url);
+        // 查询条件 - 下拉框数据获取
+        this.queryChannelAll();
+        this.queryPfGewayAll();
+        //添加
+        $(".addbtn").live("click",function(){
+            window.location.href = ctx + "/channelplatformgewaycodelink/jumpAdd.do";
+        });
+
+        // 初始化列表数据
+        common.showDatas(this.condJsonData,this.list);
+        // 条件查询按钮事件
+        $('#btnQuery').click(function() {
+            account.condJsonData['alias'] = $("#alias").val();
+            account.condJsonData['channelId'] = $("#channelId").val();
+            account.condJsonData['pfGewayCodeId'] = $("#pfGewayCodeId").val();
+            account.condJsonData['isEnable'] = $("#isEnable").val();
+            account.condJsonData['pfGewayCode'] = $("#pfGewayCode").val();
+            common.showDatas(account.condJsonData,account.list);
+        });
+
+        // 重置
+        $("#butReset").click(function(){
+            account.condJsonData['alias'] = "";
+            $("#alias").val("");
+            account.condJsonData['channelId'] = "0";
+            $("#channelId").val("0");
+            account.condJsonData['pfGewayCodeId'] = "0";
+            $("#pfGewayCodeId").val("0");
+            account.condJsonData['isEnable'] = "0";
+            $("#isEnable").val("0");
+            account.condJsonData['pfGewayCode'] = "";
+            $("#pfGewayCode").val("");
+
+            common.showDatas(account.condJsonData,account.list);
+        });
+
+        //启用/暂停
+        $(".dataTableEnableBtn").live("click",function(){
+            var id = $(this).attr('directkey');
+            var isEnable = $(this).attr('directValue');
+            var data = {
+                id:id,
+                isEnable:isEnable
+            }
+            common.manyOperation(data);
+        });
+
+        //删除
+        $(".dataTableDeleteBtn").live("click",function(){
+            var id = $(this).attr('directkey');
+            var data = {
+                id:id,
+                yn:'1'
+            }
+            common.updateStatus(data);
+        });
+
+    },
+
+    //下拉框数据填充
+    //查询所有渠道-无分页-下拉框选项:
+    queryChannelAll:function(){
+        var url = basePath + "adminchannel/dataAllList.do";
+        var data = {
+        };
+        common.ajax(url,data,function(data){
+            var dataList=data;
+            var shtml="";
+            shtml += "<select id='channelId' name='channelId'  class='text-input medium-input'>";
+            shtml +="<option value=''>===请选择===</option>";
+            for (var i=0;i<dataList.length>0;i++) {
+                shtml +="<option value="+dataList[i].id+">"+dataList[i].channelName+"</option>";
+            }
+            shtml +="</select>";
+            $("#channelDiv").html(shtml);
+        });
+    },
+
+    //下拉框数据填充
+    //查询所有平台通道-无分页-下拉框选项:
+    queryPfGewayAll:function(){
+        var url = basePath + "prplatformgewaycode/dataAllList.do";
+        var data = {
+        };
+        common.ajax(url,data,function(data){
+            var dataList=data;
+            var shtml="";
+            shtml += "<select id='pfGewayCodeId' name='pfGewayCodeId'  class='text-input medium-input'>";
+            shtml +="<option value=''>===请选择===</option>";
+            for (var i=0;i<dataList.length>0;i++) {
+                shtml +="<option value="+dataList[i].id+">"+dataList[i].codeName+"==="+dataList[i].pfGewayCode+"</option>";
+            }
+            shtml +="</select>";
+            $("#pfGewayDiv").html(shtml);
+        });
+    }
+
+}
+
+$(function(){
+    account.indexInit();
+})

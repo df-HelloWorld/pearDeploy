@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xn.manager.dao.StatisticsAgentDao">
+
+
+    <!-- 属性映射 -->
+    <resultMap type="com.xn.manager.model.statistics.StatisticsAgentModel" id="dataMap">
+        <id property="id" column="id" />
+        <result property="agentId" column="agent_id" />
+        <result property="totalMoney" column="total_money" />
+        <result property="balance" column="balance" />
+        <result property="lockMoney" column="lock_money" />
+        <result property="totalAmount" column="total_amount" />
+        <result property="profit" column="profit" />
+        <result property="withdrawIngMoney" column="withdraw_ing_money" />
+        <result property="withdrawSucMoney" column="withdraw_suc_money" />
+        <result property="withdrawFailMoney" column="withdraw_fail_money" />
+        <result property="addMoney" column="add_money" />
+        <result property="reduceMoney" column="reduce_money" />
+        <result property="curday" column="curday" />
+        <result property="curhour" column="curhour" />
+        <result property="curminute" column="curminute" />
+        <result property="createTime" column="create_time" />
+        <result property="yn" column="yn" />
+
+
+
+        <result property="agentName" column="agent_name" />
+        <result property="totalTotalMoney" column="total_total_money" />
+        <result property="totalBalance" column="total_balance" />
+        <result property="totalLockMoney" column="total_lock_money" />
+        <result property="totalTotalAmount" column="total_total_amount" />
+        <result property="totalProfit" column="total_profit" />
+        <result property="totalWithdrawIngMoney" column="total_withdraw_ing_money" />
+        <result property="totalWithdrawSucMoney" column="total_withdraw_suc_money" />
+        <result property="totalWithdrawFailMoney" column="total_withdraw_fail_money" />
+        <result property="totalAddMoney" column="total_add_money" />
+        <result property="totalReduceMoney" column="total_reduce_money" />
+
+    </resultMap>
+
+
+
+
+
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+        a.id,a.agent_id,a.total_money,a.balance,a.lock_money,a.total_amount,a.profit,a.withdraw_ing_money,
+        a.withdraw_suc_money,a.withdraw_fail_money,a.add_money,a.reduce_money,
+        a.curday,a.curhour,a.curminute,
+        a.create_time,a.update_time,a.yn,
+        b.agent_name
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != null and id != '' " >
+                and a.id = #{id}
+            </if>
+            <if test="agentId != null and agentId != '' " >
+                and a.agent_id = #{agentId}
+            </if>
+            <if test="curday != null and curday != '' " >
+                and a.curday = #{curday}
+            </if>
+            and a.yn = 0
+
+        </trim>
+    </sql>
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != null and id != '' " >
+                and a.id = #{id}
+            </if>
+            and a.yn =  0
+        </trim>
+    </sql>
+
+
+    <!-- 查询总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from tb_pr_statistics_agent a left join tb_pr_agent b on a.agent_id = b.id
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 查询分页列表 -->
+    <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_statistics_agent a left join tb_pr_agent b on a.agent_id = b.id
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+
+
+
+    <!-- 获取订单的total信息 -->
+    <select id="getTotalData"  resultMap="dataMap" parameterType="Object">
+        select ifnull(sum(convert(a.total_money,decimal(19,4))), '0.0000') as total_total_money,
+        ifnull(sum(convert(a.balance,decimal(19,4))), '0.0000') as total_balance,
+        ifnull(sum(convert(a.lock_money,decimal(19,4))), '0.0000') as total_lock_money,
+        ifnull(sum(convert(a.total_amount,decimal(19,4))), '0.0000') as total_total_amount,
+        ifnull(sum(convert(a.profit,decimal(19,4))), '0.0000') as total_profit,
+        ifnull(sum(convert(a.withdraw_ing_money,decimal(19,4))), '0.0000') as total_withdraw_ing_money,
+        ifnull(sum(convert(a.withdraw_suc_money,decimal(19,4))), '0.0000') as total_withdraw_suc_money,
+        ifnull(sum(convert(a.withdraw_fail_money,decimal(19,4))), '0.0000') as total_withdraw_fail_money,
+        ifnull(sum(convert(a.add_money,decimal(19,4))), '0.0000') as total_add_money,
+        ifnull(sum(convert(a.reduce_money,decimal(19,4))), '0.0000') as total_reduce_money
+         from tb_pr_statistics_agent a
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+
+
+</mapper>

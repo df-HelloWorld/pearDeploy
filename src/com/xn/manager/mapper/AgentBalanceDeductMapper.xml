@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xn.manager.dao.AgentBalanceDeductDao">
+
+
+    <!-- 属性映射 -->
+    <resultMap type="com.xn.manager.model.agent.AgentBalanceDeductModel" id="dataMap">
+        <id property="id" column="id" />
+        <result property="agentId" column="agent_id" />
+        <result property="orderNo" column="order_no" />
+        <result property="money" column="money" />
+        <result property="orderType" column="order_type" />
+        <result property="orderStatus" column="order_status" />
+        <result property="changeType" column="change_type" />
+        <result property="delayTime" column="delay_time" />
+        <result property="lockTime" column="lock_time" />
+        <result property="dataExplain" column="data_explain" />
+        <result property="remark" column="remark" />
+        <result property="curday" column="curday" />
+        <result property="curhour" column="curhour" />
+        <result property="curminute" column="curminute" />
+        <result property="runNum" column="run_num" />
+        <result property="runStatus" column="run_status" />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+        <result property="yn" column="yn" />
+    </resultMap>
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+        a.id,a.agent_id,a.order_no,a.money,a.order_type,a.order_status,a.change_type,
+        a.delay_time,a.lock_time,a.data_explain,a.remark,
+        a.curday,a.curhour,a.curminute,a.run_num,a.run_status,
+        a.create_time,a.update_time,a.yn
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            <if test="agentId != 0 and agentId >0 " >
+                and a.agent_id = #{agentId}
+            </if>
+            <if test="orderNo != null and orderNo != '' " >
+                and a.order_no = #{orderNo}
+            </if>
+            <if test="orderType != 0 null and orderType >0 " >
+                and a.order_type = #{orderType}
+            </if>
+            <if test="orderStatus != 0 null and orderStatus >0 " >
+                and a.order_status = #{orderStatus}
+            </if>
+            <if test="curday != 0 and curday >0 " >
+                and a.curday = #{curday}
+            </if>
+            <if test="curdayStart != 0 and curdayStart >0 and curdayEnd != 0 and curdayEnd >0 " >
+                and a.curday >= #{curdayStart} and a.curday &lt;= #{curdayEnd}
+            </if>
+            <if test="runNum != 0 and runNum >0 " >
+                and a.run_num = #{runNum}
+            </if>
+            <if test="runStatus != 0 and runStatus >0 " >
+                and a.run_status = #{runStatus}
+            </if>
+            and a.yn = 0
+        </trim>
+    </sql>
+
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            and a.yn =  0
+        </trim>
+    </sql>
+
+    <!-- 排序条件 -->
+    <sql id="Example_Order_By">
+        order by a.create_time desc
+    </sql>
+
+
+
+    <!-- 查询总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from tb_pr_agent_balance_deduct a
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 查询分页列表 -->
+    <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_agent_balance_deduct a
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 查询列表-无分页-有条件/有条件 -->
+    <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_agent_balance_deduct a
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+    </select>
+
+    <!-- 根据id查询记录 -->
+    <select id="queryById"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_agent_balance_deduct a
+        <include refid="Example_Where_Clause_id"/>
+    </select>
+
+    <!-- 根据条件查询记录 -->
+    <select id="queryByCondition"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_agent_balance_deduct a
+        <include refid="Example_Where_Clause"/>
+        limit 1
+    </select>
+
+
+    <!-- 添加基本信息 -->
+    <insert id="add" parameterType="Object" >
+        <!--<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">-->
+        <!--SELECT LAST_INSERT_ID() as id-->
+        <!--</selectKey>-->
+        insert into tb_pr_agent_balance_deduct
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="agentId != 0 and agentId >0 " >
+                agent_id,
+            </if>
+            <if test="orderNo != null and orderNo != '' " >
+                order_no,
+            </if>
+            <if test="money != null and money != '' " >
+                money,
+            </if>
+            <if test="orderType != 0 and orderType >0 " >
+                order_type,
+            </if>
+            <if test="orderStatus != 0 and orderStatus >0 " >
+                order_status,
+            </if>
+            <if test="changeType != 0 and changeType >0 " >
+                change_type,
+            </if>
+            <if test="delayTime != null and delayTime != '' " >
+                delay_time,
+            </if>
+            <if test="lockTime != null and lockTime != '' " >
+                lock_time,
+            </if>
+            <if test="dataExplain != null and dataExplain != '' " >
+                data_explain,
+            </if>
+            <if test="remark != null and remark != '' " >
+                remark,
+            </if>
+            <if test="curday != 0 and curday >0 " >
+                curday,
+            </if>
+            <if test="curhour != 0 and curhour >0 " >
+                curhour,
+            </if>
+            <if test="curminute != 0 and curminute >0 " >
+                curminute,
+            </if>
+            create_time,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="agentId != 0 and agentId >0 " >
+                <![CDATA[  #{agentId}, ]]>
+            </if>
+            <if test="orderNo != null and orderNo != '' " >
+                <![CDATA[  #{orderNo}, ]]>
+            </if>
+            <if test="money != null and money != '' " >
+                <![CDATA[  #{money}, ]]>
+            </if>
+            <if test="orderType != 0 and orderType >0 " >
+                <![CDATA[  #{orderType}, ]]>
+            </if>
+            <if test="orderStatus != 0 and orderStatus >0 " >
+                <![CDATA[  #{orderStatus}, ]]>
+            </if>
+            <if test="changeType != 0 and changeType >0 " >
+                <![CDATA[  #{changeType}, ]]>
+            </if>
+            <if test="delayTime != null and delayTime != '' " >
+                <![CDATA[  #{delayTime}, ]]>
+            </if>
+            <if test="lockTime != null and lockTime != '' " >
+                <![CDATA[  #{lockTime}, ]]>
+            </if>
+            <if test="dataExplain != null and dataExplain != '' " >
+                <![CDATA[  #{dataExplain}, ]]>
+            </if>
+            <if test="remark != null and remark != '' " >
+                <![CDATA[  #{remark}, ]]>
+            </if>
+            <if test="curday != 0 and curday >0 " >
+                <![CDATA[  #{curday}, ]]>
+            </if>
+            <if test="curhour != 0 and curhour >0 " >
+                <![CDATA[  #{curhour}, ]]>
+            </if>
+            <if test="curminute != 0 and curminute >0 " >
+                <![CDATA[  #{curminute}, ]]>
+            </if>
+            NOW(),
+        </trim>
+    </insert>
+
+    <!-- 更新基本信息 -->
+    <update id="update" parameterType="Object">
+        UPDATE tb_pr_agent_balance_deduct a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="agentId != 0 and agentId >0 " >
+                a.agent_id = #{agentId},
+            </if>
+            <if test="orderNo != null and orderNo != '' " >
+                a.order_no = #{orderNo},
+            </if>
+            <if test="money != null and money != '' " >
+                a.money = #{money},
+            </if>
+            <if test="orderType != 0 and orderType >0 " >
+                a.order_type = #{orderType},
+            </if>
+            <if test="orderStatus != 0 and orderStatus >0 " >
+                a.order_status = #{orderStatus},
+            </if>
+            <if test="changeType != 0 and changeType >0 " >
+                a.change_type = #{changeType},
+            </if>
+            <if test="delayTime != null and delayTime != '' " >
+                a.delay_time = #{delayTime},
+            </if>
+            <if test="lockTime != null and lockTime != '' " >
+                a.lock_time = #{lockTime},
+            </if>
+            <if test="dataExplain != null and dataExplain != '' " >
+                a.data_explain = #{dataExplain},
+            </if>
+            <if test="remark != null and remark != '' " >
+                a.remark = #{agentId},
+            </if>
+            a.update_time = NOW(),
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+    <!-- 主要作用1.逻辑删除，2更新状态 -->
+    <update id="manyOperation" parameterType="Object">
+        update tb_pr_agent_balance_deduct a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="yn != 0 and yn >0 " >
+                a.yn = #{yn},
+            </if>
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+
+
+
+</mapper>

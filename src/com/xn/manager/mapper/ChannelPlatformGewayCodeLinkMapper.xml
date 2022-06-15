@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xn.manager.dao.ChannelPlatformGewayCodeLinkDao">
+
+    <!-- 属性映射 -->
+    <resultMap type="com.xn.manager.model.channel.ChannelPlatformGewayCodeLinkModel" id="dataMap">
+        <id property="id" column="id" />
+        <result property="alias" column="alias" />
+        <result property="channelId" column="channel_id" />
+        <result property="pfGewayCodeId" column="pf_geway_code_id" />
+        <result property="serviceChargeType" column="service_charge_type" />
+        <result property="serviceCharge" column="service_charge" />
+        <result property="extraServiceCharge" column="extra_service_charge" />
+        <result property="isEnable" column="is_enable" />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+        <result property="yn" column="yn" />
+        <result property="channelName" column="channel_name" />
+        <result property="codeName" column="code_name" />
+        <result property="pfGewayCode" column="pf_geway_code" />
+    </resultMap>
+
+
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+        a.id,a.alias,a.channel_id,a.pf_geway_code_id,
+        a.service_charge_type,a.service_charge,a.extra_service_charge,
+        a.is_enable,
+        a.create_time,a.update_time,a.yn,
+        b.channel_name,
+        c.code_name,c.pf_geway_code
+    </sql>
+
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            <if test="alias != null and alias != '' " >
+                and a.alias = #{alias}
+            </if>
+            <if test="channelId != 0 and channelId >0 " >
+                and a.channel_id = #{channelId}
+            </if>
+            <if test="pfGewayCodeId != 0 and pfGewayCodeId >0 " >
+                and a.pf_geway_code_id = #{pfGewayCodeId}
+            </if>
+            <if test="serviceChargeType != 0 and serviceChargeType >0 " >
+                and a.service_charge_type = #{serviceChargeType}
+            </if>
+            <if test="isEnable != 0 and isEnable >0 " >
+                and a.is_enable = #{isEnable}
+            </if>
+            <if test="channelName != null and channelName != '' " >
+                and b.channel_name = #{channelName}
+            </if>
+            <if test="codeName != null and codeName != '' " >
+                and c.code_name = #{codeName}
+            </if>
+            <if test="pfGewayCode != null and pfGewayCode != '' " >
+                and c.pf_geway_code = #{pfGewayCode}
+            </if>
+            <if test="idList != null and idList.size()>0">
+                and a.id not in
+                <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and a.yn = 0
+        </trim>
+    </sql>
+
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            and a.yn = 0
+        </trim>
+    </sql>
+
+
+    <!-- 排序条件 -->
+    <sql id="Example_Order_By">
+        order by a.create_time asc
+    </sql>
+
+    <!-- 查询总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from tb_pr_channel_platform_geway_code_link a
+        left join tb_pr_channel b on a.channel_id = b.id and b.yn = 0
+        left join tb_pr_platform_geway_code c on a.pf_geway_code_id = c.id and c.yn = 0
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 查询分页列表 -->
+    <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_channel_platform_geway_code_link a
+        left join tb_pr_channel b on a.channel_id = b.id and b.yn = 0
+        left join tb_pr_platform_geway_code c on a.pf_geway_code_id = c.id and c.yn = 0
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 查询列表-无分页-有条件/有条件 -->
+    <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_channel_platform_geway_code_link a
+        left join tb_pr_channel b on a.channel_id = b.id and b.yn = 0
+        left join tb_pr_platform_geway_code c on a.pf_geway_code_id = c.id and c.yn = 0
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+    </select>
+
+    <!-- 根据id查询记录 -->
+    <select id="queryById"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_channel_platform_geway_code_link a
+        left join tb_pr_channel b on a.channel_id = b.id and b.yn = 0
+        left join tb_pr_platform_geway_code c on a.pf_geway_code_id = c.id and c.yn = 0
+        <include refid="Example_Where_Clause_id"/>
+    </select>
+
+    <!-- 根据条件查询记录 -->
+    <select id="queryByCondition"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_channel_platform_geway_code_link a
+        left join tb_pr_channel b on a.channel_id = b.id and b.yn = 0
+        left join tb_pr_platform_geway_code c on a.pf_geway_code_id = c.id and c.yn = 0
+        <include refid="Example_Where_Clause"/>
+        limit 1
+    </select>
+
+
+    <!-- 添加基本信息 -->
+    <insert id="add" parameterType="Object" >
+        <!--<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">-->
+        <!--SELECT LAST_INSERT_ID() as id-->
+        <!--</selectKey>-->
+        insert into tb_pr_channel_platform_geway_code_link
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="alias != null and alias != '' " >
+                alias,
+            </if>
+            <if test="channelId != 0 and channelId >0 " >
+                channel_id,
+            </if>
+            <if test="pfGewayCodeId != 0 and pfGewayCodeId >0 " >
+                pf_geway_code_id,
+            </if>
+            <if test="serviceChargeType != 0 and serviceChargeType >0 " >
+                service_charge_type,
+            </if>
+            <if test="serviceCharge != null and serviceCharge != '' " >
+                service_charge,
+            </if>
+            <if test="extraServiceCharge != null and extraServiceCharge != '' " >
+                extra_service_charge,
+            </if>
+            <if test="isEnable != 0 and isEnable >0 " >
+                is_enable,
+            </if>
+            create_time,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="alias != null and alias != '' " >
+                <![CDATA[  #{alias}, ]]>
+            </if>
+            <if test="channelId != 0 and channelId >0 " >
+                <![CDATA[  #{channelId}, ]]>
+            </if>
+            <if test="pfGewayCodeId != 0 and pfGewayCodeId >0 " >
+                <![CDATA[  #{pfGewayCodeId}, ]]>
+            </if>
+            <if test="serviceChargeType != 0 and serviceChargeType >0 " >
+                <![CDATA[  #{serviceChargeType}, ]]>
+            </if>
+            <if test="serviceCharge != null and serviceCharge != '' " >
+                <![CDATA[  #{serviceCharge}, ]]>
+            </if>
+            <if test="extraServiceCharge != null and extraServiceCharge != '' " >
+                <![CDATA[  #{extraServiceCharge}, ]]>
+            </if>
+            <if test="isEnable != 0 and isEnable >0 " >
+                <![CDATA[  #{isEnable}, ]]>
+            </if>
+            NOW(),
+        </trim>
+    </insert>
+
+    <!-- 更新基本信息 -->
+    <update id="update" parameterType="Object">
+        UPDATE tb_pr_channel_platform_geway_code_link a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="alias != null and alias != '' " >
+                a.alias = #{alias},
+            </if>
+            <if test="channelId != 0 and channelId >0 " >
+                a.channel_id = #{channelId},
+            </if>
+            <if test="pfGewayCodeId != 0 and pfGewayCodeId >0 " >
+                a.pf_geway_code_id = #{pfGewayCodeId},
+            </if>
+            <if test="serviceChargeType != 0 and serviceChargeType >0 " >
+                a.service_charge_type = #{serviceChargeType},
+            </if>
+            <if test="serviceCharge != null and serviceCharge != '' " >
+                a.service_charge = #{serviceCharge},
+            </if>
+            a.extra_service_charge = #{extraServiceCharge},
+            <if test="isEnable != 0 and isEnable >0 " >
+                a.is_enable = #{isEnable},
+            </if>
+            a.update_time = NOW(),
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+    <!-- 主要作用1.逻辑删除，2更新状态 -->
+    <update id="manyOperation" parameterType="Object">
+        update tb_pr_channel_platform_geway_code_link a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="isEnable != 0 and isEnable >0 " >
+                a.is_enable=#{isEnable},
+            </if>
+            <if test="yn != 0 and yn >0 " >
+                a.yn = #{yn},
+            </if>
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+
+</mapper>

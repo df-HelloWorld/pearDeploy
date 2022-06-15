@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xn.manager.dao.AgentProfitDistributionDao">
+    <!-- 属性映射 -->
+    <resultMap type="com.xn.manager.model.agent.AgentProfitDistributionModel" id="dataMap">
+        <id column="id" property="id"/>
+        <result property="alias" column="alias" />
+        <result property="agentId" column="agent_id" />
+        <result property="deployId" column="deploy_id" />
+        <result property="gewayCodeId" column="geway_code_id" />
+        <result property="channelId" column="channel_id" />
+        <result property="bindingType" column="binding_type" />
+        <result property="serviceChargeType" column="service_charge_type" />
+        <result property="serviceCharge" column="service_charge" />
+        <result property="extraServiceCharge" column="extra_service_charge" />
+        <result property="isEnable" column="is_enable" />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+        <result column="yn" property="yn"/>
+        <result property="agentName" column="agent_name" />
+        <result property="agentType" column="agent_type" />
+        <result property="gewayCodeName" column="geway_code_name" />
+        <result property="channelName" column="channel_name" />
+    </resultMap>
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+        a.id, a.alias, a.agent_id, a.geway_code_id, a.channel_id, a.binding_type, a.service_charge_type,
+        a.service_charge, a.extra_service_charge, a.is_enable,
+        a.create_time, a.update_time, a.ts_time, a.yn,
+        ifnull(b.agent_name, '') as agent_name,
+        <!--b.agent_name,-->
+        b.agent_type,
+        c.geway_code_name,
+        ifnull(d.channel_name, '') as channel_name
+        <!--d.channel_name-->
+
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            <if test="alias != null and alias != '' " >
+                and a.alias = #{alias}
+            </if>
+            <if test="agentId != 0 and agentId >0 " >
+                and a.agent_id = #{agentId}
+            </if>
+            <if test="gewayCodeId != 0 and gewayCodeId >0 " >
+                and a.geway_code_id = #{gewayCodeId}
+            </if>
+            <if test="channelId != 0 and channelId >0 " >
+                and a.channel_id = #{channelId}
+            </if>
+            <if test="bindingType != 0 and bindingType >0 " >
+                and a.binding_type = #{bindingType}
+            </if>
+            <if test="serviceChargeType != null and serviceChargeType != '' " >
+                and a.service_charge_type = #{serviceChargeType}
+            </if>
+            <if test="isEnable != 0 and isEnable >0 " >
+                and a.is_enable = #{isEnable}
+            </if>
+            <if test="agentName != null and agentName != '' " >
+                and b.agent_name = #{agentName}
+            </if>
+            <if test="gewayCodeName != null and gewayCodeName != '' " >
+                and c.geway_code_name = #{gewayCodeName}
+            </if>
+            <if test="channelName != null and channelName != '' " >
+                and d.channel_name = #{channelName}
+            </if>
+            <if test="deployId != 0 and deployId >0 " >
+                and a.deploy_id = #{deployId}
+            </if>
+            <if test="idList != null and idList.size()>0">
+                and a.id not in
+                <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and a.yn = 0
+        </trim>
+    </sql>
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            and a.yn = 0
+        </trim>
+    </sql>
+
+    <!-- 查询总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from tb_pr_agent_profit_distribution a left join tb_pr_agent b on a.agent_id = b.id
+        left join tb_pr_geway_code c on a.geway_code_id = c.id
+        left join tb_pr_channel d on a.channel_id = d.id
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 查询分页列表 -->
+    <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_agent_profit_distribution a left join tb_pr_agent b on a.agent_id = b.id
+        left join tb_pr_geway_code c on a.geway_code_id = c.id
+        left join tb_pr_channel d on a.channel_id = d.id
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 查询列表-无分页-有条件/有条件 -->
+    <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_agent_profit_distribution a left join tb_pr_agent b on a.agent_id = b.id
+        left join tb_pr_geway_code c on a.geway_code_id = c.id
+        left join tb_pr_channel d on a.channel_id = d.id
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+    </select>
+
+    <!-- 根据id查询记录 -->
+    <select id="queryById"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_agent_profit_distribution a left join tb_pr_agent b on a.agent_id = b.id
+        left join tb_pr_geway_code c on a.geway_code_id = c.id
+        left join tb_pr_channel d on a.channel_id = d.id
+        <include refid="Example_Where_Clause_id"/>
+    </select>
+
+    <!-- 根据条件查询记录 -->
+    <select id="queryByCondition"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_agent_profit_distribution a left join tb_pr_agent b on a.agent_id = b.id
+        left join tb_pr_geway_code c on a.geway_code_id = c.id
+        left join tb_pr_channel d on a.channel_id = d.id
+        <include refid="Example_Where_Clause"/>
+        limit 1
+    </select>
+
+    <!-- 添加记录 -->
+    <insert id="add" parameterType="Object" >
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        insert into tb_pr_agent_profit_distribution
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="alias != null and alias != ''" >
+                alias,
+            </if>
+            <if test="agentId != 0 and agentId >0" >
+                agent_id,
+            </if>
+            <if test="deployId != 0 and deployId >0" >
+                deploy_id,
+            </if>
+            <if test="gewayCodeId != 0 and gewayCodeId >0" >
+                geway_code_id,
+            </if>
+            <if test="channelId != 0 and channelId >0" >
+                channel_id,
+            </if>
+            <if test="bindingType != 0 and bindingType >0" >
+                binding_type,
+            </if>
+            <if test="serviceChargeType != 0 and serviceChargeType >0 "  >
+                service_charge_type,
+            </if>
+            <if test="serviceCharge != null and serviceCharge != ''" >
+                service_charge,
+            </if>
+            <if test="extraServiceCharge != null and extraServiceCharge != ''" >
+                extra_service_charge,
+            </if>
+            <if test="isEnable != 0 and isEnable >0" >
+                is_enable,
+            </if>
+            create_time,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="alias != null and alias != ''" >
+                <![CDATA[  #{alias}, ]]>
+            </if>
+            <if test="agentId != 0 and agentId >0" >
+                <![CDATA[  #{agentId}, ]]>
+            </if>
+            <if test="deployId != 0 and deployId >0" >
+                <![CDATA[  #{deployId}, ]]>
+            </if>
+            <if test="gewayCodeId != 0 and gewayCodeId >0" >
+                <![CDATA[  #{gewayCodeId}, ]]>
+            </if>
+            <if test="channelId != 0 and channelId >0" >
+                <![CDATA[  #{channelId}, ]]>
+            </if>
+            <if test="bindingType != 0 and bindingType >0" >
+                <![CDATA[  #{bindingType}, ]]>
+            </if>
+            <if test="serviceChargeType != 0 and serviceChargeType >0"  >
+                <![CDATA[  #{serviceChargeType}, ]]>
+            </if>
+            <if test="serviceCharge != null and serviceCharge != ''" >
+                <![CDATA[  #{serviceCharge}, ]]>
+            </if>
+            <if test="extraServiceCharge != null and extraServiceCharge != ''" >
+                <![CDATA[  #{extraServiceCharge}, ]]>
+            </if>
+            <if test="isEnable != 0 and isEnable >0" >
+                <![CDATA[  #{isEnable}, ]]>
+            </if>
+            <![CDATA[  NOW(), ]]>
+        </trim>
+    </insert>
+
+
+    <!-- 更新记录 -->
+    <update id="update" parameterType="Object">
+        UPDATE tb_pr_agent_profit_distribution a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="alias != null and alias != ''" >
+                a.alias = #{alias},
+            </if>
+            <if test="deployId != 0 and deployId >0" >
+                a.deploy_id = #{deployId},
+            </if>
+            <if test="agentId != 0 and agentId >0" >
+                a.agent_id = #{agentId},
+            </if>
+            <!--<if test="gewayCodeId != 0 and gewayCodeId >0" >-->
+                <!--a.geway_code_id = #{gewayCodeId},-->
+            <!--</if>-->
+            a.geway_code_id = #{gewayCodeId},
+            <!--<if test="channelId != 0 and channelId >0" >-->
+                <!--a.channel_id = #{channelId},-->
+            <!--</if>-->
+            a.channel_id = #{channelId},
+            <if test="bindingType != 0 and bindingType >0" >
+                a.binding_type = #{bindingType},
+            </if>
+            <if test="serviceChargeType != 0 and serviceChargeType >0"  >
+                a.service_charge_type = #{serviceChargeType},
+            </if>
+            <if test="serviceCharge != null and serviceCharge != ''" >
+                a.service_charge = #{serviceCharge},
+            </if>
+            <!--<if test="extraServiceCharge != null and extraServiceCharge != ''" >-->
+                <!--a.extra_service_charge = #{extraServiceCharge},-->
+            <!--</if>-->
+            a.extra_service_charge = #{extraServiceCharge},
+            <if test="isEnable != 0 and isEnable >0" >
+                a.is_enable = #{isEnable},
+            </if>
+            a.update_time = NOW(),
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+
+    <!-- 主要作用1.逻辑删除，2更新状态 -->
+    <update id="manyOperation" parameterType="Object">
+        update tb_pr_agent_profit_distribution a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="isEnable != 0 and isEnable >0 " >
+                a.is_enable=#{isEnable},
+            </if>
+            <if test="yn != 0 and yn >0 " >
+                a.yn = #{yn},
+            </if>
+            a.update_time=NOW()
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
+    </update>
+
+    <!--逻辑删除数据 -->
+    <update id="delete" parameterType="java.lang.Long">
+        UPDATE tb_pr_agent_profit_distribution a set a.yn = 1,
+        a.update_time = now()
+        where 1=1
+        and a.id =#{id}
+        and a.yn=0
+    </update>
+
+    <!--逻辑删除数据 -->
+    <update id="deleteDeployId" parameterType="java.lang.Long">
+        UPDATE tb_pr_agent_profit_distribution a set a.yn = 1,
+        a.update_time = now()
+        where 1=1
+        and a.deploy_id =#{id}
+        and a.yn=0
+    </update>
+
+</mapper>

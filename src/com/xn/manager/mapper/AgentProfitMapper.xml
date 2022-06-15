@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xn.manager.dao.AgentProfitDao">
+
+
+    <!-- 属性映射 -->
+    <resultMap type="com.xn.manager.model.agent.AgentProfitModel" id="dataMap">
+        <id property="id" column="id" />
+        <result property="myTradeNo" column="my_trade_no" />
+        <result property="tradeNo" column="trade_no" />
+        <result property="outTradeNo" column="out_trade_no" />
+        <result property="orderType" column="order_type" />
+        <result property="totalAmount" column="total_amount" />
+        <result property="serviceCharge" column="service_charge" />
+        <result property="actualMoney" column="actual_money" />
+        <result property="profit" column="profit" />
+        <result property="profitType" column="profit_type" />
+        <result property="pfGewayCodeId" column="pf_geway_code_id" />
+        <result property="gewayCodeId" column="geway_code_id" />
+        <result property="channelId" column="channel_id" />
+        <result property="gewayId" column="geway_id" />
+        <result property="agentId" column="agent_id" />
+        <result property="dataExplain" column="data_explain" />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+        <result property="yn" column="yn" />
+        <result property="agentName" column="agent_name" />
+        <result property="agentType" column="agent_type" />
+        <result property="channelName" column="channel_name" />
+        <result property="totalProfit" column="total_profit" />
+        <result property="totalMoney" column="total_money" />
+        <result property="codeName" column="code_name" />
+        <result property="gewayCodeName" column="geway_code_name" />
+
+    </resultMap>
+
+
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+        a.id,a.my_trade_no,a.trade_no,a.out_trade_no,a.order_type,a.total_amount,a.service_charge,a.actual_money,a.profit,a.profit_type,
+        a.pf_geway_code_id,a.geway_code_id,a.channel_id,a.geway_id,a.agent_id,a.data_explain,
+        a.curday,a.curhour,a.curminute,a.run_num,a.run_status,
+        a.create_time,a.update_time,a.yn,
+        b.agent_name,b.agent_type,
+        c.channel_name,
+        /*case b.agent_type
+          when 1 then c.channel_name
+          when 2 then 'xx渠道'
+          else c.channel_name end as channel_name,*/
+        d.code_name,
+        e.geway_code_name
+        /*case b.agent_type
+          when 1 then 'xx通道'
+          when 2 then e.geway_code_name
+          else e.geway_code_name end as geway_code_name*/
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            <if test="myTradeNo != null and myTradeNo != '' " >
+                and a.my_trade_no = #{myTradeNo}
+            </if>
+            <if test="outTradeNo != null and outTradeNo != '' " >
+                and a.out_trade_no = #{outTradeNo}
+            </if>
+            <if test="orderType != 0 and orderType >0 " >
+                and a.order_type = #{orderType}
+            </if>
+            <if test="profitType != 0 and profitType >0 " >
+                and a.profit_type = #{profitType}
+            </if>
+            <if test="pfGewayCodeId != 0 and pfGewayCodeId >0 " >
+                and a.pf_geway_code_id = #{pfGewayCodeId}
+            </if>
+            <if test="gewayCodeId != 0 and gewayCodeId >0 " >
+                and a.geway_code_id = #{gewayCodeId}
+            </if>
+            <if test="channelId != 0 and channelId >0 " >
+                and a.channel_id = #{channelId}
+            </if>
+            <if test="gewayId != 0 and gewayId >0 " >
+                and a.geway_id = #{gewayId}
+            </if>
+            <if test="agentId != 0 and agentId >0 " >
+                and a.agent_id = #{agentId}
+            </if>
+            <if test="curday != 0 and curday >0 " >
+                and a.curday = #{curday}
+            </if>
+            <if test="curdayStart != 0 and curdayStart >0 and curdayEnd != 0 and curdayEnd >0 " >
+                and a.curday >= #{curdayStart} and a.curday &lt;= #{curdayEnd}
+            </if>
+            <if test="agentName != null and agentName != '' " >
+                and b.agent_name = #{agentName}
+            </if>
+            <if test="channelName != null and channelName != '' " >
+                and c.channel_name = #{channelName}
+            </if>
+            <if test="codeName != null and codeName != '' " >
+                and d.code_name = #{codeName}
+            </if>
+            <if test="gewayCodeName != null and gewayCodeName != '' " >
+                and e.geway_code_name = #{gewayCodeName}
+            </if>
+            and a.yn = 0
+        </trim>
+    </sql>
+
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            and a.yn =  0
+        </trim>
+    </sql>
+
+    <!-- 排序条件 -->
+    <sql id="Example_Order_By">
+        order by a.create_time desc
+    </sql>
+
+
+    <!-- 查询总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from tb_pr_agent_profit a left join tb_pr_agent b on a.agent_id = b.id
+        left join tb_pr_channel c on a.channel_id = c.id
+        left join tb_pr_platform_geway_code d on a.pf_geway_code_id = d.id
+        left join tb_pr_geway_code e on a.geway_code_id = e.id
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 查询分页列表 -->
+    <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_agent_profit a left join tb_pr_agent b on a.agent_id = b.id
+        left join tb_pr_channel c on a.channel_id = c.id
+        left join tb_pr_platform_geway_code d on a.pf_geway_code_id = d.id
+        left join tb_pr_geway_code e on a.geway_code_id = e.id
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 查询列表-无分页-有条件/有条件 -->
+    <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_agent_profit a left join tb_pr_agent b on a.agent_id = b.id
+        left join tb_pr_channel c on a.channel_id = c.id
+        left join tb_pr_platform_geway_code d on a.pf_geway_code_id = d.id
+        left join tb_pr_geway_code e on a.geway_code_id = e.id
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+    </select>
+
+    <!-- 根据id查询记录 -->
+    <select id="queryById"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_agent_profit a left join tb_pr_agent b on a.agent_id = b.id
+        left join tb_pr_channel c on a.channel_id = c.id
+        left join tb_pr_platform_geway_code d on a.pf_geway_code_id = d.id
+        left join tb_pr_geway_code e on a.geway_code_id = e.id
+        <include refid="Example_Where_Clause_id"/>
+    </select>
+
+    <!-- 根据条件查询记录 -->
+    <select id="queryByCondition"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_agent_profit a left join tb_pr_agent b on a.agent_id = b.id
+        left join tb_pr_channel c on a.channel_id = c.id
+        left join tb_pr_platform_geway_code d on a.pf_geway_code_id = d.id
+        left join tb_pr_geway_code e on a.geway_code_id = e.id
+        <include refid="Example_Where_Clause"/>
+        limit 1
+    </select>
+
+
+
+
+
+
+    <!-- 获取订单的total信息 -->
+    <select id="getTotalData"  resultMap="dataMap" parameterType="Object">
+        select
+        ifnull(sum(convert(a.total_amount,decimal(19,4))), '0.0000') as total_money,
+        ifnull(sum(convert(a.profit,decimal(19,4))), '0.0000') as total_profit
+        from tb_pr_agent_profit a left join tb_pr_agent b on a.agent_id = b.id
+        left join tb_pr_channel c on a.channel_id = c.id
+        left join tb_pr_platform_geway_code d on a.pf_geway_code_id = d.id
+        left join tb_pr_geway_code e on a.geway_code_id = e.id
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+
+
+
+</mapper>
