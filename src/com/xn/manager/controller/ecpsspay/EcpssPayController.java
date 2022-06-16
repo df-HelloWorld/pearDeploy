@@ -1,25 +1,14 @@
 package com.xn.manager.controller.ecpsspay;
 
-import com.xn.common.constant.ManagerConstant;
 import com.xn.common.controller.BaseController;
-import com.xn.common.util.DateUtil;
-import com.xn.common.util.HtmlUtil;
 import com.xn.manager.model.channel.ChannelChangeModel;
-import com.xn.manager.model.channel.ChannelModel;
-import com.xn.manager.service.ChannelChangeService;
-import com.xn.manager.service.ChannelService;
-import com.xn.system.entity.Account;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
