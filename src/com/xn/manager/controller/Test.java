@@ -9,4 +9,7 @@ package com.xn.manager.controller;
  **/
 public class Test {
     //aaa
+    public static void main(String [] args){
+
+    }
 }
