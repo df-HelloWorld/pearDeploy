@@ -1,5 +1,6 @@
 
 var datatable;
+var basePath = $("#excDataHid").val();
 var account = {
     //地址
     url:{
@@ -14,35 +15,36 @@ var account = {
     //列表显示参数
     list:[
         {"data":"accountNum",},
-        {"data":"roleName",},
+        // {"data":"roleName",},
         {"data":"agentName",},
         {"data":"totalMoney",},
         {"data":"balance",},
         {"data":"lockMoney",},
-        {"data":"withdrawType",
-            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                var html="";
-                if(oData.withdrawType==1){
-                    html='<span>平台内</span>';
-                }else if(oData.withdrawType==2){
-                    html='<span><font color="red">平台外</font></span>';
-                }
-                $(nTd).html(html);
-            }
-        },
-        {"data":"agentType",
-            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                var html="";
-                if(oData.agentType==1){
-                    html='<span>针对渠道</span>';
-                }else if(oData.agentType==2){
-                    html='<span>针对通道</span>';
-                }else if(oData.agentType==3){
-                    html='<span><font color="red">两者针对</font></span>';
-                }
-                $(nTd).html(html);
-            }
-        },
+        // {"data":"withdrawType",
+        //     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+        //         var html="";
+        //         if(oData.withdrawType==1){
+        //             html='<span>平台内</span>';
+        //         }else if(oData.withdrawType==2){
+        //             html='<span><font color="red">平台外</font></span>';
+        //         }
+        //         $(nTd).html(html);
+        //     }
+        // },
+        // {"data":"agentType",
+        //     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+        //         var html="";
+        //         if(oData.agentType==1){
+        //             html='<span>针对渠道</span>';
+        //         }else if(oData.agentType==2){
+        //             html='<span>针对通道</span>';
+        //         }else if(oData.agentType==3){
+        //             html='<span><font color="red">两者针对</font></span>';
+        //         }
+        //         $(nTd).html(html);
+        //     }
+        // },
+        {"data":"agentTypeName",},
         {"data":"isEnable",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                 var html="";
@@ -84,6 +86,9 @@ var account = {
     indexInit : function (){
         //url同步
         common.updateUrl(this.url);
+
+        this.queryAgentType();// 获取策略中代理类型
+
         //添加
         $(".addbtn").live("click",function(){
             window.location.href = ctx + "/adminagent/jumpAdd.do";
@@ -126,7 +131,30 @@ var account = {
             }
             common.manyOperation(data);
         });
+    },
+
+    //下拉框数据填充
+    //查询所有代理类型-无分页-下拉框选项:
+    queryAgentType:function(){
+        var url = basePath + "strategy/dataJsonList.do";
+        var data = {
+            "stgType":18
+        };
+        common.ajax(url,data,function(data){
+            var dataList=data;
+            var shtml="";
+            shtml += "<select id='agentType' name='agentType'  class='text-input medium-input'>";
+            shtml +="<option value=''>===请选择===</option>";
+            for (var i=0;i<dataList.length>0;i++) {
+                shtml +="<option value="+dataList[i].stgValueTwo+">"+dataList[i].stgValueOne+"</option>";
+            }
+            shtml +="</select>";
+            $("#agentTypeDiv").html(shtml);
+        });
     }
+
+
+
 
 }
 

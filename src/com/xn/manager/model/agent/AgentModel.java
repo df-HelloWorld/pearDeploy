@@ -65,9 +65,14 @@ public class AgentModel extends BasePage implements Serializable {
     private int withdrawType;
 
     /**
-     * 代理类型：1针对渠道，2针对通道，3两者针对
+     * 代理类型：1针对渠道，2针对通道，3两者针对，4平台
      */
     private int agentType;
+
+    /**
+     * 代理类型：具体类型昵称
+     */
+    private String agentTypeName;
 
     /**
      * 所属角色ID
@@ -103,6 +108,11 @@ public class AgentModel extends BasePage implements Serializable {
      * 今日收益
      */
     private String todayProfit;
+
+    /**
+     * SQL条件
+     */
+    private long notId;
 
     public long getId() {
         return id;
@@ -238,5 +248,21 @@ public class AgentModel extends BasePage implements Serializable {
 
     public void setAgentType(int agentType) {
         this.agentType = agentType;
+    }
+
+    public String getAgentTypeName() {
+        return agentTypeName;
+    }
+
+    public void setAgentTypeName(String agentTypeName) {
+        this.agentTypeName = agentTypeName;
+    }
+
+    public long getNotId() {
+        return notId;
+    }
+
+    public void setNotId(long notId) {
+        this.notId = notId;
     }
 }

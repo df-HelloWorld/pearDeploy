@@ -8,9 +8,13 @@ import com.xn.manager.model.agent.AgentBalanceDeductModel;
 import com.xn.manager.model.channel.ChannelBalanceDeductModel;
 import com.xn.manager.model.inorder.InOrderModel;
 import com.xn.manager.model.replenish.ReplenishModel;
+import com.xn.manager.model.strategy.StrategyData;
+import com.xn.manager.model.strategy.StrategyModel;
 import com.xn.manager.model.template.*;
+import com.xn.manager.service.StrategyService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 import java.net.URLDecoder;
@@ -24,6 +28,7 @@ import java.util.stream.Collectors;
  **/
 public class PublicMethod {
     private static Logger log = Logger.getLogger(PublicMethod.class);
+
 
     /**
      * @Description: TODO(生成AppKey的值)
@@ -800,6 +805,26 @@ public class PublicMethod {
         return resList;
 
     }
+
+
+//    /**
+//    * @Description: 根据条件查询策略数据，把json策略返回集合数据
+//    * @param strategyModel - 查询策略的条件
+//    * @return: List<StrategyData>
+//    * @author: yoko
+//    * @date: 2022/6/20 10:32
+//    * @version 1.0.0
+//    */
+//    public List<StrategyData> getStrategyJsonList(StrategyModel strategyModel){
+//        StrategyModel strategyData = strategyService.queryByCondition(strategyModel);
+//        List<StrategyData> resList = new ArrayList<>();
+//        if (strategyData != null ){
+//            if (!StringUtils.isBlank(strategyData.getStgBigValue())){
+//                resList = JSON.parseArray(strategyModel.getStgBigValue(), StrategyData.class);
+//            }
+//        }
+//        return resList;
+//    }
 
 
 

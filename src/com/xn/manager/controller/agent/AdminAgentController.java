@@ -1,13 +1,19 @@
 package com.xn.manager.controller.agent;
 
+import com.alibaba.fastjson.JSON;
 import com.xn.common.constant.ManagerConstant;
 import com.xn.common.controller.BaseController;
 import com.xn.common.enums.ManagerEnum;
 import com.xn.common.util.HtmlUtil;
 import com.xn.common.util.MD5;
+import com.xn.manager.method.PublicMethod;
 import com.xn.manager.model.agent.AgentModel;
+import com.xn.manager.model.strategy.StrategyData;
+import com.xn.manager.model.strategy.StrategyModel;
 import com.xn.manager.service.AgentService;
+import com.xn.manager.service.StrategyService;
 import com.xn.system.entity.Account;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,6 +42,9 @@ public class AdminAgentController extends BaseController {
     @Autowired
     private AgentService<AgentModel> agentService;
 
+    @Autowired
+    private StrategyService<StrategyModel> strategyService;
+
 
     /**
      * 获取页面
@@ -53,6 +62,15 @@ public class AdminAgentController extends BaseController {
     @RequestMapping("/dataList")
     public void dataList(HttpServletRequest request, HttpServletResponse response, AgentModel model) throws Exception {
         List<AgentModel> dataList = new ArrayList<AgentModel>();
+        StrategyModel strategyQuery = new StrategyModel();
+        strategyQuery.setStgKey("agentTypeList");
+        StrategyModel strategyData = strategyService.queryByCondition(strategyQuery);
+        List<StrategyData> strategyDataList = new ArrayList<>();
+        if (strategyData != null ){
+            if (!StringUtils.isBlank(strategyData.getStgBigValue())){
+                strategyDataList = JSON.parseArray(strategyData.getStgBigValue(), StrategyData.class);
+            }
+        }
 //        model.setIsEnable(ManagerConstant.PUBLIC_CONSTANT.IS_ENABLE_ZC);
         Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
         if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
@@ -62,6 +80,16 @@ public class AdminAgentController extends BaseController {
                 model.setId(account.getId());
             }
             dataList = agentService.queryByList(model);
+            if (dataList != null && dataList.size() > 0){
+                for (int i = 0; i < dataList.size(); i++){
+                    for (int j = 0; j < strategyDataList.size(); j++){
+                        if (dataList.get(i).getAgentType() == strategyDataList.get(j).getStgKey()){
+                            dataList.get(i).setAgentTypeName(strategyDataList.get(j).getStgValueOne());
+                        }
+                    }
+                }
+            }
+
         }
         HtmlUtil.writerJson(response, model.getPage(), dataList);
     }
@@ -74,6 +102,15 @@ public class AdminAgentController extends BaseController {
     @RequestMapping("/dataAllList")
     public void dataAllList(HttpServletRequest request, HttpServletResponse response, AgentModel model) throws Exception {
         List<AgentModel> dataList = new ArrayList<AgentModel>();
+        StrategyModel strategyQuery = new StrategyModel();
+        strategyQuery.setStgKey("agentTypeList");
+        StrategyModel strategyData = strategyService.queryByCondition(strategyQuery);
+        List<StrategyData> strategyDataList = new ArrayList<>();
+        if (strategyData != null ){
+            if (!StringUtils.isBlank(strategyData.getStgBigValue())){
+                strategyDataList = JSON.parseArray(strategyData.getStgBigValue(), StrategyData.class);
+            }
+        }
         Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
         if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
             if (account.getAcType() == ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
@@ -82,6 +119,16 @@ public class AdminAgentController extends BaseController {
                 model.setId(account.getId());
             }
             dataList = agentService.queryAllList(model);
+            if (dataList != null && dataList.size() > 0){
+                for (int i = 0; i < dataList.size(); i++){
+                    for (int j = 0; j < strategyDataList.size(); j++){
+                        if (dataList.get(i).getAgentType() == strategyDataList.get(j).getStgKey()){
+                            dataList.get(i).setAgentTypeName(strategyDataList.get(j).getStgValueOne());
+                            log.info("");
+                        }
+                    }
+                }
+            }
         }
         HtmlUtil.writerJson(response, dataList);
     }
@@ -90,7 +137,18 @@ public class AdminAgentController extends BaseController {
      * 获取新增页面
      */
     @RequestMapping("/jumpAdd")
-    public String jumpAdd(HttpServletRequest request, HttpServletResponse response) {
+    public String jumpAdd(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        StrategyModel strategyQuery = new StrategyModel();
+        strategyQuery.setStgKey("agentTypeList");
+        StrategyModel strategyData = strategyService.queryByCondition(strategyQuery);
+        List<StrategyData> strategyDataList = new ArrayList<>();
+        if (strategyData != null ){
+            if (!StringUtils.isBlank(strategyData.getStgBigValue())){
+                strategyDataList = JSON.parseArray(strategyData.getStgBigValue(), StrategyData.class);
+            }
+        }
+        model.addAttribute("agentTypeList", strategyDataList);
         return "manager/adminagent/adminagentAdd";
     }
 
@@ -110,8 +168,20 @@ public class AdminAgentController extends BaseController {
                     sendFailureMessage(response,"有重复的账号,请重新输入其它账号!");
                     return;
                 }else{
+                    //check是否有重复的平台类型的代理
+                    if (bean.getAgentType() == 4){
+                        AgentModel queryAgentType = new AgentModel();
+                        queryAgentType.setAgentType(bean.getAgentType());
+                        queryAgentType = agentService.queryByCondition(queryAgentType);
+                        if (queryAgentType != null && queryAgentType.getId() > 0){
+                            sendFailureMessage(response,"平台类型代理只允许设置一个!");
+                            return;
+                        }
+                    }
+
                     bean.setPassWd(MD5.parseMD5(bean.getPassWd()));
                     bean.setRoleId(ManagerEnum.RoleTypeEnum.AGENT.getRoleType());
+                    bean.setWithdrawType(1);
                     agentService.add(bean);
                     sendSuccessMessage(response, "保存成功~");
                     return;
@@ -137,6 +207,18 @@ public class AdminAgentController extends BaseController {
         atModel.setId(id);
         model.addAttribute("account", agentService.queryById(atModel));
         model.addAttribute("op", op);
+
+        StrategyModel strategyQuery = new StrategyModel();
+        strategyQuery.setStgKey("agentTypeList");
+        StrategyModel strategyData = strategyService.queryByCondition(strategyQuery);
+        List<StrategyData> strategyDataList = new ArrayList<>();
+        if (strategyData != null ){
+            if (!StringUtils.isBlank(strategyData.getStgBigValue())){
+                strategyDataList = JSON.parseArray(strategyData.getStgBigValue(), StrategyData.class);
+            }
+        }
+        model.addAttribute("agentTypeList", strategyDataList);
+
         return "manager/adminagent/adminagentEdit";
     }
 
@@ -151,6 +233,31 @@ public class AdminAgentController extends BaseController {
                 if ("2".equals(op)) {
                     bean.setPassWd(MD5.parseMD5(bean.getPassWd()));
                 }
+
+                //check是否有重复的账号
+                AgentModel queryBean = new AgentModel();
+                queryBean.setNotId(bean.getId());
+                queryBean.setAccountNum(bean.getAccountNum());
+                queryBean = agentService.queryByCondition(queryBean);
+                if (queryBean != null && queryBean.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
+                    sendFailureMessage(response,"有重复的账号,请重新输入其它账号!");
+                    return;
+                }
+
+
+                //check是否有重复的平台类型的代理
+                if (bean.getAgentType() == 4){
+                    AgentModel queryAgentType = new AgentModel();
+                    queryAgentType.setNotId(bean.getId());
+                    queryAgentType.setAgentType(bean.getAgentType());
+                    queryAgentType = agentService.queryByCondition(queryAgentType);
+                    if (queryAgentType != null && queryAgentType.getId() > 0){
+                        sendFailureMessage(response,"平台类型代理只允许设置一个!");
+                        return;
+                    }
+                }
+
+
                 agentService.update(bean);
                 sendSuccessMessage(response, "保存成功~");
                 return;

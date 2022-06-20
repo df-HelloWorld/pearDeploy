@@ -94,51 +94,76 @@
                         </div>
                     </li>
 
+                    <%--<li style="border-top: none;">--%>
+                        <%--<div class="formTextDiv">--%>
+                            <%--<span class="require" ><font color="red">*</font>提现类型</span>--%>
+                        <%--</div>--%>
+                        <%--<div class="formCtrlDiv">--%>
+                            <%--<select id="withdrawType" name="withdrawType">--%>
+                                <%--<option value="">===请选择===</option>--%>
+                                <%--<c:if test="${dl.withdrawType == 1}">--%>
+                                    <%--<option value="1" selected="selected">平台内</option>--%>
+                                    <%--<option value="2">平台外</option>--%>
+                                <%--</c:if>--%>
+                                <%--<c:if test="${dl.withdrawType == 2}">--%>
+                                    <%--<option value="1">平台内</option>--%>
+                                    <%--<option value="2" selected="selected">平台外</option>--%>
+                                <%--</c:if>--%>
+                            <%--</select>--%>
+                        <%--</div>--%>
+                    <%--</li>--%>
+
+
+                    <%--<li style="border-top: none;">--%>
+                        <%--<div class="formTextDiv">--%>
+                            <%--<span class="require" ><font color="red">*</font>代理类型</span>--%>
+                        <%--</div>--%>
+                        <%--<div class="formCtrlDiv">--%>
+                            <%--<select id="agentType" name="agentType">--%>
+                                <%--<option value="">===请选择===</option>--%>
+                                <%--<c:if test="${dl.agentType == 1}">--%>
+                                    <%--<option value="1" selected="selected">针对渠道</option>--%>
+                                    <%--<option value="2">针对通道</option>--%>
+                                    <%--<option value="3">两者针对</option>--%>
+                                <%--</c:if>--%>
+                                <%--<c:if test="${dl.agentType == 2}">--%>
+                                    <%--<option value="1">针对渠道</option>--%>
+                                    <%--<option value="2" selected="selected">针对通道</option>--%>
+                                    <%--<option value="3">两者针对</option>--%>
+                                <%--</c:if>--%>
+                                <%--<c:if test="${dl.agentType == 3}">--%>
+                                    <%--<option value="1">针对渠道</option>--%>
+                                    <%--<option value="2">针对通道</option>--%>
+                                    <%--<option value="3" selected="selected">两者针对</option>--%>
+                                <%--</c:if>--%>
+                            <%--</select>--%>
+                        <%--</div>--%>
+                    <%--</li>--%>
+
+
+
                     <li style="border-top: none;">
                         <div class="formTextDiv">
-                            <span class="require" ><font color="red">*</font>提现类型</span>
+                            <span class="require" ><font color="red">*</font>代理类型：</span>
                         </div>
                         <div class="formCtrlDiv">
-                            <select id="withdrawType" name="withdrawType">
+                            <select id="agentType" name="agentType" >
                                 <option value="">===请选择===</option>
-                                <c:if test="${dl.withdrawType == 1}">
-                                    <option value="1" selected="selected">平台内</option>
-                                    <option value="2">平台外</option>
-                                </c:if>
-                                <c:if test="${dl.withdrawType == 2}">
-                                    <option value="1">平台内</option>
-                                    <option value="2" selected="selected">平台外</option>
-                                </c:if>
+                                <c:forEach items="${agentTypeList}" var="dataList">
+                                    <c:choose>
+                                        <c:when test="${dl.agentType == dataList.stgValueTwo}">
+                                            <option selected="selected" value="${dataList.stgValueTwo}">${dataList.stgValueOne}</option>
+                                        </c:when>
+                                        <c:when test="${dl.agentType != dataList.stgValueTwo}">
+                                            <option value="${dataList.stgValueTwo}">${dataList.stgValueOne}</option>
+                                        </c:when>
+                                    </c:choose>
+                                </c:forEach>
                             </select>
                         </div>
                     </li>
 
 
-                    <li style="border-top: none;">
-                        <div class="formTextDiv">
-                            <span class="require" ><font color="red">*</font>代理类型</span>
-                        </div>
-                        <div class="formCtrlDiv">
-                            <select id="agentType" name="agentType">
-                                <option value="">===请选择===</option>
-                                <c:if test="${dl.agentType == 1}">
-                                    <option value="1" selected="selected">针对渠道</option>
-                                    <option value="2">针对通道</option>
-                                    <option value="3">两者针对</option>
-                                </c:if>
-                                <c:if test="${dl.agentType == 2}">
-                                    <option value="1">针对渠道</option>
-                                    <option value="2" selected="selected">针对通道</option>
-                                    <option value="3">两者针对</option>
-                                </c:if>
-                                <c:if test="${dl.agentType == 3}">
-                                    <option value="1">针对渠道</option>
-                                    <option value="2">针对通道</option>
-                                    <option value="3" selected="selected">两者针对</option>
-                                </c:if>
-                            </select>
-                        </div>
-                    </li>
 
                     <li>
                         <div class="" style="margin-bottom: 20px; margin-top: 20px;margin-left:200px;">

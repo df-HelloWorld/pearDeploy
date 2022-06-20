@@ -61,32 +61,48 @@
                 </li>
 
 
-                <li style="border-top: none;">
-                    <div class="formTextDiv">
-                        <span class="require" ><font color="red">*</font>提现类型</span>
-                    </div>
-                    <div class="formCtrlDiv">
-                        <select id="withdrawType"  name ="withdrawType">
-                            <option value="0" selected="selected">=请选择=</option>
-                            <option value="1">平台内</option>
-                            <option value="2">平台外</option>
-                        </select>
-                    </div>
-                </li>
+                <%--<li style="border-top: none;">--%>
+                    <%--<div class="formTextDiv">--%>
+                        <%--<span class="require" ><font color="red">*</font>提现类型</span>--%>
+                    <%--</div>--%>
+                    <%--<div class="formCtrlDiv">--%>
+                        <%--<select id="withdrawType"  name ="withdrawType">--%>
+                            <%--<option value="0" selected="selected">=请选择=</option>--%>
+                            <%--<option value="1">平台内</option>--%>
+                            <%--<option value="2">平台外</option>--%>
+                        <%--</select>--%>
+                    <%--</div>--%>
+                <%--</li>--%>
+
+                <%--<li style="border-top: none;">--%>
+                    <%--<div class="formTextDiv">--%>
+                        <%--<span class="require" ><font color="red">*</font>代理类型</span>--%>
+                    <%--</div>--%>
+                    <%--<div class="formCtrlDiv">--%>
+                        <%--<select id="agentType"  name ="agentType">--%>
+                            <%--<option value="0" selected="selected">=请选择=</option>--%>
+                            <%--<option value="1">针对渠道</option>--%>
+                            <%--<option value="2">针对通道</option>--%>
+                            <%--<option value="3">两者针对</option>--%>
+                        <%--</select>--%>
+                    <%--</div>--%>
+                <%--</li>--%>
+
 
                 <li style="border-top: none;">
                     <div class="formTextDiv">
                         <span class="require" ><font color="red">*</font>代理类型</span>
                     </div>
                     <div class="formCtrlDiv">
-                        <select id="agentType"  name ="agentType">
-                            <option value="0" selected="selected">=请选择=</option>
-                            <option value="1">针对渠道</option>
-                            <option value="2">针对通道</option>
-                            <option value="3">两者针对</option>
+                        <select id="agentType" name="agentType" >
+                            <option value="">===请选择===</option>
+                            <c:forEach items="${agentTypeList}" var="dataList">
+                                <option value="${dataList.stgValueTwo}">${dataList.stgValueOne}</option>
+                            </c:forEach>
                         </select>
                     </div>
                 </li>
+
 
                 <li>
                     <div class="" style="margin-bottom: 20px; margin-top: 20px;margin-left:200px;">

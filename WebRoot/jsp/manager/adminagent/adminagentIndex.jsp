@@ -15,15 +15,20 @@
                 <div class="formCtrlDiv">
                     <input type ="text" class ="inputCommonSty" id="accountNum" name ="accountNum">
                 </div>
+                <%--<div class = "condQueryLabelDiv">代理类型：</div>--%>
+                <%--<div class="formCtrlDiv">--%>
+                    <%--<select id="agentType" name="agentType">--%>
+                        <%--<option value="0" selected="selected">=请选择=</option>--%>
+                        <%--<option value="1">针对渠道</option>--%>
+                        <%--<option value="2">针对通道</option>--%>
+                        <%--<option value="3">两者针对</option>--%>
+                    <%--</select>--%>
+                <%--</div>--%>
+
                 <div class = "condQueryLabelDiv">代理类型：</div>
-                <div class="formCtrlDiv">
-                    <select id="agentType" name="agentType">
-                        <option value="0" selected="selected">=请选择=</option>
-                        <option value="1">针对渠道</option>
-                        <option value="2">针对通道</option>
-                        <option value="3">两者针对</option>
-                    </select>
+                <div class="formCtrlDiv" id = "agentTypeDiv">
                 </div>
+
                 <div class="searchdiv">
                     <input type = "button" id = "btnQuery" class = "buttonClass imginput" value = "搜索" />
                 </div>
@@ -46,12 +51,12 @@
         <thead>
         <tr>
             <th width="150">账号名称</th>
-            <th width="150">角色</th>
+            <%--<th width="150">角色</th>--%>
             <th width="150">代理名称</th>
             <th width="150">总额</th>
             <th width="150">余额</th>
             <th width="150">锁定金额</th>
-            <th width="150">提现类型</th>
+            <%--<th width="150">提现类型</th>--%>
             <th width="150">代理类型</th>
             <th width="150">使用状态</th>
             <th width="400">操作</th>
