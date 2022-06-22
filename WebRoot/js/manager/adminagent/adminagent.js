@@ -338,7 +338,7 @@ var account = {
 
 
 function onclickSaveServiceCharge(agentId,agentType,agentName){
-    alert("onclick-------agentId:"+ agentId + ",agentType:" + agentType + ",agentName:" + agentName);
+    // alert("onclick-------agentId:"+ agentId + ",agentType:" + agentType + ",agentName:" + agentName);
     // var agentId = $("#agentId").val();
     var channelId = $('input[name=channelId]:checked').val();
     var serviceCharge = $("#serviceCharge").val();
@@ -348,7 +348,7 @@ function onclickSaveServiceCharge(agentId,agentType,agentName){
     } else if(agentType == 2){
         bindingType = 1;
     }
-    alert("agentId:"+ agentId +",channelId:" + channelId + ",serviceCharge:" + serviceCharge + ",agentType:" + agentType + ",bindingType:" + bindingType);
+    // alert("agentId:"+ agentId +",channelId:" + channelId + ",serviceCharge:" + serviceCharge + ",agentType:" + agentType + ",bindingType:" + bindingType);
 
 
     $.ajax({
@@ -358,7 +358,8 @@ function onclickSaveServiceCharge(agentId,agentType,agentName){
         data :{
             agentId:agentId,
             channelId:channelId,
-            serviceCharge:serviceCharge
+            serviceCharge:serviceCharge,
+            bindingType:bindingType
         },
         success : function(data) {
             // alert("data:" + data);
