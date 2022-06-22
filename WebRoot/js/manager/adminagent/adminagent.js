@@ -445,7 +445,7 @@ function agentServiceCharge(agentId,agentType,agentName){
 
                     shtml +="<center>";
                     // shtml +="<input type='button' style='background-color: #767DC3' class='formBtn' onclick='onclickSaveServiceCharge("+agentId+","+agentType+","+agentName+")' value='保　存' />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                    shtml +="<input type='button' style='background-color: #767DC3' class='formBtn' onclick='onclickSaveServiceCharge("+agentId+","+agentType+",'"+agentName+"')' value='保　存' />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                    shtml +="<input type='button' style='background-color: #767DC3' class='formBtn' onclick='onclickSaveServiceCharge("+agentId+","+agentType+",\""+agentName+"\")' value='保　存' />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
                     shtml +="<input type=\"reset\" onClick=\"javascript :closeDialog('show')\" style=\"background-color: #767DC3\" class=\"formBtn\" value=\" 返 回 \" />";
                     shtml +="</center>";
 
