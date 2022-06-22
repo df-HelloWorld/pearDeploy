@@ -9,6 +9,7 @@ import com.xn.manager.model.agent.AgentProfitDistributionModel;
 import com.xn.manager.model.channel.ChannelModel;
 import com.xn.manager.service.*;
 import com.xn.system.entity.Account;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -67,7 +68,7 @@ public class AdminAgentProfitDistributionController extends BaseController {
             if (account.getAcType() == ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
             }else{
                 //不是管理员，不能操作
-                log.info("");
+                log.info("1");
                 HtmlUtil.writerJson(response, model.getPage(), dataList);
                 return;
             }
@@ -140,6 +141,11 @@ public class AdminAgentProfitDistributionController extends BaseController {
                 return;
             }
 
+            if (bean.getBindingType() == 0){
+                sendFailureMessage(response,"请填写绑定类型!");
+                return;
+            }
+
             if (bean.getBindingType() == 1){
                 if (bean.getGewayCodeId() == 0 || bean.getChannelId() > 0){
                     sendFailureMessage(response,"与通道码绑定,渠道不用填写!");
@@ -159,6 +165,11 @@ public class AdminAgentProfitDistributionController extends BaseController {
                     sendFailureMessage(response,"与两者绑定,通道码跟渠道都要填写!");
                     return;
                 }
+            }
+
+            if (StringUtils.isBlank(bean.getServiceCharge())){
+                sendFailureMessage(response,"请填写分润值!");
+                return;
             }
 
             if (account.getAcType() == ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
@@ -327,5 +338,41 @@ public class AdminAgentProfitDistributionController extends BaseController {
             sendFailureMessage(response, "登录超时,请重新登录在操作!");
             return;
         }
+    }
+
+
+
+    /**
+     * @Description: 获取代理的所有利益分配数据
+     * @param id
+     * @return
+     * @author yoko
+     * @date 2020/10/16 16:02
+     */
+    @RequestMapping("/getAgentProfitDistributionList")
+    public void getAgentProfitDistributionList(Long id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
+        if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
+            if (account.getAcType() == ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
+                AgentProfitDistributionModel query = new AgentProfitDistributionModel();
+                query.setAgentId(id);
+                List<AgentProfitDistributionModel> dataList = new ArrayList<AgentProfitDistributionModel>();
+                dataList = agentProfitDistributionService.queryAllList(query);
+                sendSuccessMessage(response, "", dataList);
+                return;
+            }else {
+                sendFailureMessage(response,"您无权操作!");
+                return;
+            }
+
+        }else{
+            sendFailureMessage(response, "登录超时,请重新登录在操作!");
+            return;
+        }
+
+
+
+
+
     }
 }
