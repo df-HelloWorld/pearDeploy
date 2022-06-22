@@ -72,18 +72,18 @@
                     <%--</div>--%>
                 <%--</li>--%>
 
-                <li style="border-top: none;">
-                    <div class="formTextDiv">
-                        <span class="require"><font color="red">*</font>类型：</span>
-                    </div>
-                    <div class="formCtrlDiv">
-                        <select id="pfGewayCodeType" name="pfGewayCodeType">
-                            <option value="" selected="selected">=请选择=</option>
-                            <option  value="1">代收</option>
-                            <option  value="2">代付</option>
-                        </select>
-                    </div>
-                </li>
+                <%--<li style="border-top: none;">--%>
+                    <%--<div class="formTextDiv">--%>
+                        <%--<span class="require"><font color="red">*</font>类型：</span>--%>
+                    <%--</div>--%>
+                    <%--<div class="formCtrlDiv">--%>
+                        <%--<select id="pfGewayCodeType" name="pfGewayCodeType">--%>
+                            <%--<option value="" selected="selected">=请选择=</option>--%>
+                            <%--<option  value="1">代收</option>--%>
+                            <%--<option  value="2">代付</option>--%>
+                        <%--</select>--%>
+                    <%--</div>--%>
+                <%--</li>--%>
 
                 <li style="border-top: none;">
                     <div class="formTextDiv">

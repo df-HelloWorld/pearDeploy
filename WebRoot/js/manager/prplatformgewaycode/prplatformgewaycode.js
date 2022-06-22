@@ -28,20 +28,21 @@ var account = {
         // },
         // {"data":"serviceCharge",},
         // {"data":"extraServiceCharge",},
-        {"data":"pfGewayCodeType",
-            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                var html="";
-                if(oData.pfGewayCodeType==1){
-                    html='<span>代收</span>';
-                }else if(oData.pfGewayCodeType==2){
-                    html='<span><font color="red">代付</font></span>';
-                }
-                $(nTd).html(html);
-            }
-        },
+        // {"data":"pfGewayCodeType",
+        //     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+        //         var html="";
+        //         if(oData.pfGewayCodeType==1){
+        //             html='<span>代收</span>';
+        //         }else if(oData.pfGewayCodeType==2){
+        //             html='<span><font color="red">代付</font></span>';
+        //         }
+        //         $(nTd).html(html);
+        //     }
+        // },
         {"data":"moneyRange",},
-        {"data":"jumpAds",},
-        {"data":"redisTime",},
+        // {"data":"jumpAds",},
+        // {"data":"redisTime",},
+        {"data":"gewayNameStr",},
         {"data":"isEnable",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                 var html="";
@@ -56,6 +57,7 @@ var account = {
         {"data":"id",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                 var html = '';
+                html += '<a class = "dataTableBtn dataTableResetBtn " href="'+ctx+'/prrelationtype/jumpGewayCodeUpdate.do?id='+oData.id+'"> 绑定通道 </a>';
                 html += '<a class = "dataTableBtn dataTableResetBtn " href="'+ctx+'/prplatformgewaycode/jumpUpdate.do?id='+oData.id+'"> 编辑 </a>';
                 if (oData.isEnable == 1){
                     html += '<a class = "dataTableBtn dataTableEnableBtn"  directkey="'+oData.id+'"  directValue="2" href = "javascript:void(0);"> 启用 </a>';

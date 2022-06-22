@@ -3,27 +3,26 @@
 <mapper namespace="com.xn.manager.dao.PrPlatformGewayCodeLinkDao">
     <!-- 属性映射 -->
     <resultMap id="BaseResultMap" type="com.xn.manager.model.PrPlatformGewayCodeLinkModel" >
-        <id column="id" property="id" jdbcType="BIGINT" />
-        <result column="alias" property="alias" jdbcType="VARCHAR" />
-        <result column="pf_geway_code_id" property="pfGewayCodeId" jdbcType="BIGINT" />
-        <result column="pf_geway_code_name" property="pfGewayCodeNames" jdbcType="BIGINT" />
-        <result column="code_name" property="codeNames" jdbcType="BIGINT" />
-        <result column="code_name" property="codeName" jdbcType="BIGINT" />
-
-        <result column="geway_name" property="gewayName" jdbcType="VARCHAR" />
-        <result column="geway_code_name" property="gewayCodeNames" jdbcType="BIGINT" />
-        <result column="my_geway_code" property="myGewayCode" jdbcType="BIGINT" />
-        <result column="geway_code_id" property="gewayCodeId" jdbcType="BIGINT" />
-        <result column="ratio" property="ratio" jdbcType="INTEGER" />
-        <result column="is_enable" property="isEnable" jdbcType="BIT" />
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-        <result column="ts_time" property="tsTime" jdbcType="TIMESTAMP" />
-        <result column="yn" property="yn" jdbcType="BIT" />
+        <id column="id" property="id" />
+        <result column="alias" property="alias"  />
+        <result column="pf_geway_code_id" property="pfGewayCodeId"  />
+        <result column="pf_geway_code_name" property="pfGewayCodeNames"  />
+        <result column="code_name" property="codeNames"  />
+        <result column="geway_code" property="gewayCode" />
+        <result column="geway_name" property="gewayName"  />
+        <result column="geway_code_name" property="gewayCodeNames"  />
+        <result column="my_geway_code" property="myGewayCode"  />
+        <result column="geway_code_id" property="gewayCodeId" />
+        <result column="ratio" property="ratio"  />
+        <result column="is_enable" property="isEnable"  />
+        <result column="create_time" property="createTime"  />
+        <result column="update_time" property="updateTime"  />
+        <result column="ts_time" property="tsTime"  />
+        <result column="yn" property="yn"  />
     </resultMap>
     <!-- 定义数据库基本列,只适用代替单表的*-->
     <sql id="Base_Column_List">
-         a.id,a.relation_type_id, a.alias, a.pf_geway_code_id,a.geway_code_id,c.geway_code_name,b.code_name
+         a.id,a.relation_type_id, a.alias, a.pf_geway_code_id,a.geway_code_id,c.geway_code_name,b.code_name,c.geway_code
     </sql>
 
     <!-- 查询条件 -->
@@ -141,7 +140,7 @@
     <!-- 根据id查询记录 -->
     <select id="queryGewayCodeId"  resultMap="BaseResultMap" parameterType="Object">
         SELECT
-        c.geway_code_name,c.my_geway_code,a.id,a.geway_code_id,a.ratio,b.geway_name
+        c.geway_code_name,c.my_geway_code,a.id,a.geway_code_id,a.ratio,b.geway_name,c.geway_code
         FROM tb_pr_platform_geway_code_link a
         LEFT JOIN   tb_pr_geway_code  c
 

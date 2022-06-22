@@ -64,11 +64,12 @@ public class PrGewayCodeController extends BaseController {
         if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
             if (account.getAcType() == ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
             }else {
-                log.info("7");
+//                log.info("7");
                 HtmlUtil.writerJson(response, model.getPage(), dataList);
                 return;
             }
             dataList = prGewayCodeService.queryByList(model);
+
         }
         HtmlUtil.writerJson(response, model.getPage(), dataList);
     }

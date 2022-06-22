@@ -24,12 +24,12 @@
     <div class="formContentDiv">
         <form id="addSupplierForm">
             <ul>
-                <input type="hidden" id="relationTypeId" name="relationTypeId" value="${relationTypeId}">
+                <input type="hidden" id="pfGewayCodeId" name="pfGewayCodeId" value="${pfGewayCodeId}">
                 <li style="border-top: none;">
                     <%--<div class="formTextDiv">--%>
                         <%--<span class="require"><font color="red">*</font>通道编码：</span>--%>
                     <%--</div>--%>
-                    <div class="formCtrlDiv" style="text-align: center;width: 100%">
+                    <div class="formCtrlDiv" style="width: 100%">
                         <div id="divGewayCodeId" >
                         </div>
                     </div>
@@ -41,13 +41,12 @@
                         <input type="button" onClick="javascript :history.back(-1);" class="formBtn" value=" 返 回 " style="background-color: #54D8FE;"/>
                     </div>
                 </div>
-
                 <br>
                 <br>
 
                 <div id="tabList">
 
-                </div>
+                </div><br><br>
             </ul>
         </form>
     </div>

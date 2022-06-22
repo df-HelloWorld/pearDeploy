@@ -79,6 +79,11 @@ public class PrPlatformGewayCodeModel extends BasePage {
     private String jumpAds;
 
     /**
+     * 通道组合字符串
+     */
+    private String gewayNameStr;
+
+    /**
      * redis缓存时间（单位秒）：要跳转时token储存在redis的时长
      */
     private Long redisTime;
@@ -269,5 +274,13 @@ public class PrPlatformGewayCodeModel extends BasePage {
 
     public void setRedisTime(Long redisTime) {
         this.redisTime = redisTime;
+    }
+
+    public String getGewayNameStr() {
+        return gewayNameStr;
+    }
+
+    public void setGewayNameStr(String gewayNameStr) {
+        this.gewayNameStr = gewayNameStr;
     }
 }

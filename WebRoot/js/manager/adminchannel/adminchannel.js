@@ -14,7 +14,7 @@ var account = {
     //列表显示参数
     list:[
         {"data":"accountNum",},
-        {"data":"roleName",},
+        // {"data":"roleName",},
         {"data":"channelName",},
         {"data":"channel",},
         {"data":"totalMoney",},
@@ -32,36 +32,37 @@ var account = {
                 $(nTd).html(html);
             }
         },
-        {"data":"channelType",
-            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                var html="";
-                if(oData.channelType==1){
-                    html='<span>代收</span>';
-                }else if(oData.channelType==2){
-                    html='<span>代付</span>';
-                }else if(oData.channelType==3){
-                    html='<span>其它</span>';
-                }
-                $(nTd).html(html);
-            }
-        },
-        {"data":"isSynchro",
-            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                var html="";
-                if(oData.isSynchro==1){
-                    html='<span>要同步</span>';
-                }else if(oData.isSynchro==2){
-                    html='<span>不同步</span>';
-                }
-                $(nTd).html(html);
-            }
-        },
+        // {"data":"channelType",
+        //     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+        //         var html="";
+        //         if(oData.channelType==1){
+        //             html='<span>代收</span>';
+        //         }else if(oData.channelType==2){
+        //             html='<span>代付</span>';
+        //         }else if(oData.channelType==3){
+        //             html='<span>其它</span>';
+        //         }
+        //         $(nTd).html(html);
+        //     }
+        // },
+        // {"data":"isSynchro",
+        //     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+        //         var html="";
+        //         if(oData.isSynchro==1){
+        //             html='<span>要同步</span>';
+        //         }else if(oData.isSynchro==2){
+        //             html='<span>不同步</span>';
+        //         }
+        //         $(nTd).html(html);
+        //     }
+        // },
         {"data":"id",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                 var html = '';
                 var isEnableHtml = '';
-                html = html = '<a class = "dataTableBtn dataTableDeleteBtn " href="'+ctx+'/adminchannel/jumpUpdate.do?op=1&id='+oData.id+'"> 编辑 </a>'
-                    +'<a class = "dataTableBtn" href="'+ctx+'/adminchannel/jumpUpdate.do?op=2&id='+oData.id+'">重置密码 </a>'
+                html = html = '<a class = "dataTableBtn dataTableDeleteBtn " id = "edit" directkey="' + oData.id + '" href = "javascript:void(0);"> 费率 </a>'
+                    +'<a class = "dataTableBtn dataTableDeleteBtn " href="'+ctx+'/adminchannel/jumpUpdate.do?op=1&id='+oData.id+'"> 编辑 </a>'
+                    +'<a class = "dataTableBtn dataTableDeleteBtn" href="'+ctx+'/adminchannel/jumpUpdate.do?op=2&id='+oData.id+'">重置密码 </a>'
                     +isEnableHtml
                     +' <a class = "dataTableBtn dataTableResetBtn"  directkey="' + oData.id + '" href = "javascript:void(0);">删除 </a>';
                 $(nTd).html(html);
@@ -118,6 +119,76 @@ var account = {
             }
             common.manyOperation(data);
         });
+
+        //审核
+        $("#edit").live("click",function(){
+            var channelId = $(this).attr('directkey');
+            $.ajax({url : ctx+ "/channelplatformgewaycodelink/dataAllList.do",
+                type : 'post',
+                dataType : 'json',
+                data :{
+                    channelId:channelId
+                },
+                success : function(data) {
+                    var table ="";
+                    table+="<table    class='datatable tables'>"
+                    table+="<tr>";
+                    table+="<td>渠道名称</td>";
+                    table+="<td>平台码名称</td>";
+                    table+="<td>费率</td>";
+                    table+="<td>操作</td>";
+                    table+="</tr>";
+                    for(var i=0;i<data.length;i++){
+                        table+="<tr>";
+                        table+="<td>"+data[i].channelName+"</td>";
+                        table+="<td>"+data[i].codeName+"</td>";
+                        // var  serviceChargeId="serviceCharge"+i;
+                        table+="<td><input type='text' id='"+data[i].id+"'  value="+data[i].serviceCharge+"></td>";
+                        table+="<td> <input type = 'button' id = 'saveServiceCharge' directkey="+ data[i].id +"  href = 'javascript:void(0);' class = 'buttonClass imginput'value = '保存' /></td>";
+                        table+="</tr>";
+                    }
+                    table+="</table>";
+
+                    document.getElementById("divTable").innerHTML=table;
+                    // $("#divTable").innerText=table;
+                    // if (data.success) {
+                    //     debugger
+                    //     var m = data.data;
+                    //
+                    //
+                    openDialog("show","");
+                    // } else {
+                    //     art.alert(data.msg);
+                    // }
+                },
+                error : function(data) {
+                    art.alert(data.info);
+                }
+            });
+        });
+
+
+
+        $("#saveServiceCharge").live("click",function(){
+            var channelId = $(this).attr('directkey');
+            var serviceCharge = $("#"+channelId).val();
+            $.ajax({url : ctx+ "/channelplatformgewaycodelink/updateServiceCharge.do",
+                type : 'post',
+                dataType : 'json',
+                data :{
+                    id:channelId,
+                    serviceCharge:serviceCharge
+                },
+                success : function(data) {
+                    alert(data.msg);
+                },
+                error : function(data) {
+                    art.alert(data.info);
+                }
+            });
+        });
+
+
     },
 
 

@@ -26,6 +26,7 @@ public class PrPlatformGewayCodeLinkModel extends BasePage {
     private String gewayCodeNames;
     private String gewayName;
     private String myGewayCode;
+    private String gewayCode;
     /**
      * 通道码名称
      *
@@ -249,5 +250,13 @@ public class PrPlatformGewayCodeLinkModel extends BasePage {
 
     public void setCodeName(String codeName) {
         this.codeName = codeName;
+    }
+
+    public String getGewayCode() {
+        return gewayCode;
+    }
+
+    public void setGewayCode(String gewayCode) {
+        this.gewayCode = gewayCode;
     }
 }

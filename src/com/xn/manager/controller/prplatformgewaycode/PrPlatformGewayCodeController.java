@@ -3,6 +3,7 @@ package com.xn.manager.controller.prplatformgewaycode;
 import com.xn.common.constant.ManagerConstant;
 import com.xn.common.controller.BaseController;
 import com.xn.common.util.HtmlUtil;
+import com.xn.manager.model.PrGewayCodeModel;
 import com.xn.manager.model.PrGewayModel;
 import com.xn.manager.model.PrPlatformGewayCodeLinkModel;
 import com.xn.manager.model.PrPlatformGewayCodeModel;
@@ -69,6 +70,18 @@ public class PrPlatformGewayCodeController extends BaseController {
                 HtmlUtil.writerJson(response, model.getPage(), dataList);
             }
             dataList = prPlatformGewayCodeService.queryByList(model);
+            for(PrPlatformGewayCodeModel prGewayCodeModel: dataList){
+                String  gewayNameStr ="";
+                long  prGewayCodeId =prGewayCodeModel.getId();
+                PrPlatformGewayCodeLinkModel  prPlatformGewayCodeLinkModel =new PrPlatformGewayCodeLinkModel();
+                prPlatformGewayCodeLinkModel.setPfGewayCodeId(prGewayCodeId);
+                List<PrPlatformGewayCodeLinkModel>   linkList=prPlatformGewayCodeLinkService.queryAllList(prPlatformGewayCodeLinkModel);
+                for(PrPlatformGewayCodeLinkModel  prPlatformGewayCodeLinkModel1:linkList){
+                    gewayNameStr+=prPlatformGewayCodeLinkModel1.getGewayCodeNames()+"--"+prPlatformGewayCodeLinkModel1.getGewayCode()+"<br>";
+                }
+
+                prGewayCodeModel.setGewayNameStr(gewayNameStr);
+            }
         }
         HtmlUtil.writerJson(response, model.getPage(), dataList);
     }

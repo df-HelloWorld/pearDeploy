@@ -127,6 +127,43 @@ public class PrPlatformGewayCodeLinkController extends BaseController {
     }
 
 
+    @RequestMapping("/addLink")
+    public void addLink(HttpServletRequest request, HttpServletResponse response, PrPlatformGewayCodeLinkModel bean) throws Exception {
+        Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
+        if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
+            if (account.getAcType() == ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
+                if(bean.getRelationType().equals("")){
+                    sendSuccessMessage(response, "请选择数据进行添加!");
+                }else{
+                    String [] relationType=bean.getRelationType().split(",");
+
+                    PrPlatformGewayCodeLinkModel  query =new  PrPlatformGewayCodeLinkModel();
+                    query.setPfGewayCodeId(bean.getPfGewayCodeId());
+
+                    for(int i=0;i<relationType.length;i++){
+                        PrPlatformGewayCodeLinkModel prPlatformGewayCodeLinkModel =new PrPlatformGewayCodeLinkModel();
+                        prPlatformGewayCodeLinkModel.setGewayCodeId(Long.parseLong(relationType[i]));
+                        PrPlatformGewayCodeLinkModel  queryByCondition=prPlatformGewayCodeLinkService.queryByCondition(prPlatformGewayCodeLinkModel);
+                        prPlatformGewayCodeLinkModel.setPfGewayCodeId(bean.getPfGewayCodeId());
+                        if(queryByCondition==null){
+                            prPlatformGewayCodeLinkService.add(prPlatformGewayCodeLinkModel);
+                        }
+                    }
+                }
+                sendSuccessMessage(response, "保存成功~");
+                return;
+            }else {
+                sendFailureMessage(response,"您无权操作!");
+                return;
+            }
+
+        }else {
+            sendFailureMessage(response,"登录超时,请重新登录在操作!");
+            return;
+        }
+    }
+
+
     @RequestMapping("/addGewayCodeLink")
     public void addGewayCodeLink(HttpServletRequest request, HttpServletResponse response, PrPlatformGewayCodeLinkModel bean) throws Exception {
         Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
@@ -217,7 +254,6 @@ public class PrPlatformGewayCodeLinkController extends BaseController {
                 sendSuccessMessage(response, "删除成功");
                 return;
             }else {
-                log.info("11");
                 sendFailureMessage(response,"您无权操作!");
                 return;
             }

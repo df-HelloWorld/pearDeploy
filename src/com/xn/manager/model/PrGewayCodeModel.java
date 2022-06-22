@@ -41,6 +41,11 @@ public class PrGewayCodeModel extends BasePage {
     private String gewayName;
 
     /**
+     * 通道拼接接受字符串
+     */
+    private String gewayNameStr;
+
+    /**
      * 通道码/上游通道码
      *
      * @mbggenerated
@@ -499,5 +504,13 @@ public class PrGewayCodeModel extends BasePage {
 
     public void setSendIdentity(String sendIdentity) {
         this.sendIdentity = sendIdentity;
+    }
+
+    public String getGewayNameStr() {
+        return gewayNameStr;
+    }
+
+    public void setGewayNameStr(String gewayNameStr) {
+        this.gewayNameStr = gewayNameStr;
     }
 }

@@ -75,16 +75,16 @@
                             <input type="text" class="formInput" id="accountNum" name="accountNum" value="${dl.accountNum}"	maxlength="240" />
                         </div>
                     </li>
-                    <li style="border-top: none;">
-                        <div class="formTextDiv">
-                            <span class="require" ><font color="red">*</font>角色</span>
-                        </div>
-                        <div class="formCtrlDiv">
-                            <select id="type" name="roleId">
-                                <option value="">渠道</option>
-                            </select>
-                        </div>
-                    </li>
+                    <%--<li style="border-top: none;">--%>
+                        <%--<div class="formTextDiv">--%>
+                            <%--<span class="require" ><font color="red">*</font>角色</span>--%>
+                        <%--</div>--%>
+                        <%--<div class="formCtrlDiv">--%>
+                            <%--<select id="type" name="roleId">--%>
+                                <%--<option value="">渠道</option>--%>
+                            <%--</select>--%>
+                        <%--</div>--%>
+                    <%--</li>--%>
                     <li style="border-top: none;">
                         <div class="formTextDiv">
                             <span class="require"><font color="red">*</font>渠道名称</span>
@@ -193,50 +193,50 @@
                     </li>
 
 
-                    <li style="border-top: none;">
-                        <div class="formTextDiv">
-                            <span class="require" ><font color="red">*</font>渠道类型</span>
-                        </div>
-                        <div class="formCtrlDiv">
-                            <select id="channelType" name="channelType">
-                                <option value="">===请选择===</option>
-                                <c:if test="${dl.channelType == 1}">
-                                    <option value="1" selected="selected">代收</option>
-                                    <option value="2">代付</option>
-                                    <option value="3">其它</option>
-                                </c:if>
-                                <c:if test="${dl.channelType == 2}">
-                                    <option value="1">代收</option>
-                                    <option value="2" selected="selected">代付</option>
-                                    <option value="3">其它</option>
-                                </c:if>
-                                <c:if test="${dl.channelType == 3}">
-                                    <option value="1">代收</option>
-                                    <option value="2">代付</option>
-                                    <option value="3" selected="selected">其它</option>
-                                </c:if>
-                            </select>
-                        </div>
-                    </li>
+                    <%--<li style="border-top: none;">--%>
+                        <%--<div class="formTextDiv">--%>
+                            <%--<span class="require" ><font color="red">*</font>渠道类型</span>--%>
+                        <%--</div>--%>
+                        <%--<div class="formCtrlDiv">--%>
+                            <%--<select id="channelType" name="channelType">--%>
+                                <%--<option value="">===请选择===</option>--%>
+                                <%--<c:if test="${dl.channelType == 1}">--%>
+                                    <%--<option value="1" selected="selected">代收</option>--%>
+                                    <%--<option value="2">代付</option>--%>
+                                    <%--<option value="3">其它</option>--%>
+                                <%--</c:if>--%>
+                                <%--<c:if test="${dl.channelType == 2}">--%>
+                                    <%--<option value="1">代收</option>--%>
+                                    <%--<option value="2" selected="selected">代付</option>--%>
+                                    <%--<option value="3">其它</option>--%>
+                                <%--</c:if>--%>
+                                <%--<c:if test="${dl.channelType == 3}">--%>
+                                    <%--<option value="1">代收</option>--%>
+                                    <%--<option value="2">代付</option>--%>
+                                    <%--<option value="3" selected="selected">其它</option>--%>
+                                <%--</c:if>--%>
+                            <%--</select>--%>
+                        <%--</div>--%>
+                    <%--</li>--%>
 
-                    <li style="border-top: none;">
-                        <div class="formTextDiv">
-                            <span class="require" ><font color="red">*</font>是否同步</span>
-                        </div>
-                        <div class="formCtrlDiv">
-                            <select id="isSynchro" name="isSynchro">
-                                <option value="">===请选择===</option>
-                                <c:if test="${dl.isSynchro == 1}">
-                                    <option value="1" selected="selected">需要同步</option>
-                                    <option value="2">无需同步</option>
-                                </c:if>
-                                <c:if test="${dl.isSynchro == 2}">
-                                    <option value="1" >需要同步</option>
-                                    <option value="2" selected="selected">无需同步</option>
-                                </c:if>
-                            </select>
-                        </div>
-                    </li>
+                    <%--<li style="border-top: none;">--%>
+                        <%--<div class="formTextDiv">--%>
+                            <%--<span class="require" ><font color="red">*</font>是否同步</span>--%>
+                        <%--</div>--%>
+                        <%--<div class="formCtrlDiv">--%>
+                            <%--<select id="isSynchro" name="isSynchro">--%>
+                                <%--<option value="">===请选择===</option>--%>
+                                <%--<c:if test="${dl.isSynchro == 1}">--%>
+                                    <%--<option value="1" selected="selected">需要同步</option>--%>
+                                    <%--<option value="2">无需同步</option>--%>
+                                <%--</c:if>--%>
+                                <%--<c:if test="${dl.isSynchro == 2}">--%>
+                                    <%--<option value="1" >需要同步</option>--%>
+                                    <%--<option value="2" selected="selected">无需同步</option>--%>
+                                <%--</c:if>--%>
+                            <%--</select>--%>
+                        <%--</div>--%>
+                    <%--</li>--%>
 
 
                     <li style="border-top: none;">

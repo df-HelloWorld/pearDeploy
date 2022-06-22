@@ -49,16 +49,16 @@
                     </div>
                 </li>
 
-                <li style="border-top: none;">
-                    <div class="formTextDiv">
-                        <span class="require" ><font color="red">*</font>角色</span>
-                    </div>
-                    <div class="formCtrlDiv">
-                        <select id="type" name="roleId">
-                            <option value="">渠道</option>
-                        </select>
-                    </div>
-                </li>
+                <%--<li style="border-top: none;">--%>
+                    <%--<div class="formTextDiv">--%>
+                        <%--<span class="require" ><font color="red">*</font>角色</span>--%>
+                    <%--</div>--%>
+                    <%--<div class="formCtrlDiv">--%>
+                        <%--<select id="type" name="roleId">--%>
+                            <%--<option value="">渠道</option>--%>
+                        <%--</select>--%>
+                    <%--</div>--%>
+                <%--</li>--%>
 
                 <%--<li style="border-top: none;">--%>
                     <%--<div class="formTextDiv">--%>
@@ -170,31 +170,31 @@
 
 
 
-                <li style="border-top: none;">
-                    <div class="formTextDiv">
-                        <span class="require" ><font color="red">*</font>渠道类型</span>
-                    </div>
-                    <div class="formCtrlDiv">
-                        <select id="channelType"  name ="channelType">
-                            <option value="0" selected="selected">=请选择=</option>
-                            <option value="1">代收</option>
-                            <option value="2">代付</option>
-                            <option value="3">其它</option>
-                        </select>
-                    </div>
-                </li>
+                <%--<li style="border-top: none;">--%>
+                    <%--<div class="formTextDiv">--%>
+                        <%--<span class="require" ><font color="red">*</font>渠道类型</span>--%>
+                    <%--</div>--%>
+                    <%--<div class="formCtrlDiv">--%>
+                        <%--<select id="channelType"  name ="channelType">--%>
+                            <%--<option value="0" selected="selected">=请选择=</option>--%>
+                            <%--<option value="1">代收</option>--%>
+                            <%--<option value="2">代付</option>--%>
+                            <%--<option value="3">其它</option>--%>
+                        <%--</select>--%>
+                    <%--</div>--%>
+                <%--</li>--%>
 
-                <li style="border-top: none;">
-                    <div class="formTextDiv">
-                        <span class="require" ><font color="red">*</font>是否同步</span>
-                    </div>
-                    <div class="formCtrlDiv">
-                        <select id="isSynchro" name="isSynchro">
-                            <option value="1" selected="selected">需要同步</option>
-                            <option value="2" >无需同步</option>
-                        </select>
-                    </div>
-                </li>
+                <%--<li style="border-top: none;">--%>
+                    <%--<div class="formTextDiv">--%>
+                        <%--<span class="require" ><font color="red">*</font>是否同步</span>--%>
+                    <%--</div>--%>
+                    <%--<div class="formCtrlDiv">--%>
+                        <%--<select id="isSynchro" name="isSynchro">--%>
+                            <%--<option value="1" selected="selected">需要同步</option>--%>
+                            <%--<option value="2" >无需同步</option>--%>
+                        <%--</select>--%>
+                    <%--</div>--%>
+                <%--</li>--%>
 
 
                 <li style="border-top: none;">

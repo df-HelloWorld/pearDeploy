@@ -46,17 +46,12 @@
     <table class="datatable tables">
         <thead>
         <tr>
-            <th width="200">平台通道名称</th>
-            <th width="160">平台通道码</th>
-            <%--<th width="140">费率类型</th>--%>
-            <%--<th width="110">费率</th>--%>
-            <%--<th width="145">额外费率</th>--%>
-            <th width="100">类型</th>
-            <th width="250">支持金额</th>
-            <th width="180">跳转地址</th>
-            <th width="120">缓存时长</th>
-            <th width="140">是否启用</th>
-            <th width="250">操作</th>
+            <th >平台通道名称</th>
+            <th >平台通道码</th>
+            <th >支持金额</th>
+            <th >绑定订单信息</th>
+            <th >是否启用</th>
+            <th width="20%">操作</th>
         </tr>
         </thead>
         <tbody>

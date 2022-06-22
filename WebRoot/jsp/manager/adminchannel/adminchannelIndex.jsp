@@ -43,7 +43,7 @@
         <thead>
         <tr>
             <th width="150">账号名称</th>
-            <th width="150">角色</th>
+            <%--<th width="150">角色</th>--%>
             <th width="150">渠道名称</th>
             <th width="130">商铺号</th>
             <th width="150">总额</th>
@@ -51,8 +51,10 @@
             <th width="150">锁定金额</th>
             <th width="180">秘钥</th>
             <th width="180">google密钥</th>
-            <th width="130">渠道类型</th>
-            <th width="150">是否同步</th>
+
+
+            <%--<th width="130">渠道类型</th>--%>
+            <%--<th width="150">是否同步</th>--%>
             <th width="380">操作</th>
         </tr>
         </thead>
@@ -60,6 +62,13 @@
         </tbody>
     </table>
 </div>
+<div id="show" style="display:none;width: 700px;height: 400px;overflow-x: auto; overflow-y: auto">
+    <div id="divTable"  style="width: 100%;height: 100%">
+
+    </div>
+</div>
+
+
 <script type='text/javascript' charset="utf-8" src='${ctxData}js/common/common2.js'></script>
 <script type='text/javascript' charset="utf-8" src='${ctxData}js/manager/adminchannel/adminchannel.js'></script>
 </body>

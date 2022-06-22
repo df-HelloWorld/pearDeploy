@@ -250,6 +250,8 @@ public class PrRelationTypeController extends BaseController {
      */
     @RequestMapping("/jumpPtGewayCodeUpdate")
     public String jumpPtGewayCodeUpdate(Model model, long id) {
+
+
         model.addAttribute("platformGewayCode", prPlatformGewayCodeService.queryAllList());
 
         PrPlatformGewayCodeLinkModel  prPlatformGewayCodeLinkModel = new  PrPlatformGewayCodeLinkModel();
@@ -269,13 +271,15 @@ public class PrRelationTypeController extends BaseController {
 
 
 
-
     @RequestMapping("/jumpGewayCodeUpdate")
     public String jumpGewayCodeUpdate(Model model, long id) {
 //        model.addAttribute("platformGewayCode", prGewayCodeService.queryAllList());
-        model.addAttribute("relationTypeId", id);
+        model.addAttribute("pfGewayCodeId", id);
         return "manager/prrelationtype/prrelationtypeAddLink";
     }
+
+
+
 
     /**
      * 修改数据

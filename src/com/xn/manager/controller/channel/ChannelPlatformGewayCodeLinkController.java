@@ -195,6 +195,26 @@ public class ChannelPlatformGewayCodeLinkController extends BaseController {
             return;
         }
     }
+
+    @RequestMapping("/updateServiceCharge")
+    public void updateServiceCharge(HttpServletRequest request, HttpServletResponse response,ChannelPlatformGewayCodeLinkModel bean) throws Exception {
+        Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
+        if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
+            if (account.getAcType() == ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
+
+                channelPlatformGewayCodeLinkService.update(bean);
+                sendSuccessMessage(response, "保存成功~");
+                return;
+            }else {
+                sendFailureMessage(response,"您无权操作!");
+                return;
+            }
+        }else {
+            sendFailureMessage(response, "登录超时,请重新登录在操作!");
+            return;
+        }
+    }
+
     /**
      * 删除数据
      */

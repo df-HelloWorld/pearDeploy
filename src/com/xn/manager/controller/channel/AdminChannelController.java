@@ -7,8 +7,14 @@ import com.xn.common.util.DateUtil;
 import com.xn.common.util.GoogleAuthenticator;
 import com.xn.common.util.HtmlUtil;
 import com.xn.common.util.MD5;
+import com.xn.manager.model.PrPlatformGewayCodeLinkModel;
+import com.xn.manager.model.PrPlatformGewayCodeModel;
 import com.xn.manager.model.channel.ChannelModel;
+import com.xn.manager.model.channel.ChannelPlatformGewayCodeLinkModel;
+import com.xn.manager.service.ChannelPlatformGewayCodeLinkService;
 import com.xn.manager.service.ChannelService;
+import com.xn.manager.service.PrPlatformGewayCodeLinkService;
+import com.xn.manager.service.PrPlatformGewayCodeService;
 import com.xn.system.entity.Account;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +43,16 @@ public class AdminChannelController extends BaseController {
 
     @Autowired
     private ChannelService<ChannelModel> channelService;
+
+    @Autowired
+    PrPlatformGewayCodeService<PrPlatformGewayCodeModel> prPlatformGewayCodeService;
+
+    @Autowired
+    PrPlatformGewayCodeLinkService<PrPlatformGewayCodeLinkModel> prPlatformGewayCodeLinkService;
+
+
+    @Autowired
+    ChannelPlatformGewayCodeLinkService<ChannelPlatformGewayCodeLinkModel> channelPlatformGewayCodeLinkService;
 
 
     /**
@@ -114,12 +130,14 @@ public class AdminChannelController extends BaseController {
     @RequestMapping("/add")
     public void add(HttpServletRequest request, HttpServletResponse response, ChannelModel bean) throws Exception {
         Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
+
         if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
             if (account.getAcType() == ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
                 //check是否有重复的账号
                 ChannelModel queryBean = new ChannelModel();
                 queryBean.setAccountNum(bean.getAccountNum());
                 queryBean = channelService.queryByCondition(queryBean);
+                List<PrPlatformGewayCodeModel> list=prPlatformGewayCodeService.queryAllList();
                 if (queryBean != null && queryBean.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
                     sendFailureMessage(response,"有重复的账号,请重新输入其它账号!");
                 }else{
@@ -128,6 +146,22 @@ public class AdminChannelController extends BaseController {
                     bean.setSecretKey(MD5.parseMD5(bean.getAccountNum() + DateUtil.getNowLongTime()));
                     bean.setGoogleKey(GoogleAuthenticator.generateSecretKey());
                     channelService.add(bean);
+                    Long    channerlId =   bean.getId();
+
+                    for(PrPlatformGewayCodeModel  prPlatformGewayCodeModel:list){
+                        ChannelPlatformGewayCodeLinkModel query =new ChannelPlatformGewayCodeLinkModel();
+                        query.setChannelId(channerlId);
+                        query.setPfGewayCodeId(prPlatformGewayCodeModel.getId());
+                        ChannelPlatformGewayCodeLinkModel pf = channelPlatformGewayCodeLinkService.queryByCondition(query);
+                        if (pf != null && pf.getId() > 0){
+                             continue;
+//                            sendFailureMessage(response,"平台通道码有重复,请重新换一个!");
+//                            return;
+                        }
+
+                        channelPlatformGewayCodeLinkService.add(query);
+                    }
+
 //                if (bean.getAgentId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
 //                    AgentChannelModel agentChannelModel = new AgentChannelModel();
 //                    agentChannelModel.setAgentId(bean.getAgentId());
@@ -155,6 +189,15 @@ public class AdminChannelController extends BaseController {
         model.addAttribute("account", channelService.queryById(atModel));
         model.addAttribute("op", op);
         return "manager/adminchannel/adminchannelEdit";
+    }
+
+
+    @RequestMapping("/jumpServiceCharge")
+    public String jumpServiceCharge(Model model, long id) {
+        ChannelModel atModel = new ChannelModel();
+        atModel.setId(id);
+        model.addAttribute("channelId", id);
+        return "manager/adminchannel/adminchannelservicechargeEdit";
     }
 
     /**

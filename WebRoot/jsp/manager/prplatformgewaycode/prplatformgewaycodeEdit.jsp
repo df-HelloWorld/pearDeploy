@@ -81,24 +81,24 @@
                     <%--</div>--%>
                 <%--</li>--%>
 
-                <li style="border-top: none;">
-                    <div class="formTextDiv">
-                        <span class="require"><font color="red">*</font>类型：</span>
-                    </div>
-                    <div class="formCtrlDiv">
-                        <select id="pfGewayCodeType" name="pfGewayCodeType" >
-                            <option value="" >=请选择=</option>
-                            <c:if test="${dl.pfGewayCodeType == 1}">
-                                <option value="1" selected="selected">代收</option>
-                                <option value="2">代付</option>
-                            </c:if>
-                            <c:if test="${dl.pfGewayCodeType == 2}">
-                                <option value="1" >代收</option>
-                                <option value="2" selected="selected">代付</option>
-                            </c:if>
-                        </select>
-                    </div>
-                </li>
+                <%--<li style="border-top: none;">--%>
+                    <%--&lt;%&ndash;<div class="formTextDiv">&ndash;%&gt;--%>
+                        <%--&lt;%&ndash;<span class="require"><font color="red">*</font>类型：</span>&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<div class="formCtrlDiv">&ndash;%&gt;--%>
+                        <%--&lt;%&ndash;<select id="pfGewayCodeType" name="pfGewayCodeType" >&ndash;%&gt;--%>
+                            <%--&lt;%&ndash;<option value="" >=请选择=</option>&ndash;%&gt;--%>
+                            <%--&lt;%&ndash;<c:if test="${dl.pfGewayCodeType == 1}">&ndash;%&gt;--%>
+                                <%--&lt;%&ndash;<option value="1" selected="selected">代收</option>&ndash;%&gt;--%>
+                                <%--&lt;%&ndash;<option value="2">代付</option>&ndash;%&gt;--%>
+                            <%--&lt;%&ndash;</c:if>&ndash;%&gt;--%>
+                            <%--&lt;%&ndash;<c:if test="${dl.pfGewayCodeType == 2}">&ndash;%&gt;--%>
+                                <%--&lt;%&ndash;<option value="1" >代收</option>&ndash;%&gt;--%>
+                                <%--&lt;%&ndash;<option value="2" selected="selected">代付</option>&ndash;%&gt;--%>
+                            <%--&lt;%&ndash;</c:if>&ndash;%&gt;--%>
+                        <%--&lt;%&ndash;</select>&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+                <%--</li>--%>
 
                 <li style="border-top: none;">
                     <div class="formTextDiv">
