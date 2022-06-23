@@ -1,13 +1,17 @@
 package com.xn.manager.controller.agent;
 
+import com.alibaba.fastjson.JSON;
 import com.xn.common.constant.ManagerConstant;
 import com.xn.common.controller.BaseController;
 import com.xn.common.util.DateUtil;
 import com.xn.common.util.HtmlUtil;
 import com.xn.manager.model.agent.AgentModel;
 import com.xn.manager.model.agent.AgentProfitModel;
+import com.xn.manager.model.strategy.StrategyData;
+import com.xn.manager.model.strategy.StrategyModel;
 import com.xn.manager.service.AgentProfitService;
 import com.xn.manager.service.AgentService;
+import com.xn.manager.service.StrategyService;
 import com.xn.system.entity.Account;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -41,6 +45,9 @@ public class AgentController extends BaseController {
     @Autowired
     private AgentProfitService<AgentProfitModel> agentProfitService;
 
+    @Autowired
+    private StrategyService<StrategyModel> strategyService;
+
 
     /**
      * 获取页面
@@ -58,6 +65,17 @@ public class AgentController extends BaseController {
     @RequestMapping("/dataList")
     public void dataList(HttpServletRequest request, HttpServletResponse response, AgentModel model) throws Exception {
         List<AgentModel> dataList = new ArrayList<AgentModel>();
+
+//        StrategyModel strategyQuery = new StrategyModel();
+//        strategyQuery.setStgKey("agentTypeList");
+//        StrategyModel strategyData = strategyService.queryByCondition(strategyQuery);
+//        List<StrategyData> strategyDataList = new ArrayList<>();
+//        if (strategyData != null ){
+//            if (!StringUtils.isBlank(strategyData.getStgBigValue())){
+//                strategyDataList = JSON.parseArray(strategyData.getStgBigValue(), StrategyData.class);
+//            }
+//        }
+
         model.setIsEnable(ManagerConstant.PUBLIC_CONSTANT.IS_ENABLE_ZC);
         Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
         if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
@@ -85,6 +103,16 @@ public class AgentController extends BaseController {
                 }
 
             }
+
+//            if (dataList != null && dataList.size() > 0){
+//                for (int i = 0; i < dataList.size(); i++){
+//                    for (int j = 0; j < strategyDataList.size(); j++){
+//                        if (dataList.get(i).getAgentType() == strategyDataList.get(j).getStgKey()){
+//                            dataList.get(i).setAgentTypeName(strategyDataList.get(j).getStgValueOne());
+//                        }
+//                    }
+//                }
+//            }
         }
         HtmlUtil.writerJson(response, model.getPage(), dataList);
     }
