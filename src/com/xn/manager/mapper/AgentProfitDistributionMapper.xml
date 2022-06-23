@@ -21,6 +21,8 @@
         <result property="agentType" column="agent_type" />
         <result property="gewayCodeName" column="geway_code_name" />
         <result property="channelName" column="channel_name" />
+        <result property="gewayName" column="geway_name" />
+        <result property="codeName" column="code_name" />
     </resultMap>
     <!-- 定义数据库基本列,只适用代替单表的*-->
     <sql id="Base_Column_List">
@@ -31,8 +33,10 @@
         <!--b.agent_name,-->
         b.agent_type,
         c.geway_code_name,
-        ifnull(d.channel_name, '') as channel_name
+        ifnull(d.channel_name, '') as channel_name,
         <!--d.channel_name-->
+        ifnull(e.geway_name, '') as geway_name,
+        ifnull(f.code_name, '') as code_name
 
     </sql>
 
@@ -103,6 +107,8 @@
         from tb_pr_agent_profit_distribution a left join tb_pr_agent b on a.agent_id = b.id
         left join tb_pr_geway_code c on a.geway_code_id = c.id
         left join tb_pr_channel d on a.channel_id = d.id
+        left join tb_pr_geway e on c.geway_id = e.id
+        left join tb_pr_platform_geway_code f on a.pf_geway_code_id = f.id
         <include refid="Example_Where_Clause"/>
     </select>
 
@@ -113,6 +119,8 @@
         from tb_pr_agent_profit_distribution a left join tb_pr_agent b on a.agent_id = b.id
         left join tb_pr_geway_code c on a.geway_code_id = c.id
         left join tb_pr_channel d on a.channel_id = d.id
+        left join tb_pr_geway e on c.geway_id = e.id
+        left join tb_pr_platform_geway_code f on a.pf_geway_code_id = f.id
         <include refid="Example_Where_Clause"/>
         order by a.create_time desc
         limit #{startIndex},#{pageSize}
@@ -125,6 +133,8 @@
         from tb_pr_agent_profit_distribution a left join tb_pr_agent b on a.agent_id = b.id
         left join tb_pr_geway_code c on a.geway_code_id = c.id
         left join tb_pr_channel d on a.channel_id = d.id
+        left join tb_pr_geway e on c.geway_id = e.id
+        left join tb_pr_platform_geway_code f on a.pf_geway_code_id = f.id
         <include refid="Example_Where_Clause"/>
         order by a.create_time desc
     </select>
@@ -136,6 +146,8 @@
         from tb_pr_agent_profit_distribution a left join tb_pr_agent b on a.agent_id = b.id
         left join tb_pr_geway_code c on a.geway_code_id = c.id
         left join tb_pr_channel d on a.channel_id = d.id
+        left join tb_pr_geway e on c.geway_id = e.id
+        left join tb_pr_platform_geway_code f on a.pf_geway_code_id = f.id
         <include refid="Example_Where_Clause_id"/>
     </select>
 
@@ -146,6 +158,8 @@
         from tb_pr_agent_profit_distribution a left join tb_pr_agent b on a.agent_id = b.id
         left join tb_pr_geway_code c on a.geway_code_id = c.id
         left join tb_pr_channel d on a.channel_id = d.id
+        left join tb_pr_geway e on c.geway_id = e.id
+        left join tb_pr_platform_geway_code f on a.pf_geway_code_id = f.id
         <include refid="Example_Where_Clause"/>
         limit 1
     </select>

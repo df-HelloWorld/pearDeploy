@@ -147,7 +147,7 @@
                             <span class="require" ><font color="red">*</font>代理类型：</span>
                         </div>
                         <div class="formCtrlDiv">
-                            <select id="agentType" name="agentType" >
+                            <select id="agentType" name="agentType" disabled="disabled">
                                 <option value="">===请选择===</option>
                                 <c:forEach items="${agentTypeList}" var="dataList">
                                     <c:choose>

@@ -257,7 +257,7 @@ public class AdminAgentController extends BaseController {
                     }
                 }
 
-
+                bean.setAgentType(0);
                 agentService.update(bean);
                 sendSuccessMessage(response, "保存成功~");
                 return;

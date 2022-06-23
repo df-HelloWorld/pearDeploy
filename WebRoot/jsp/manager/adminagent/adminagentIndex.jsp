@@ -55,7 +55,7 @@
             <th width="150">代理名称</th>
             <th width="150">总额</th>
             <th width="150">余额</th>
-            <th width="150">锁定金额</th>
+            <%--<th width="150">锁定金额</th>--%>
             <%--<th width="150">提现类型</th>--%>
             <th width="150">代理类型</th>
             <th width="150">使用状态</th>
@@ -122,6 +122,7 @@
         </form>
     </div>
 </div>
+
 
 
 

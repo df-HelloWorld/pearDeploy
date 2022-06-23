@@ -117,6 +117,16 @@ public class AgentProfitDistributionModel extends BasePage implements Serializab
      */
     private List<Long> idList;
 
+    /**
+     * 通道名称
+     */
+    private String gewayName;
+
+    /**
+     * 平台通道名称
+     */
+    private String codeName;
+
     public long getId() {
         return id;
     }
@@ -267,5 +277,21 @@ public class AgentProfitDistributionModel extends BasePage implements Serializab
 
     public void setIdList(List<Long> idList) {
         this.idList = idList;
+    }
+
+    public String getGewayName() {
+        return gewayName;
+    }
+
+    public void setGewayName(String gewayName) {
+        this.gewayName = gewayName;
+    }
+
+    public String getCodeName() {
+        return codeName;
+    }
+
+    public void setCodeName(String codeName) {
+        this.codeName = codeName;
     }
 }

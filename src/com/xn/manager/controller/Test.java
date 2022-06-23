@@ -34,5 +34,17 @@ public class Test {
             }
         }
 
+        String a = "0.9999";
+        if (a.matches("[+-]?[0-9]+(\\.[0-9]+)?")){
+            System.out.println("是");
+        }else {
+            System.out.println("不是");
+        }
+
+        double fr = Double.parseDouble(a);
+        if (fr >= 1){
+            System.out.println("错误");
+        }
+
     }
 }

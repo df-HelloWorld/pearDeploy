@@ -170,6 +170,41 @@ public class AdminAgentProfitDistributionController extends BaseController {
             if (StringUtils.isBlank(bean.getServiceCharge())){
                 sendFailureMessage(response,"请填写分润值!");
                 return;
+            }else{
+                if (!bean.getServiceCharge().matches("[+-]?[0-9]+(\\.[0-9]+)?")){
+                    sendFailureMessage(response,"请输入正确的分润值!");
+                    return;
+                }else {
+                    if (Double.parseDouble(bean.getServiceCharge()) >= 1){
+                        sendFailureMessage(response,"分润值不能大于等于1!");
+                        return;
+                    }
+                }
+            }
+
+            // 查询代理的类型
+            AgentModel agentQuery = new AgentModel();
+            agentQuery.setId(bean.getAgentId());
+            AgentModel agentModel = agentService.queryByCondition(agentQuery);
+            // check数据
+            if (agentModel.getAgentType() == 1){
+                // 针对渠道的
+                if (bean.getBindingType() != 2){
+                    sendFailureMessage(response,"此代理只能绑定渠道!");
+                    return;
+                }
+            }else if (agentModel.getAgentType() == 2){
+                // 针对通道码
+                if (bean.getBindingType() != 1){
+                    sendFailureMessage(response,"此代理只能绑定通道码!");
+                    return;
+                }
+            }else if (agentModel.getAgentType() == 3){
+                // 两者针对
+                if (bean.getBindingType() != 3){
+                    sendFailureMessage(response,"此代理只能绑定两者针对的!");
+                    return;
+                }
             }
 
             if (account.getAcType() == ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
@@ -238,6 +273,11 @@ public class AdminAgentProfitDistributionController extends BaseController {
                 return;
             }
 
+            if (bean.getBindingType() == 0){
+                sendFailureMessage(response,"请填写绑定类型!");
+                return;
+            }
+
             if (bean.getBindingType() == 1){
                 if (bean.getGewayCodeId() == 0 || bean.getChannelId() > 0){
                     sendFailureMessage(response,"与通道码绑定,渠道不用填写!");
@@ -255,6 +295,48 @@ public class AdminAgentProfitDistributionController extends BaseController {
             if (bean.getBindingType() == 3){
                 if (bean.getGewayCodeId() == 0 || bean.getChannelId() == 0){
                     sendFailureMessage(response,"与两者绑定,通道码跟渠道都要填写!");
+                    return;
+                }
+            }
+
+            if (StringUtils.isBlank(bean.getServiceCharge())){
+                sendFailureMessage(response,"请填写分润值!");
+                return;
+            }else{
+                if (!bean.getServiceCharge().matches("[+-]?[0-9]+(\\.[0-9]+)?")){
+                    sendFailureMessage(response,"请输入正确的分润值!");
+                    return;
+                }else {
+                    if (Double.parseDouble(bean.getServiceCharge()) >= 1){
+                        log.info("");
+                        sendFailureMessage(response,"分润值不能大于等于1!");
+                        return;
+                    }
+                }
+            }
+
+
+            // 查询代理的类型
+            AgentModel agentQuery = new AgentModel();
+            agentQuery.setId(bean.getAgentId());
+            AgentModel agentModel = agentService.queryByCondition(agentQuery);
+            // check数据
+            if (agentModel.getAgentType() == 1){
+                // 针对渠道的
+                if (bean.getBindingType() != 2){
+                    sendFailureMessage(response,"此代理只能绑定渠道!");
+                    return;
+                }
+            }else if (agentModel.getAgentType() == 2){
+                // 针对通道码
+                if (bean.getBindingType() != 1){
+                    sendFailureMessage(response,"此代理只能绑定通道码!");
+                    return;
+                }
+            }else if (agentModel.getAgentType() == 3){
+                // 两者针对
+                if (bean.getBindingType() != 3){
+                    sendFailureMessage(response,"此代理只能绑定两者针对的!");
                     return;
                 }
             }
@@ -280,6 +362,10 @@ public class AdminAgentProfitDistributionController extends BaseController {
                 if (agentProfitDistributionModel != null && agentProfitDistributionModel.getId() > 0){
                     sendFailureMessage(response,"有重复纪录,请重新选择!");
                     return;
+                }
+
+                if (StringUtils.isBlank(bean.getExtraServiceCharge())){
+                    bean.setExtraServiceCharge("");
                 }
 
                 agentProfitDistributionService.update(bean);
