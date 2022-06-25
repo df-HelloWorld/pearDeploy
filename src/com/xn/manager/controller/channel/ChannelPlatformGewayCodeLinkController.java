@@ -3,13 +3,14 @@ package com.xn.manager.controller.channel;
 import com.xn.common.constant.ManagerConstant;
 import com.xn.common.controller.BaseController;
 import com.xn.common.util.HtmlUtil;
+import com.xn.manager.model.PrGewayCodeModel;
+import com.xn.manager.model.PrPlatformGewayCodeLinkModel;
 import com.xn.manager.model.PrPlatformGewayCodeModel;
 import com.xn.manager.model.channel.ChannelModel;
 import com.xn.manager.model.channel.ChannelPlatformGewayCodeLinkModel;
-import com.xn.manager.service.ChannelPlatformGewayCodeLinkService;
-import com.xn.manager.service.ChannelService;
-import com.xn.manager.service.PrPlatformGewayCodeService;
+import com.xn.manager.service.*;
 import com.xn.system.entity.Account;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,6 +43,12 @@ public class ChannelPlatformGewayCodeLinkController extends BaseController {
 
     @Autowired
     private PrPlatformGewayCodeService<PrPlatformGewayCodeModel> prPlatformGewayCodeService;
+
+    @Autowired
+    private PrGewayCodeService<PrGewayCodeModel> prGewayCodeService;
+
+    @Autowired
+    private PrPlatformGewayCodeLinkService<PrPlatformGewayCodeLinkModel> prPlatformGewayCodeLinkService;
 
 
     /**
@@ -258,5 +265,67 @@ public class ChannelPlatformGewayCodeLinkController extends BaseController {
             return;
         }
     }
+
+
+
+
+    /**
+     *
+     * 获取渠道与平台通道码的详情
+     * <p>
+     *     这里包含平台通道码旗下的通道信息
+     * </p>
+     */
+    @RequestMapping("/dataAllInfoList")
+    public void dataAllInfoList(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        List<ChannelPlatformGewayCodeLinkModel> dataList = new ArrayList<ChannelPlatformGewayCodeLinkModel>();
+        Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
+        if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
+            if (account.getAcType() == ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
+            }else{
+                //不是管理员，不能操作
+//                sendFailureMessage(response,"无法操作,请登录其它账号角色!");
+                HtmlUtil.writerJson(response, dataList);
+                return;
+            }
+            dataList = channelPlatformGewayCodeLinkService.queryAllList();
+            for (int i = 0; i < dataList.size(); i++){
+                String splicing = "";
+                PrPlatformGewayCodeLinkModel prPlatformGewayCodeLinkQuery = new PrPlatformGewayCodeLinkModel();
+                prPlatformGewayCodeLinkQuery.setPfGewayCodeId(dataList.get(i).getPfGewayCodeId());
+                List<PrPlatformGewayCodeLinkModel> prPlatformGewayCodeLinkList = new ArrayList<>();
+                prPlatformGewayCodeLinkList = prPlatformGewayCodeLinkService.queryAllList(prPlatformGewayCodeLinkQuery);
+                for (PrPlatformGewayCodeLinkModel prPlatformGewayCodeLinkModel : prPlatformGewayCodeLinkList){
+                    PrGewayCodeModel query = new PrGewayCodeModel();
+                    query.setId(prPlatformGewayCodeLinkModel.getGewayCodeId());
+                    PrGewayCodeModel prGewayCodeModel = prGewayCodeService.queryByCondition(query);
+                    if (prGewayCodeModel != null && prGewayCodeModel.getId() > 0){
+                        String serviceCharge = "";
+                        if (!StringUtils.isBlank(prGewayCodeModel.getUpServiceCharge())){
+                            serviceCharge = prGewayCodeModel.getUpServiceCharge();
+                        }else {
+                            serviceCharge = "0.0000";
+                        }
+                        splicing += prGewayCodeModel.getGewayName() + "|" + prGewayCodeModel.getGewayCodeName() + "|" + prGewayCodeModel.getGewayCode() + "|" + serviceCharge + "<br />";
+                    }
+                }
+
+                if (!StringUtils.isBlank(splicing)){
+                    dataList.get(i).setSplicing(splicing);
+                }else{
+                    dataList.get(i).setSplicing("");
+                }
+
+
+
+            }
+        }
+        HtmlUtil.writerJson(response, dataList);
+//        sendSuccessMessage(response, "", dataList);
+    }
+
+
+
+
 
 }

@@ -456,9 +456,39 @@ public class AdminAgentProfitDistributionController extends BaseController {
             return;
         }
 
+    }
 
 
+    /**
+     * @Description: 获取渠道的所有利益分配数据-两者针对
+     * @param id
+     * @return
+     * @author yoko
+     * @date 2020/10/16 16:02
+     */
+    @RequestMapping("/getAgentProfitDistributionByChannelList")
+    public void getAgentProfitDistributionByChannelList(Long id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
+        if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
+            if (account.getAcType() == ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
+                AgentProfitDistributionModel query = new AgentProfitDistributionModel();
+                query.setChannelId(id);
+                query.setBindingType(3);
+                List<AgentProfitDistributionModel> dataList = new ArrayList<AgentProfitDistributionModel>();
+                dataList = agentProfitDistributionService.queryAllList(query);
+                sendSuccessMessage(response, "", dataList);
+                return;
+            }else {
+                sendFailureMessage(response,"您无权操作!");
+                return;
+            }
 
+        }else{
+            sendFailureMessage(response, "登录超时,请重新登录在操作!");
+            return;
+        }
 
     }
+
+
 }

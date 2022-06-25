@@ -102,6 +102,11 @@ public class ChannelPlatformGewayCodeLinkModel extends BasePage implements Seria
      */
     private List<Long> idList;
 
+    /**
+     * 拼接字符串使用
+     */
+    private String splicing;
+
     public long getId() {
         return id;
     }
@@ -220,5 +225,13 @@ public class ChannelPlatformGewayCodeLinkModel extends BasePage implements Seria
 
     public void setIdList(List<Long> idList) {
         this.idList = idList;
+    }
+
+    public String getSplicing() {
+        return splicing;
+    }
+
+    public void setSplicing(String splicing) {
+        this.splicing = splicing;
     }
 }

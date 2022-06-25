@@ -1,5 +1,9 @@
 
 var datatable;
+var basePath = $("#excDataHid").val();
+var agentDataList;// 代理数据
+var pfGewayCodeDataList;// 平台通道
+
 var account = {
     //地址
     url:{
@@ -61,6 +65,7 @@ var account = {
                 var html = '';
                 var isEnableHtml = '';
                 html = html = '<a class = "dataTableBtn dataTableDeleteBtn " id = "edit" directkey="' + oData.id + '" href = "javascript:void(0);"> 费率 </a>'
+                    +'<a class = "dataTableBtn dataShowBtn " directkey="'+oData.id+'" directName="'+oData.channelName+'" href = "javascript:void(0);"> 分润 </a>'
                     +'<a class = "dataTableBtn dataTableDeleteBtn " href="'+ctx+'/adminchannel/jumpUpdate.do?op=1&id='+oData.id+'"> 编辑 </a>'
                     +'<a class = "dataTableBtn dataTableDeleteBtn" href="'+ctx+'/adminchannel/jumpUpdate.do?op=2&id='+oData.id+'">重置密码 </a>'
                     +isEnableHtml
@@ -77,6 +82,10 @@ var account = {
     indexInit : function (){
         //url同步
         common.updateUrl(this.url);
+
+        this.queryAgentAll();
+        this.queryPfGewayCodeAll();
+
         //添加
         $(".addbtn").live("click",function(){
             window.location.href = ctx + "/adminchannel/jumpAdd.do";
@@ -189,10 +198,219 @@ var account = {
         });
 
 
+
+
+        // start
+
+        //点击分润
+        $(".dataShowBtn").live("click",function(){
+            var channelId = $(this).attr('directkey');
+            var agentType = 3;
+            var channelName = $(this).attr('directName');
+
+
+            agentServiceCharge(channelId,agentType,channelName);
+
+        });
+
+        // end
+
+
     },
 
 
+    //查询所有平台通道码
+    queryPfGewayCodeAll:function(){
+        var url = basePath + "channelplatformgewaycodelink/dataAllInfoList.do";
+        var data = {
+        };
+        common.ajax(url,data,function(data){
+            pfGewayCodeDataList=data;
+        });
+    },
+
+    //查询所有代理-类型:针对两者
+    queryAgentAll:function(){
+        var url = basePath + "adminagent/dataAllList.do";
+        var data = {
+            agentType:3
+        };
+        common.ajax(url,data,function(data){
+            agentDataList=data;
+        });
+    }
+
+
 }
+
+
+
+function agentServiceCharge(channelId,agentType,channelName){
+    $("#agentProfitInfoDiv").html("");//清空展现层
+
+    var agentTypeInfo = channelName + "> 两者针对";
+
+    $("#divAgentName").html(agentTypeInfo);
+
+    $.ajax({url : ctx+ "/adminagentprofitdistribution/getAgentProfitDistributionByChannelList.do",
+        type : 'post',
+        dataType : 'json',
+        data :{
+            id:channelId
+        },
+        success : function(data) {
+            if (data.success) {
+                var dataList=data.data;
+                alert("lenght:"+ pfGewayCodeDataList.length);
+
+                // 两者针对-start
+
+                // show-div-start
+
+                var shtml="";
+
+                shtml +="<div style='border: 2px solid red;'>";
+                shtml +="<input type='hidden' style='width: 100px;box-sizing: border-box' class='formInput' id='channelId' name='channelId' value='"+channelId+"' />";
+                for (var i=0;i<agentDataList.length>0;i++) {
+                    if(i!=0&&i%6==0){
+                        shtml +="<br/>";
+                    }
+                    shtml += "<input type='checkbox' name='agentId' id='agentId' value="+agentDataList[i].id+"> "+agentDataList[i].agentName+"&nbsp;&nbsp;&nbsp;&nbsp;";
+                }
+
+                shtml +="<br />";
+                shtml +="<br />";
+
+
+
+                shtml +="<table id='dataDayTable' name='dataDayTable'>";
+
+                shtml +="<tr>";
+                shtml +="<td>平台通道</td>";
+                shtml +="<td>平台通道码</td>";
+                shtml +="<td>用户费率</td>";
+                shtml +="<td>通道费率</td>";
+                shtml +="<td>分润</td>";
+                shtml +="<td>操作</td>";
+                shtml +="</tr>";
+                for (var i=0;i<pfGewayCodeDataList.length>0;i++) {
+                    if (pfGewayCodeDataList[i].channelId == channelId){
+                        shtml +="<tr>";
+                        shtml +="<input type='hidden' style='width: 100px;box-sizing: border-box' class='formInput' id='id' name='id' value='"+pfGewayCodeDataList[i].id+"' />";
+                        shtml +="<td><input type='text' style='width: 100px;box-sizing: border-box' class='formInput' id='codeName' name='codeName' disabled='disabled' value='"+pfGewayCodeDataList[i].codeName+"'/> </td>";
+                        shtml +="<td><input type='text' style='width: 100px;box-sizing: border-box' class='formInput' id='pfGewayCode' name='pfGewayCode' disabled='disabled' value='"+pfGewayCodeDataList[i].pfGewayCode+"'/> </td>";
+                        shtml +="<td><input type='text' style='width: 80px;box-sizing: border-box' class='formInput' id='' name='' disabled='disabled' value='"+pfGewayCodeDataList[i].serviceCharge+"' /> </td>";
+                        if(pfGewayCodeDataList[i].splicing.length>=20){
+                            shtml +="<td onmouseover='tooltip.pop(this, \""+pfGewayCodeDataList[i].splicing+"\",\""+{offsetY:-25, smartPosition:true}+"\")'> "+pfGewayCodeDataList[i].splicing.substring(0,20)+"。。</td>";
+                        }else {
+                            shtml +="<td onmouseover='tooltip.pop(this, \""+pfGewayCodeDataList[i].splicing+"\",\""+{offsetY:-25, smartPosition:true}+"\")'> "+pfGewayCodeDataList[i].splicing+"</td>";
+                        }
+                        shtml +="<td><input type='text' style='width: 100px;box-sizing: border-box' class='formInput' id='serviceCharge_"+pfGewayCodeDataList[i].id+"' name='serviceCharge_"+pfGewayCodeDataList[i].id+"'  value=''/> </td>";
+
+                        shtml +="<td>";
+                        // shtml +="<a style='background-color:#00b7ee;' class='formBtn' href = 'javascript:void(0);' onclick='onclickUpdateServiceCharge("+pfGewayCodeDataList[i].id+","+channelId+","+dataList[i].gewayCodeId+","+agentId+","+agentType+",\""+channelName+"\")' >保存 </a>";
+                        shtml +="<a style='background-color:#00b7ee;' class='formBtn' href = 'javascript:void(0);' onclick='' >保存 </a>";
+
+                        shtml += "</td>";
+                        shtml +="</tr>";
+                    }
+
+                }
+
+                shtml +="</table>";
+
+
+
+
+
+                shtml +="</div>";
+
+                /*shtml +="<table id='dataDayTable' name='dataDayTable'>";
+
+                shtml +="<tr>";
+                shtml +="<td>代理</td>";
+                shtml +="<td>渠道</td>";
+                shtml +="<td>绑定类型</td>";
+                shtml +="<td>使用状态</td>";
+                shtml +="<td>分润</td>";
+                shtml +="<td>操作</td>";
+                shtml +="</tr>";
+                for (var i=0;i<dataList.length>0;i++) {
+                    shtml +="<tr>";
+                    shtml +="<input type='hidden' style='width: 100px;box-sizing: border-box' class='formInput' id='id' name='id' value='"+dataList[i].id+"' />";
+                    shtml +="<td><input type='text' style='width: 80px;box-sizing: border-box' class='formInput' id='agentName' name='agentName' disabled='disabled' value='"+dataList[i].agentName+"' /> </td>";
+                    shtml +="<td><input type='text' style='width: 100px;box-sizing: border-box' class='formInput' id='channelName' name='channelName' disabled='disabled' value='"+dataList[i].channelName+"'/> </td>";
+                    if (dataList[i].bindingType == 2){
+                        shtml +="<td><input type='text' style='width: 100px;box-sizing: border-box' class='formInput' id='bindingTypeName' name='bindingTypeName' disabled='disabled' value='渠道绑定'/> </td>";
+                    }else if (dataList[i].bindingType == 1){
+                        shtml +="<td><input type='text' style='width: 100px;box-sizing: border-box' class='formInput' id='bindingTypeName' name='bindingTypeName' disabled='disabled' value='通道码绑定'/> </td>";
+                    }
+                    if (dataList[i].isEnable == 1){
+                        shtml +="<td><input type='text' style='width: 100px;box-sizing: border-box' class='formInput' id='' name='' disabled='disabled' value='禁用'/> </td>";
+                    }else if (dataList[i].isEnable == 2){
+                        shtml +="<td><input type='text' style='width: 100px;box-sizing: border-box' class='formInput' id='' name='' disabled='disabled' value='启用'/> </td>";
+                    }
+                    shtml +="<td><input type='text' style='width: 100px;box-sizing: border-box' class='formInput' id='serviceCharge_"+dataList[i].id+"' name='serviceCharge_"+dataList[i].id+"'  value='"+dataList[i].serviceCharge+"'/> </td>";
+                    shtml +="<td>";
+                    shtml +="<a style='background-color:#00b7ee;' class='formBtn' href = 'javascript:void(0);' onclick='onclickUpdateServiceCharge("+dataList[i].id+","+dataList[i].channelId+","+dataList[i].gewayCodeId+","+agentId+","+agentType+",\""+agentName+"\")' >保存 </a>";
+                    if (dataList[i].isEnable==1) {
+                        shtml +="<a style='background-color:#00ff00;' class='formBtn' directValue='2' href = 'javascript:void(0);' onclick='onclickIsEnable("+dataList[i].id+",2,"+agentId+","+agentType+",\""+agentName+"\")'>启用 </a>";
+                    }else {
+                        shtml +="<a style='background-color:#8EA534;' class='formBtn' directValue='1' href = 'javascript:void(0);' onclick='onclickIsEnable("+dataList[i].id+",1,"+agentId+","+agentType+",\""+agentName+"\")'>禁用 </a>";
+                    }
+                    shtml +="<a style='background-color:#85140E;' class='formBtn' directValue='1' href = 'javascript:void(0);' onclick='onclickDelete("+dataList[i].id+",1,"+agentId+","+agentType+",\""+agentName+"\")'>删除 </a>";
+                    shtml += "</td>";
+                    shtml +="</tr>";
+                }
+
+                shtml +="</table>";*/
+
+                // 两者针对-end
+
+                // show-div-end
+
+
+
+                $("#agentProfitInfoDiv").html(shtml);
+                openDialog("showTwo","");
+            } else {
+                art.alert(data.msg);
+            }
+        },
+        error : function(data) {
+            art.alert(data.info);
+        }
+    });
+}
+
+
+
+
+/*function channelplatformgewaycodelinkData(channelId){
+    $.ajax({url : ctx+ "/channelplatformgewaycodelink/dataAllInfoList.do",
+        type : 'post',
+        dataType : 'json',
+        data :{
+            channelId:channelId
+        },
+        success : function(data) {
+            if (data.success) {
+                alert("哈哈");
+                pfGewayCodeDataList=data.data;
+
+
+            } else {
+                art.alert(data.msg);
+            }
+        },
+        error : function(data) {
+            art.alert(data.info);
+        }
+    });
+}*/
+
+
+
 
 $(function(){
     account.indexInit();

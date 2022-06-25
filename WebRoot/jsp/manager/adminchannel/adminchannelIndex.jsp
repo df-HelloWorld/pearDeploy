@@ -69,7 +69,70 @@
 </div>
 
 
+
+
+
+<div id="showTwo" style="display:none;width:100%;">
+    <div class="formHeadDiv" >
+        <h2>
+            <span><font color="red"><div id = "divAgentName"> </div></font></span>
+        </h2>
+    </div>
+    <div  style="padding-right:0px;width:auto;height:auto;">
+        <form id="newFirstStoreForm">
+            <dl>
+
+                <%--<div class="formTextDiv">--%>
+
+                <%--<tr>--%>
+                <%--<td>字段名</td>--%>
+                <%--<td>字段</td>--%>
+                <%--</tr>--%>
+                <%--</div>--%>
+
+                <div class="formTextDiv" style="width: 100%;" id="agentProfitInfoDiv">
+
+                </div>
+
+
+
+
+
+
+
+
+                <dd style="border-top: none;">
+                    <div class="formTextDiv"></div>
+                    <%--<div class="formCtrlDiv">
+                        -------------------------------------------------------------------------------
+                    </div>--%>
+                </dd>
+                <%--<dd style=" height: 60px; line-height: 58px;">--%>
+                <%--<div class="formCtrlDiv">--%>
+                <%--<span style="margin-left: 100px;">--%>
+                <%--<input type="button" style="background-color: #767DC3" class="formBtn" onClick="addTr()" value="新增一行" />--%>
+                <%--&lt;%&ndash;<input type="button" style="background-color: #767DC3" class="formBtn" onClick="delTr()" value="删除一行" />&ndash;%&gt;--%>
+                <%--</span>--%>
+                <%--<span style="margin-left: 100px;">--%>
+                <%--<input type="button" style="background-color: #767DC3" class="formBtn" onclick="submitHandler()" value="保　存" />--%>
+                <%--&lt;%&ndash;<input type="reset"  style="background-color: #42425E" class="formBtn" value="重　置" />&ndash;%&gt;--%>
+                <%--<input type="reset" onClick="javascript :closeDialog('show')" style="background-color: #767DC3" class="formBtn" value=" 返 回 " />--%>
+                <%--</span>--%>
+                <%--</div>--%>
+                <%--</dd>--%>
+            </dl>
+        </form>
+    </div>
+</div>
+
+
 <script type='text/javascript' charset="utf-8" src='${ctxData}js/common/common2.js'></script>
 <script type='text/javascript' charset="utf-8" src='${ctxData}js/manager/adminchannel/adminchannel.js'></script>
 </body>
 </html>
+
+<style>
+    .formContentDiv form .formCtrlDiv {
+        margin-left: 10px;
+    }
+</style>
