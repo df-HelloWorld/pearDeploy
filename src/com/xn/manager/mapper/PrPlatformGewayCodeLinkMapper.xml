@@ -56,6 +56,9 @@
             <if test="relationTypeId != 0 and relationTypeId >0 " >
                 and a.relation_type_id = #{relationTypeId}
             </if>
+            <if test="pfGewayCodeId != 0 and pfGewayCodeId >0 " >
+                and a.pf_geway_code_id = #{pfGewayCodeId}
+            </if>
             <!--<if test="gewayName != null and gewayName != '' " >-->
                 <!--and a.geway_name = #{gewayName}-->
             <!--</if>-->
@@ -145,9 +148,11 @@
         LEFT JOIN   tb_pr_geway_code  c
 
         ON   a.geway_code_id=c.id
+
         LEFT JOIN tb_pr_geway  b
         ON    b.id= c.geway_id
         <include refid="Example_Where_Clause_id"/>
+        and a.yn=0
         and c.yn=0
     </select>
 

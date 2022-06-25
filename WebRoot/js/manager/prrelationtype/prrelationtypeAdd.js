@@ -21,9 +21,9 @@ function  querygewayCode(){
 
 function  queryselGewayCode(){
     var url = ctx + "/prrelationtype/dataSelGewayCode.do";
-    // var relationTypeId=$("#relationTypeId").val();
+    var pfGewayCodeId=$("#pfGewayCodeId").val();
     var data = {
-        relationTypeId:$("#relationTypeId").val()
+        pfGewayCodeId:$("#pfGewayCodeId").val()
     };
     common.ajax(url,data,function(data){
         var dataList=data;
