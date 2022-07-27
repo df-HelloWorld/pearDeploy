@@ -91,7 +91,7 @@ function  updateRatio(id){
     var url = ctx + "/prplatformgewaycodelink/update.do";
     common.ajax(url,data,function(data){
         alert("保存成功");
-        window.location.href = ctx + "/prrelationtype/jumpGewayCodeUpdate.do?id="+$("#relationTypeId").val();
+        window.location.href = ctx + "/prrelationtype/jumpGewayCodeUpdate.do?id="+$("#pfGewayCodeId").val();
     });
 }
 

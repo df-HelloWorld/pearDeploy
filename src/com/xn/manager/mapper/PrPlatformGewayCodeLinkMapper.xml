@@ -43,6 +43,8 @@
             </if>
 
             and a.yn = 0
+            and b.yn=0
+            and c.yn=0
         </trim>
     </sql>
 

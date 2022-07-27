@@ -142,6 +142,7 @@ public class PrPlatformGewayCodeLinkController extends BaseController {
 
                     for(int i=0;i<relationType.length;i++){
                         PrPlatformGewayCodeLinkModel prPlatformGewayCodeLinkModel =new PrPlatformGewayCodeLinkModel();
+                        prPlatformGewayCodeLinkModel.setPfGewayCodeId(bean.getPfGewayCodeId());
                         prPlatformGewayCodeLinkModel.setGewayCodeId(Long.parseLong(relationType[i]));
                         PrPlatformGewayCodeLinkModel  queryByCondition=prPlatformGewayCodeLinkService.queryByCondition(prPlatformGewayCodeLinkModel);
                         prPlatformGewayCodeLinkModel.setPfGewayCodeId(bean.getPfGewayCodeId());
