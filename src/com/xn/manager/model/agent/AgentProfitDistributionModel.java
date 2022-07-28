@@ -36,6 +36,11 @@ public class AgentProfitDistributionModel extends BasePage implements Serializab
     private long agentId;
 
     /**
+     * 平台通道码ID
+     */
+    private long pfGewayCodeId;
+
+    /**
      * 通道码ID
      */
     private long gewayCodeId;
@@ -126,6 +131,37 @@ public class AgentProfitDistributionModel extends BasePage implements Serializab
      * 平台通道名称
      */
     private String codeName;
+
+    /**
+     * 平台通道码
+     */
+    private String pfGewayCode;
+
+    /**
+     * 渠道对应平台通道码的费率
+     */
+    private String pfGewayServiceCharge;
+
+
+    /**
+     * 拼接字符串使用
+     */
+    private String splicing;
+
+    /**
+     * 页面传的复选框的值-代理ID集合
+     */
+    private String agentArr;
+
+    /**
+     * 页面传的通道ID，分润
+     * <p>
+     *     数据传输格式
+     *     平台通道ID_1,分润值_1#平台通道ID_2,分润值_2#
+     * </p>
+     */
+    private String pfGewayServiceChargeArr;
+
 
     public long getId() {
         return id;
@@ -293,5 +329,53 @@ public class AgentProfitDistributionModel extends BasePage implements Serializab
 
     public void setCodeName(String codeName) {
         this.codeName = codeName;
+    }
+
+    public String getPfGewayCode() {
+        return pfGewayCode;
+    }
+
+    public void setPfGewayCode(String pfGewayCode) {
+        this.pfGewayCode = pfGewayCode;
+    }
+
+    public String getPfGewayServiceCharge() {
+        return pfGewayServiceCharge;
+    }
+
+    public void setPfGewayServiceCharge(String pfGewayServiceCharge) {
+        this.pfGewayServiceCharge = pfGewayServiceCharge;
+    }
+
+    public String getSplicing() {
+        return splicing;
+    }
+
+    public void setSplicing(String splicing) {
+        this.splicing = splicing;
+    }
+
+    public long getPfGewayCodeId() {
+        return pfGewayCodeId;
+    }
+
+    public void setPfGewayCodeId(long pfGewayCodeId) {
+        this.pfGewayCodeId = pfGewayCodeId;
+    }
+
+    public String getAgentArr() {
+        return agentArr;
+    }
+
+    public void setAgentArr(String agentArr) {
+        this.agentArr = agentArr;
+    }
+
+    public String getPfGewayServiceChargeArr() {
+        return pfGewayServiceChargeArr;
+    }
+
+    public void setPfGewayServiceChargeArr(String pfGewayServiceChargeArr) {
+        this.pfGewayServiceChargeArr = pfGewayServiceChargeArr;
     }
 }

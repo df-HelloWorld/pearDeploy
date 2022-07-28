@@ -46,4 +46,9 @@ public class PrPlatformGewayCodeLinkServiceImpl<T> extends BaseServiceImpl<T> im
     public int deleteRelationType(PrPlatformGewayCodeLinkModel prPlatformGewayCodeLinkModel) {
         return prPlatformGewayCodeLinkDao.deleteRelationType(prPlatformGewayCodeLinkModel);
     }
+
+    @Override
+    public String queryMaxUpServiceChargeByPfGewayCode(PrPlatformGewayCodeLinkModel model) {
+        return prPlatformGewayCodeLinkDao.queryMaxUpServiceChargeByPfGewayCode(model);
+    }
 }

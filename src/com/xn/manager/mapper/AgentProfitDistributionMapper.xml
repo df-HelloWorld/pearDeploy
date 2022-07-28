@@ -7,6 +7,7 @@
         <result property="alias" column="alias" />
         <result property="agentId" column="agent_id" />
         <result property="deployId" column="deploy_id" />
+        <result property="pfGewayCodeId" column="pf_geway_code_id" />
         <result property="gewayCodeId" column="geway_code_id" />
         <result property="channelId" column="channel_id" />
         <result property="bindingType" column="binding_type" />
@@ -23,10 +24,11 @@
         <result property="channelName" column="channel_name" />
         <result property="gewayName" column="geway_name" />
         <result property="codeName" column="code_name" />
+        <result property="pfGewayCode" column="pf_geway_code" />
     </resultMap>
     <!-- 定义数据库基本列,只适用代替单表的*-->
     <sql id="Base_Column_List">
-        a.id, a.alias, a.agent_id, a.geway_code_id, a.channel_id, a.binding_type, a.service_charge_type,
+        a.id, a.alias, a.agent_id, a.pf_geway_code_id, a.geway_code_id, a.channel_id, a.binding_type, a.service_charge_type,
         a.service_charge, a.extra_service_charge, a.is_enable,
         a.create_time, a.update_time, a.ts_time, a.yn,
         ifnull(b.agent_name, '') as agent_name,
@@ -36,7 +38,8 @@
         ifnull(d.channel_name, '') as channel_name,
         <!--d.channel_name-->
         ifnull(e.geway_name, '') as geway_name,
-        ifnull(f.code_name, '') as code_name
+        ifnull(f.code_name, '') as code_name,
+        ifnull(f.pf_geway_code, '') as pf_geway_code
 
     </sql>
 
@@ -52,6 +55,9 @@
             </if>
             <if test="agentId != 0 and agentId >0 " >
                 and a.agent_id = #{agentId}
+            </if>
+            <if test="pfGewayCodeId != 0 and pfGewayCodeId >0 " >
+                and a.pf_geway_code_id = #{pfGewayCodeId}
             </if>
             <if test="gewayCodeId != 0 and gewayCodeId >0 " >
                 and a.geway_code_id = #{gewayCodeId}
@@ -180,6 +186,9 @@
             <if test="deployId != 0 and deployId >0" >
                 deploy_id,
             </if>
+            <if test="pfGewayCodeId != 0 and pfGewayCodeId >0" >
+                pf_geway_code_id,
+            </if>
             <if test="gewayCodeId != 0 and gewayCodeId >0" >
                 geway_code_id,
             </if>
@@ -213,6 +222,9 @@
             </if>
             <if test="deployId != 0 and deployId >0" >
                 <![CDATA[  #{deployId}, ]]>
+            </if>
+            <if test="pfGewayCodeId != 0 and pfGewayCodeId >0" >
+                <![CDATA[  #{pfGewayCodeId}, ]]>
             </if>
             <if test="gewayCodeId != 0 and gewayCodeId >0" >
                 <![CDATA[  #{gewayCodeId}, ]]>
@@ -318,6 +330,35 @@
         where 1=1
         and a.deploy_id =#{id}
         and a.yn=0
+    </update>
+
+
+
+    <!-- 查询渠道，通道两者之间的分润情况-->
+    <select id="getSunServiceChargeByChannelAndPfGewayCode"  resultMap="dataMap" parameterType="Object">
+        select
+        a.pf_geway_code_id,a.channel_id,ifnull(sum(convert(a.service_charge,decimal(19,4))), '0.0000') as service_charge
+        from tb_pr_agent_profit_distribution a
+        <include refid="Example_Where_Clause"/>
+        group by a.pf_geway_code_id,a.channel_id
+    </select>
+
+
+    <!-- 专门修改代理的分润 -->
+    <update id="updateServiceCharge" parameterType="Object">
+        UPDATE tb_pr_agent_profit_distribution a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="serviceCharge != null and serviceCharge != ''" >
+                a.service_charge = #{serviceCharge},
+            </if>
+            <if test="isEnable != 0 and isEnable >0" >
+                a.is_enable = #{isEnable},
+            </if>
+            a.update_time = NOW(),
+        </trim>
+        where 1=1
+        and a.id = #{id}
+        and a.yn = 0
     </update>
 
 </mapper>

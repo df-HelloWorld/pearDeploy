@@ -307,4 +307,15 @@
         and a.yn=0
     </update>
 
+
+    <!-- 根据平台通道码ID查询旗下最贵的通道码的费率-->
+    <select id="queryMaxUpServiceChargeByPfGewayCode" resultType="java.lang.String"  parameterType="Object">
+        select ifnull(max(a.up_service_charge), '0.0000') as service_charge from tb_pr_geway_code a where  a.id in(
+        select a.geway_code_id
+        from tb_pr_platform_geway_code_link a
+        where 1=1 and a.pf_geway_code_id = #{pfGewayCodeId} and a.yn = 0
+        )
+        and a.yn = 0
+    </select>
+
 </mapper>

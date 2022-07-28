@@ -15,4 +15,13 @@ public interface PrPlatformGewayCodeLinkDao<T> extends BaseDao<T> {
     public List<PrPlatformGewayCodeLinkModel> queryPfGewayCodeId(PrPlatformGewayCodeLinkModel model);
     public List<PrPlatformGewayCodeLinkModel> queryGewayCodeId(PrPlatformGewayCodeLinkModel model);
     public int  deleteRelationType(PrPlatformGewayCodeLinkModel  prPlatformGewayCodeLinkModel);
+
+    /**
+     * @Description:根据平台通道码ID查询旗下最贵的通道码的费率
+     * @param model
+     * @author: yoko
+     * @date: 2022/7/27 16:42
+     * @version 1.0.0
+     */
+    public String queryMaxUpServiceChargeByPfGewayCode(PrPlatformGewayCodeLinkModel model);
 }

@@ -3,10 +3,12 @@ package com.xn.manager.service.impl;
 import com.xn.common.dao.BaseDao;
 import com.xn.common.service.impl.BaseServiceImpl;
 import com.xn.manager.dao.AgentProfitDistributionDao;
+import com.xn.manager.model.agent.AgentProfitDistributionModel;
 import com.xn.manager.service.AgentProfitDistributionService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 /**
  * @Description 代理利益分配的Service层的实现层
@@ -32,4 +34,15 @@ public class AgentProfitDistributionServiceImpl<T> extends BaseServiceImpl<T> im
     public int deleteDeployId(Long id) {
         return agentProfitDistributionDao.deleteDeployId(id);
     }
+
+    @Override
+    public AgentProfitDistributionModel getSunServiceChargeByChannelAndPfGewayCode(AgentProfitDistributionModel model) {
+        return agentProfitDistributionDao.getSunServiceChargeByChannelAndPfGewayCode(model);
+    }
+
+    @Override
+    public int updateServiceCharge(AgentProfitDistributionModel model) {
+        return agentProfitDistributionDao.updateServiceCharge(model);
+    }
+
 }
