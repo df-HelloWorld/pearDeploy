@@ -48,7 +48,7 @@
             <th width="130">商铺号</th>
             <th width="150">总额</th>
             <th width="150">余额</th>
-            <th width="150">锁定金额</th>
+            <%--<th width="150">锁定金额</th>--%>
             <th width="180">秘钥</th>
             <th width="180">google密钥</th>
 
@@ -62,8 +62,14 @@
         </tbody>
     </table>
 </div>
-<div id="show" style="display:none;width: 700px;height: 400px;overflow-x: auto; overflow-y: auto">
-    <div id="divTable"  style="width: 100%;height: 100%">
+<div id="show" style="display:none;width:100%;">
+    <div class="formHeadDiv" >
+        <h2>
+            <span><font color="red"><div id = "divChannelName"> </div></font></span>
+        </h2>
+    </div>
+
+    <div class="formTextDiv" style="width: 100%;" id="channelServiceChargeDiv">
 
     </div>
 </div>
