@@ -7,10 +7,10 @@ import com.xn.manager.model.PrGewayCodeModel;
 import com.xn.manager.model.PrGewayModel;
 import com.xn.manager.model.PrPlatformGewayCodeLinkModel;
 import com.xn.manager.model.PrPlatformGewayCodeModel;
+import com.xn.manager.model.channel.ChannelModel;
+import com.xn.manager.model.channel.ChannelPlatformGewayCodeLinkModel;
 import com.xn.manager.model.strategy.StrategyModel;
-import com.xn.manager.service.PrGewayService;
-import com.xn.manager.service.PrPlatformGewayCodeLinkService;
-import com.xn.manager.service.PrPlatformGewayCodeService;
+import com.xn.manager.service.*;
 import com.xn.system.entity.Account;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -45,6 +45,12 @@ public class PrPlatformGewayCodeController extends BaseController {
 
     @Autowired
     private PrGewayService<PrGewayModel> prGewayService;
+
+    @Autowired
+    private ChannelService<ChannelModel> channelService;
+
+    @Autowired
+    private ChannelPlatformGewayCodeLinkService<ChannelPlatformGewayCodeLinkModel> channelPlatformGewayCodeLinkService;
 
 
     /**
@@ -180,6 +186,16 @@ public class PrPlatformGewayCodeController extends BaseController {
                     return;
                 }
                 prPlatformGewayCodeService.add(bean);
+
+                // 给所有渠道默认添加新增的通道码的关联关系
+                List<ChannelModel> channelList = new ArrayList<>();
+                channelList = channelService.queryAllList();
+                for (ChannelModel channelModel : channelList){
+                    ChannelPlatformGewayCodeLinkModel channelPlatformGewayCodeLinkAdd = new ChannelPlatformGewayCodeLinkModel();
+                    channelPlatformGewayCodeLinkAdd.setChannelId(channelModel.getId());
+                    channelPlatformGewayCodeLinkAdd.setPfGewayCodeId(bean.getId());
+                    channelPlatformGewayCodeLinkService.add(channelPlatformGewayCodeLinkAdd);
+                }
                 sendSuccessMessage(response, "保存成功~");
                 return;
             }else {

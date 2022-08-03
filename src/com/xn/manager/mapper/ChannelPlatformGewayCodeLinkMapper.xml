@@ -54,6 +54,9 @@
             <if test="isEnable != 0 and isEnable >0 " >
                 and a.is_enable = #{isEnable}
             </if>
+            <if test="serviceChargeIsOk != null and serviceChargeIsOk != '' " >
+                and a.service_charge != ''
+            </if>
             <if test="channelName != null and channelName != '' " >
                 and b.channel_name = #{channelName}
             </if>

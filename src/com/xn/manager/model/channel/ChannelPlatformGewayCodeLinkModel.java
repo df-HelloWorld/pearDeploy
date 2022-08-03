@@ -107,6 +107,12 @@ public class ChannelPlatformGewayCodeLinkModel extends BasePage implements Seria
      */
     private String splicing;
 
+    /**
+     * SQL-条件
+     * 当此字段不为空，则查询条件要加上费率不能为空
+     */
+    private String serviceChargeIsOk;
+
     public long getId() {
         return id;
     }
@@ -233,5 +239,14 @@ public class ChannelPlatformGewayCodeLinkModel extends BasePage implements Seria
 
     public void setSplicing(String splicing) {
         this.splicing = splicing;
+    }
+
+
+    public String getServiceChargeIsOk() {
+        return serviceChargeIsOk;
+    }
+
+    public void setServiceChargeIsOk(String serviceChargeIsOk) {
+        this.serviceChargeIsOk = serviceChargeIsOk;
     }
 }

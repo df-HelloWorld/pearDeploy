@@ -218,7 +218,7 @@ function showServiceCharge(channelId,channelName){
         type : 'post',
         dataType : 'json',
         data :{
-            id:channelId
+            channelId:channelId
         },
         success : function(data) {
             if (data.success) {

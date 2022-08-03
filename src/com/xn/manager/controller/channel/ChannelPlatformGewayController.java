@@ -71,6 +71,8 @@ public class ChannelPlatformGewayController extends BaseController {
                 model.setChannelId(account.getId());
             }
             List<ChannelPlatformGewayCodeLinkModel> resList = new ArrayList<ChannelPlatformGewayCodeLinkModel>();
+
+            model.setServiceChargeIsOk("1");
             resList = channelPlatformGewayCodeLinkService.queryByList(model);
             if (resList != null && resList.size() > 0){
                 dataList = BeanUtils.copyList(resList, ChannelPlatformGewayCodeLinkVo.class);
