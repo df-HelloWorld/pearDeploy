@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xn.manager.dao.ChannelFlowingWaterDao">
+
+
+    <!-- 属性映射 -->
+    <resultMap type="com.xn.manager.model.channel.ChannelFlowingWaterModel" id="dataMap">
+        <id property="id" column="id" />
+        <result property="channelId" column="channel_id" />
+        <result property="myTradeNo" column="my_trade_no" />
+        <result property="outTradeNo" column="out_trade_no" />
+        <result property="channelName" column="channel_name" />
+        <result property="pfGewayCodeId" column="pf_geway_code_id" />
+        <result property="pfGewayCode" column="pf_geway_code" />
+        <result property="codeName" column="code_name" />
+        <result property="gewayId" column="geway_id" />
+        <result property="gewayName" column="geway_name" />
+        <result property="gewayCodeId" column="geway_code_id" />
+        <result property="gewayCode" column="geway_code" />
+        <result property="gewayCodeName" column="geway_code_name" />
+        <result property="totalAmount" column="total_amount" />
+        <result property="serviceCharge" column="service_charge" />
+        <result property="oldMoney" column="old_money" />
+        <result property="changeMoney" column="change_money" />
+        <result property="newMoney" column="new_money" />
+        <result property="changeType" column="change_type" />
+        <result property="remark" column="remark" />
+        <result property="curday" column="curday" />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+        <result property="yn" column="yn" />
+
+
+
+    </resultMap>
+
+    <!-- 定义数据库基本列,只适用代替单表的*-->
+    <sql id="Base_Column_List">
+        a.id,a.channel_id,a.my_trade_no,a.out_trade_no,a.pf_geway_code_id,a.pf_geway_code,a.code_name,
+        a.geway_id,a.geway_name,a.geway_code_id,a.geway_code,a.geway_code_name,a.total_amount,a.service_charge,a.old_money,
+        a.change_money,a.new_money,a.change_type,a.remark,
+        a.curday,a.create_time,a.update_time,a.yn,
+        b.channel_name
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="Example_Where_Clause">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            <if test="channelId != 0 and channelId >0 " >
+                and a.channel_id = #{channelId}
+            </if>
+            <if test="myTradeNo != null and myTradeNo != '' " >
+                and a.my_trade_no = #{myTradeNo}
+            </if>
+            <if test="outTradeNo != null and outTradeNo != '' " >
+                and a.out_trade_no = #{outTradeNo}
+            </if>
+            <if test="pfGewayCodeId != 0 and pfGewayCodeId >0 " >
+                and a.pf_geway_code_id = #{pfGewayCodeId}
+            </if>
+            <if test="pfGewayCode != null and pfGewayCode != '' " >
+                and a.pf_geway_code = #{pfGewayCode}
+            </if>
+            <if test="codeName != null and codeName != '' " >
+                and a.code_name = #{codeName}
+            </if>
+            <if test="gewayId != 0 and gewayId >0 " >
+                and a.geway_id = #{gewayId}
+            </if>
+            <if test="gewayName != null and gewayName != '' " >
+                and a.geway_name = #{gewayName}
+            </if>
+            <if test="gewayCodeId != 0 and gewayCodeId >0 " >
+                and a.geway_code_id = #{gewayCodeId}
+            </if>
+            <if test="gewayCode != null and gewayCode != '' " >
+                and a.geway_code = #{gewayCode}
+            </if>
+            <if test="gewayCodeName != null and gewayCodeName != '' " >
+                and a.geway_code_name = #{gewayCodeName}
+            </if>
+            <if test="changeType != 0 and changeType >0 " >
+                and a.change_type = #{changeType}
+            </if>
+            <if test="curdayStart != 0 and curdayStart >0 and curdayEnd != 0 and curdayEnd >0 " >
+                and a.curday >= #{curdayStart} and a.curday &lt;= #{curdayEnd}
+            </if>
+            and a.yn = 0
+
+        </trim>
+    </sql>
+
+    <!-- 查询条件_id -->
+    <sql id="Example_Where_Clause_id">
+        where 1=1
+        <trim  suffixOverrides="," >
+            <if test="id != 0 and id >0 " >
+                and a.id = #{id}
+            </if>
+            and a.yn =  0
+        </trim>
+    </sql>
+
+
+    <!-- 查询总数-->
+    <select id="queryByCount" resultType="java.lang.Integer"  parameterType="Object">
+        select count(1)
+        from tb_pr_channel_flowing_water a
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <!-- 查询分页列表 -->
+    <select id="queryByList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_channel_flowing_water a left join tb_pr_channel b on a.channel_id = b.id
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 查询列表-无分页-有条件/有条件 -->
+    <select id="queryAllList" resultMap="dataMap"  parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_channel_flowing_water a left join tb_pr_channel b on a.channel_id = b.id
+        <include refid="Example_Where_Clause"/>
+        order by a.create_time desc
+    </select>
+
+    <!-- 根据id查询记录 -->
+    <select id="queryById"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_channel_flowing_water a left join tb_pr_channel b on a.channel_id = b.id
+        <include refid="Example_Where_Clause_id"/>
+    </select>
+
+    <!-- 根据条件查询记录 -->
+    <select id="queryByCondition"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_channel_flowing_water a left join tb_pr_channel b on a.channel_id = b.id
+        <include refid="Example_Where_Clause"/>
+        limit 1
+    </select>
+
+
+    <!-- 主要作用1.逻辑删除，2更新状态 -->
+    <update id="manyOperation" parameterType="Object">
+        UPDATE tb_pr_channel_flowing_water a set a.yn = #{yn}
+        where 1=1
+        and a.id =#{id}
+        and a.yn=0
+    </update>
+
+
+
+</mapper>

@@ -41,6 +41,9 @@
 
     <table class="datatable tables">
         <thead>
+        <div class="formCtrlDiv" id = "totalDiv">
+
+        </div>
         <tr>
             <th width="150">账号名称</th>
             <%--<th width="150">角色</th>--%>

@@ -168,6 +168,16 @@ public class ChannelModel extends BasePage implements Serializable {
 
     private String roleName;
 
+    /**
+     * 求和的总账
+     */
+    private String totalTotalMoney;
+
+    /**
+     * 求和的总余额
+     */
+    private String totalBalance;
+
 
     public long getId() {
         return id;
@@ -407,5 +417,21 @@ public class ChannelModel extends BasePage implements Serializable {
 
     public void setSendDataType(Integer sendDataType) {
         this.sendDataType = sendDataType;
+    }
+
+    public String getTotalTotalMoney() {
+        return totalTotalMoney;
+    }
+
+    public void setTotalTotalMoney(String totalTotalMoney) {
+        this.totalTotalMoney = totalTotalMoney;
+    }
+
+    public String getTotalBalance() {
+        return totalBalance;
+    }
+
+    public void setTotalBalance(String totalBalance) {
+        this.totalBalance = totalBalance;
     }
 }

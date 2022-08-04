@@ -82,7 +82,7 @@ var account = {
     indexInit : function (){
         //url同步
         common.updateUrl(this.url);
-
+        this.queryTotal();
         this.queryAgentAll();
         this.queryPfGewayCodeAll();
 
@@ -199,6 +199,26 @@ var account = {
         };
         common.ajax(url,data,function(data){
             agentDataList=data;
+        });
+    },
+
+    //汇总数据填充
+    //查询所有余额汇总数据
+    queryTotal:function(){
+        var url = basePath + "adminchannel/totalData.do";
+        // var accountNum = $("#accountNum").val();
+
+        var data = {
+            // "accountNum":accountNum
+        };
+        common.ajax(url,data,function(data){
+            var data=data;
+            var shtml="";
+            shtml += "汇总：         总额：";
+            shtml += "<font color='red'>" + data.totalTotalMoney + "</font>";
+            shtml += "      余额：";
+            shtml += "<font color='red'>" + data.totalBalance + "</font>";
+            $("#totalDiv").html(shtml);
         });
     }
 

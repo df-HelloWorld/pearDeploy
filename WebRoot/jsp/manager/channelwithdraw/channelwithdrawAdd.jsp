@@ -22,7 +22,7 @@
         <h2><font color="red">新增提现</font></h2>
     </div>
     <div class="formContentDiv">
-        <h3><font color="red">手续费收取规则：小于2万手续费2元；大于2万手续费5元</font></h3>
+        <h3><font color="red">手续费收取规则：小于2万手续费3元；大于2万手续费5元</font></h3>
         <form id="addSupplierForm">
             <c:set var="tp" value="${tp}"/>
             <li style="border-top: none;">

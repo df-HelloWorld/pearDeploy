@@ -31,6 +31,9 @@
         <result property="updateTime" column="update_time" />
         <result property="yn" column="yn" />
         <result property="roleName" column="role_name" />
+
+        <result property="totalTotalMoney" column="total_total_money" />
+        <result property="totalBalance" column="total_balance" />
     </resultMap>
     <!-- 定义数据库基本列,只适用代替单表的*-->
     <sql id="Base_Column_List">
@@ -388,5 +391,14 @@
         and a.id = #{id}
         and a.yn = 0
     </update>
+
+
+    <!-- 获取渠道金额的total信息 -->
+    <select id="getTotalData"  resultMap="dataMap" parameterType="Object">
+        select ifnull(sum(convert(a.total_money,decimal(19,4))), '0.0000') as total_total_money,
+        ifnull(sum(convert(a.balance,decimal(19,4))), '0.0000') as total_balance
+        from tb_pr_channel a
+        <include refid="Example_Where_Clause"/>
+    </select>
 
 </mapper>

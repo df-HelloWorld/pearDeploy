@@ -49,12 +49,18 @@
                 <div class="searchdiv">
                     <input type = "button" id = "butReset" class = "buttonClass imginput" value = "重置" />
                 </div>
+                <div class="searchdiv">
+                    <input type = "button" id = "butExcelExport" class = "buttonClass imginput" value = "Excel导出" />
+                </div>
             </div>
         </form>
     </div>
 
     <table class="datatable tables">
         <thead>
+        <div class="formCtrlDiv" id = "totalDiv">
+
+        </div>
         <tr>
             <th width="150">渠道名称</th>
             <th width="120">提现金额</th>
@@ -62,6 +68,7 @@
             <th width="150">银行</th>
             <th width="120">开户名</th>
             <th width="250">银行卡号</th>
+            <th width="250">支行</th>
             <th width="200">备注</th>
             <th width="150">提现状态</th>
             <th width="200">创建时间</th>
@@ -158,6 +165,16 @@
                     </div>
                 </dd>
 
+                <dd style="border-top: none;">
+                    <div class="formTextDiv" style="width: 100px;">
+                        支行
+                    </div>
+                    <div class="formCtrlDiv" style="width: 200px;margin-left: 10px;">
+                        <input type="text" style="width: 200px;box-sizing: border-box" class="formInput"
+                               id="divSubbranchName" name="divSubbranchName" disabled="disabled"/>
+                    </div>
+                </dd>
+
 
                 <dd style="border-top: none;">
                     <div class="formTextDiv" style="width: 100px;">
@@ -179,7 +196,7 @@
                     </div>
                     <div class="formCtrlDiv" style="width: 200px;margin-left: 10px;">
                         <%--<input type="text" style="width: 200px;box-sizing: border-box" class="formInput"--%>
-                               <%--id="remark" name="remark"/>--%>
+                        <%--id="remark" name="remark"/>--%>
                         <textarea id="remark" name="remark" cols="40" rows="5"></textarea>
                     </div>
                 </dd>
@@ -190,7 +207,7 @@
                     </div>
                     <div class="formCtrlDiv" style="width: 200px;margin-left: 10px;">
                         <%--<input type="text" style="width: 200px;box-sizing: border-box" class="formInput"--%>
-                               <%--id="withdrawExplain" name="withdrawExplain"/>--%>
+                        <%--id="withdrawExplain" name="withdrawExplain"/>--%>
                         <textarea id="withdrawExplain" name="withdrawExplain" cols="40" rows="5"></textarea>
                     </div>
                 </dd>

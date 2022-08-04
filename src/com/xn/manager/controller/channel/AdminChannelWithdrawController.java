@@ -2,6 +2,8 @@ package com.xn.manager.controller.channel;
 
 import com.xn.common.constant.ManagerConstant;
 import com.xn.common.controller.BaseController;
+import com.xn.common.util.BeanUtils;
+import com.xn.common.util.ExportData;
 import com.xn.common.util.HtmlUtil;
 import com.xn.common.util.StringUtil;
 import com.xn.common.util.constant.CachedKeyUtils;
@@ -23,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName:
@@ -168,6 +171,83 @@ public class AdminChannelWithdrawController extends BaseController {
             return;
         }
 
+    }
+
+    /**
+     *
+     * 获取汇总数据
+     */
+    @RequestMapping("/totalData")
+    public void totalData(HttpServletRequest request, HttpServletResponse response, ChannelWithdrawModel bean) throws Exception {
+        ChannelWithdrawModel data = new ChannelWithdrawModel();
+        Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
+        if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
+            bean.setWithdrawStatus(1);//提现中
+            String ing_money = channelWithdrawService.getTotalData(bean);// 提现中
+
+            bean.setWithdrawStatus(2);//提现失败/驳回
+            String fail_money = channelWithdrawService.getTotalData(bean);// 提现失败/驳回
+
+            bean.setWithdrawStatus(3);//提现成功
+            String suc_money = channelWithdrawService.getTotalData(bean);// 提现成功
+
+            data.setTotalIngMoney(ing_money);
+            data.setTotalFailMoney(fail_money);
+            data.setTotalSucMoney(suc_money);
+        }
+        HtmlUtil.writerJson(response, data);
+    }
+
+
+
+
+    /**
+     * 按照Excel报表导出数据
+     */
+    @RequestMapping("/exportData")
+    public void exportDataNew(HttpServletRequest request, HttpServletResponse response, ChannelWithdrawModel model) throws Exception {
+        exportData(request,response,model);
+    }
+
+
+    /**
+     * 实际导出Excel
+     * @param request
+     * @param response
+     * @param model
+     */
+    public void exportData(HttpServletRequest request, HttpServletResponse response, ChannelWithdrawModel model) {
+        Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
+        if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
+            if (account.getAcType() == ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
+            }else{
+                return;
+            }
+
+            List<ChannelWithdrawModel> dataList = new ArrayList<ChannelWithdrawModel>();
+            dataList = channelWithdrawService.queryAllList(model);
+            // 导出数据
+            String[] titles = new String[10];
+            String[] titleCode = new String[10];
+            String filename = "渠道提现信息";
+//            titles = new String[]{"代理名称", "渠道名称", "平台订单", "订单金额", "实际支付金额", "手续费", "收益分成", "收益", "创建时间"};
+//            titleCode = new String[]{"agentName", "channelName", "myTradeNo", "totalAmount", "payAmount", "serviceCharge", "profitRatio", "profit", "createTime"};
+            titles = new String[]{"渠道名称",        "提现金额", "手续费",         "银行",     "开户名",      "银行卡号",  "支行",          "备注",    "提现状态",           "创建时间"};
+            titleCode = new String[]{"channelName", "money",    "serviceCharge", "bankName", "accountName", "bankCard", "subbranchName", "remark",  "withdrawStatusStr", "createTime"};
+            List<Map<String,Object>> paramList = new ArrayList<>();
+            for(ChannelWithdrawModel paramO : dataList){
+                if (paramO.getWithdrawStatus() == 1){
+                    paramO.setWithdrawStatusStr("提现中");
+                }else if (paramO.getWithdrawStatus() == 2){
+                    paramO.setWithdrawStatusStr("提现驳回");
+                }else if (paramO.getWithdrawStatus() == 3){
+                    paramO.setWithdrawStatusStr("提现成功");
+                }
+                Map<String,Object> map = BeanUtils.transBeanToMap(paramO);
+                paramList.add(map);
+            }
+            ExportData.exportExcel(paramList, titles, titleCode, filename, response);
+        }
     }
 
 

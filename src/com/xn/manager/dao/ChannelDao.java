@@ -21,4 +21,13 @@ public interface ChannelDao<T> extends BaseDao<T> {
      * @date 2020/11/15 17:53
      */
     public int updatePassWd(ChannelModel model);
+
+    /**
+     * @Description:求渠道余额和数据
+     * @param model
+     * @author: yoko
+     * @date: 2022/7/10 8:17
+     * @version 1.0.0
+     */
+    public ChannelModel getTotalData(ChannelModel model);
 }

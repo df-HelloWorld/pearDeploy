@@ -160,6 +160,31 @@ public class ChannelWithdrawModel extends BasePage implements Serializable {
      */
     private int checkWithdrawStatus;
 
+    /**
+     * 提现成功总金额
+     */
+    private String totalSucMoney;
+
+    /**
+     * 提现驳回/失败总金额
+     */
+    private String totalFailMoney;
+
+    /**
+     * 提现中
+     */
+    private String totalIngMoney;
+
+    /**
+     * 求和的金额
+     */
+    private String sumMoney;
+
+    /**
+     * 提现状态-str
+     */
+    private String withdrawStatusStr;
+
     public long getId() {
         return id;
     }
@@ -390,5 +415,45 @@ public class ChannelWithdrawModel extends BasePage implements Serializable {
 
     public void setCheckWithdrawStatus(int checkWithdrawStatus) {
         this.checkWithdrawStatus = checkWithdrawStatus;
+    }
+
+    public String getTotalSucMoney() {
+        return totalSucMoney;
+    }
+
+    public void setTotalSucMoney(String totalSucMoney) {
+        this.totalSucMoney = totalSucMoney;
+    }
+
+    public String getTotalFailMoney() {
+        return totalFailMoney;
+    }
+
+    public void setTotalFailMoney(String totalFailMoney) {
+        this.totalFailMoney = totalFailMoney;
+    }
+
+    public String getTotalIngMoney() {
+        return totalIngMoney;
+    }
+
+    public void setTotalIngMoney(String totalIngMoney) {
+        this.totalIngMoney = totalIngMoney;
+    }
+
+    public String getSumMoney() {
+        return sumMoney;
+    }
+
+    public void setSumMoney(String sumMoney) {
+        this.sumMoney = sumMoney;
+    }
+
+    public String getWithdrawStatusStr() {
+        return withdrawStatusStr;
+    }
+
+    public void setWithdrawStatusStr(String withdrawStatusStr) {
+        this.withdrawStatusStr = withdrawStatusStr;
     }
 }

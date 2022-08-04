@@ -27,6 +27,7 @@
         <result property="updateTime" column="update_time" />
         <result property="yn" column="yn" />
         <result property="channelName" column="channel_name" />
+        <result property="sumMoney" column="sum_money" />
     </resultMap>
 
 
@@ -321,6 +322,14 @@
         and a.id = #{id}
         and a.yn = 0
     </update>
+
+
+    <!-- 获取渠道提现金额的total信息 -->
+    <select id="getTotalData"  resultType="java.lang.String" parameterType="Object">
+        select ifnull(sum(convert(a.money,decimal(19,4))), '0.0000') as sum_money
+        from tb_pr_channel_withdraw a  left join tb_pr_channel b on a.channel_id = b.id
+        <include refid="Example_Where_Clause"/>
+    </select>
 
 
 </mapper>

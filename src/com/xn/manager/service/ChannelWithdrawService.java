@@ -21,4 +21,14 @@ public interface ChannelWithdrawService<T> extends BaseService<T> {
      * @Date 2021/9/7 13:32
      */
     public int checkChannelWithdraw(ChannelWithdrawModel model);
+
+
+    /**
+     * @Description:提现总金额
+     * @param model
+     * @author: yoko
+     * @date: 2022/7/10 8:17
+     * @version 1.0.0
+     */
+    public String getTotalData(ChannelWithdrawModel model);
 }

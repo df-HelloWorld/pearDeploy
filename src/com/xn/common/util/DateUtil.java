@@ -2796,6 +2796,30 @@ public class DateUtil {
 
 	}
 
+	/**
+	 * @Description:量日期相差的天数
+	 * <p>
+	 *     curdayStart的格式：20220725
+	 *     curdayEnd的格式：20220730
+	 *
+	 * </p>
+	 * @param curdayStart
+	 * @param curdayEnd
+	 * @author: yoko
+	 * @date: 2022/7/25 21:07
+	 * @version 1.0.0
+	 */
+	public static int differDayNum(String curdayStart, String curdayEnd) throws Exception{
+		String curdayStart_ = DateUtil.getStrHaveAcross(curdayStart) + " 00:00:01";
+		String curdayEnd_ = DateUtil.getStrHaveAcross(curdayEnd) + " 23:59:59";
+		SimpleDateFormat sdf = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
+		Date d1 = sdf.parse(curdayStart_);
+		Date d2 = sdf.parse(curdayEnd_);
+
+
+		return DateUtil.daysBetweenDates(d2, d1);
+	}
+
 	public static void main(String[] args) {
 		int num = getTomorrowMinute();
 		System.out.println(num);

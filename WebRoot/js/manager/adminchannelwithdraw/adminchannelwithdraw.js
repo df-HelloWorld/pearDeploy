@@ -1,5 +1,6 @@
 
 var datatable;
+var basePath = $("#excDataHid").val();
 var account = {
     //地址
     url:{
@@ -10,7 +11,8 @@ var account = {
         queryId_url: ctx+ "/adminchannelwithdraw/getId.do",
         delete_url: ctx+ "/adminchannelwithdraw/delete.do",
         manyOperation_url: ctx+ "/adminchannelwithdraw/manyOperation.do",
-        check_url: ctx+ "/adminchannelwithdraw/check.do"
+        check_url: ctx+ "/adminchannelwithdraw/check.do",
+        exportData_url : ctx +  "/adminchannelwithdraw/exportData.do"
     },
 
 
@@ -57,6 +59,7 @@ var account = {
         {"data":"bankName",},
         {"data":"accountName",},
         {"data":"bankCard",},
+        {"data":"subbranchName",},
         {"data":"remark",},
         {"data":"withdrawStatus",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
@@ -99,6 +102,8 @@ var account = {
     indexInit : function (){
         //url同步
         common.updateUrl(this.url);
+
+        this.queryTotal();
         //添加
         $(".addbtn").live("click",function(){
             window.location.href = ctx + "/channelwithdraw/jumpAdd.do";
@@ -114,6 +119,7 @@ var account = {
             account.condJsonData['withdrawStatus'] = $("#withdrawStatus").val();
             account.condJsonData['curdayStart'] = $("#curdayStart").val();
             account.condJsonData['curdayEnd'] = $("#curdayEnd").val();
+            account.queryTotal();
             common.showDatas(account.condJsonData,account.list);
         });
 
@@ -131,7 +137,15 @@ var account = {
             $("#curdayStart").val("0");
             account.condJsonData['curdayEnd'] = "0";
             $("#curdayEnd").val("0");
+
+            account.queryTotal();
             common.showDatas(account.condJsonData,account.list);
+        });
+
+
+        // 数据按照Excel格式导出
+        $("#butExcelExport").click(function () {
+            common.dataExportExcel($("#condForm"));
         });
 
 
@@ -157,6 +171,7 @@ var account = {
                         $("#divBankName").val(m.bankName);
                         $("#divAccountName").val(m.accountName);
                         $("#divBankCard").val(m.bankCard);
+                        $("#divSubbranchName").val(m.subbranchName);
                         $("#remark").val(m.remark);
                         $("#withdrawExplain").val(m.withdrawExplain);
 
@@ -173,6 +188,38 @@ var account = {
 
     },
 
+
+
+    //汇总数据填充
+    //查询所有提现状态的提现金额汇总数据
+    queryTotal:function(){
+        var url = basePath + "adminchannelwithdraw/totalData.do";
+        var channelName = $("#channelName").val();
+        var accountName = $("#accountName").val();
+        var bankCard = $("#bankCard").val();
+        //var withdrawStatus = $("#withdrawStatus").val();
+        var curdayStart = $("#curdayStart").val();
+        var curdayEnd = $("#curdayEnd").val();
+
+        var data = {
+            "channelName":channelName,
+            "accountName":accountName,
+            "bankCard":bankCard,
+            "curdayStart":curdayStart,
+            "curdayEnd":curdayEnd
+        };
+        common.ajax(url,data,function(data){
+            var data=data;
+            var shtml="";
+            shtml += "汇总：         提现中：";
+            shtml += "<font color='red'>" + data.totalIngMoney + "</font>";
+            shtml += "      提现驳回：";
+            shtml += "<font color='red'>" + data.totalFailMoney + "</font>";
+            shtml += "      提现成功：";
+            shtml += "<font color='red'>" + data.totalSucMoney + "</font>";
+            $("#totalDiv").html(shtml);
+        });
+    },
 
 
 }

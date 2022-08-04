@@ -33,4 +33,9 @@ public class ChannelWithdrawServiceImpl<T> extends BaseServiceImpl<T> implements
     public int checkChannelWithdraw(ChannelWithdrawModel model) {
         return channelWithdrawDao.checkChannelWithdraw(model);
     }
+
+    @Override
+    public String getTotalData(ChannelWithdrawModel model) {
+        return channelWithdrawDao.getTotalData(model);
+    }
 }

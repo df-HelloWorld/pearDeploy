@@ -272,4 +272,19 @@ public class AdminChannelController extends BaseController {
             return;
         }
     }
+
+
+    /**
+     *
+     * 获取汇总数据
+     */
+    @RequestMapping("/totalData")
+    public void totalData(HttpServletRequest request, HttpServletResponse response, ChannelModel bean) throws Exception {
+        ChannelModel data = new ChannelModel();
+        Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
+        if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
+            data = channelService.getTotalData(bean);
+        }
+        HtmlUtil.writerJson(response, data);
+    }
 }

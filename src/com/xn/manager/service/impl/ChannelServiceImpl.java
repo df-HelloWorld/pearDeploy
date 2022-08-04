@@ -29,4 +29,9 @@ public class ChannelServiceImpl<T> extends BaseServiceImpl<T> implements Channel
     public int updatePassWd(ChannelModel model) {
         return channelDao.updatePassWd(model);
     }
+
+    @Override
+    public ChannelModel getTotalData(ChannelModel model) {
+        return channelDao.getTotalData(model);
+    }
 }

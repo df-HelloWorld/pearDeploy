@@ -40,8 +40,8 @@ var account = {
         //     }
         // },
         {"data":"moneyRange",},
-        // {"data":"jumpAds",},
-        // {"data":"redisTime",},
+        {"data":"jumpAds",},
+        {"data":"redisTime",},
         {"data":"gewayNameStr",},
         {"data":"isEnable",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {

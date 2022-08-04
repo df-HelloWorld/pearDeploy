@@ -139,7 +139,8 @@ public class AgentWithdrawController extends BaseController {
                 return;
             }
             boolean flag_serviceCharge = false;
-            if (bean.getServiceCharge().equals("2")){
+//            if (bean.getServiceCharge().equals("2")){
+            if (bean.getServiceCharge().equals("3")){
                 flag_serviceCharge = true;
             }
             if (bean.getServiceCharge().equals("5")){

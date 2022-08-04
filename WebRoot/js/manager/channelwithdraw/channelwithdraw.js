@@ -19,6 +19,7 @@ var account = {
         {"data":"bankName",},
         {"data":"accountName",},
         {"data":"bankCard",},
+        {"data":"subbranchName",},
         {"data":"remark",},
         {"data":"withdrawStatus",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
@@ -126,7 +127,7 @@ function countServiceCharge(){
     var serviceCharge;
     if (money != null && money.length > 0){
         if (money <= 20000){
-            serviceCharge = 2;
+            serviceCharge = 3;
         }
         if (money > 20000){
             serviceCharge = 5;

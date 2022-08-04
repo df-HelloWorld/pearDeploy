@@ -11,25 +11,25 @@
     <div class = "condQueryDiv">
         <form id = "condForm">
             <div class = "condQueryCtrl">
-                <div class = "condQueryLabelDiv">渠道：</div>
+                <div class = "condQueryLabelDiv">平台订单：</div>
                 <div class="formCtrlDiv">
-                    <input type ="text" class ="inputCommonSty" id="channelName" name ="channelName">
+                <input type ="text" class ="inputCommonSty" id="myTradeNo" name ="myTradeNo">
                 </div>
-                <div class = "condQueryLabelDiv">开户名：</div>
+
+                <div class = "condQueryLabelDiv">商家订单：</div>
                 <div class="formCtrlDiv">
-                    <input type ="text" class ="inputCommonSty" id="accountName" name ="accountName">
+                    <input type ="text" class ="inputCommonSty" id="outTradeNo" name ="outTradeNo">
                 </div>
-                <div class = "condQueryLabelDiv">银行卡：</div>
-                <div class="formCtrlDiv">
-                    <input type ="text" class ="inputCommonSty" id="bankCard" name ="bankCard">
-                </div>
-                <div class = "condQueryLabelDiv">提现状态：</div>
+
+                <div class = "condQueryLabelDiv">类型：</div>
                 <div class="formCtrlDiv" id = "moduleTypeDiv">
-                    <select id="withdrawStatus" name="withdrawStatus" class='text-input medium-input'>
-                        <option value="0" selected="selected">===请选择===</option>
-                        <option value="1">提现中</option>
-                        <option value="2">提现驳回</option>
-                        <option value="3">提现成功</option>
+                    <select id="changeType" name="changeType" class='text-input medium-input'>
+                        <option value="0" selected="selected">=请选择=</option>
+                        <option value="1">付款订单</option>
+                        <option value="2">提现</option>
+                        <option value="3">提现驳回</option>
+                        <option value="4">手动添加</option>
+                        <option value="5">手动减少</option>
                     </select>
                 </div>
 
@@ -37,38 +37,39 @@
                 <div class="formCtrlDiv">
                     <input type="text" class ="inputCommonSty" name="curdayStart" id="curdayStart" size="10" readonly="readonly" onClick="WdatePicker({dateFmt:'yyyyMMdd'})" value="${model.curdayStart}"/>
                 </div>
-
                 <div class = "condQueryLabelDiv">截止日期：</div>
                 <div class="formCtrlDiv">
                     <input type="text" class ="inputCommonSty" name="curdayEnd" id="curdayEnd" size="10" readonly="readonly" onClick="WdatePicker({dateFmt:'yyyyMMdd'})" value="${model.curdayEnd}" />
                 </div>
-
                 <div class="searchdiv">
-                    <input type = "button" id = "btnQuery" class = "buttonClass imginput" value = "搜索" />
+                    <input type = "button" id = "btnQuery" class = "buttonClass imginput" value = "搜索"  />
                 </div>
                 <div class="searchdiv">
                     <input type = "button" id = "butReset" class = "buttonClass imginput" value = "重置" />
                 </div>
-                <div class = "searchdiv">
-                    <input type="button" class = "buttonClass imginput addbtn" value="我要提现" style="margin-left: 30px;" >
+                <div class="searchdiv">
+                    <input type = "button" id = "butExcelExport" class = "buttonClass imginput" value = "Excel导出" />
                 </div>
             </div>
         </form>
     </div>
 
     <table class="datatable tables">
+
         <thead>
         <tr>
-            <th width="150">渠道名称</th>
-            <th width="120">提现金额</th>
-            <th width="120">手续费</th>
-            <th width="150">银行</th>
-            <th width="120">开户名</th>
-            <th width="250">银行卡号</th>
-            <th width="250">支行</th>
-            <th width="200">备注</th>
-            <th width="150">提现状态</th>
-            <th width="200">创建时间</th>
+            <th width="150">平台订单</th>
+            <th width="150">商家订单</th>
+            <th width="120">渠道</th>
+            <th width="130">平台</th>
+            <th width="120">订单金额</th>
+            <th width="100">手续费</th>
+            <th width="120">类型</th>
+            <th width="120">原金额</th>
+            <th width="120">变动金额</th>
+            <th width="120">变动后金额</th>
+            <th width="120">备注</th>
+            <th width="120">时间</th>
         </tr>
         </thead>
         <tbody>
@@ -76,6 +77,6 @@
     </table>
 </div>
 <script type='text/javascript' charset="utf-8" src='${ctxData}js/common/common2.js'></script>
-<script type='text/javascript' charset="utf-8" src='${ctxData}js/manager/channelwithdraw/channelwithdraw.js'></script>
+<script type='text/javascript' charset="utf-8" src='${ctxData}js/manager/channelflowingwater/channelflowingwater.js'></script>
 </body>
 </html>
