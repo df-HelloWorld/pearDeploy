@@ -104,6 +104,16 @@
                 <div class="formCtrlDiv">
                     <input type="text" class ="inputCommonSty" name="curdayEnd" id="curdayEnd" size="10" readonly="readonly" onClick="WdatePicker({dateFmt:'yyyyMMdd'})" value="${model.curdayEnd}" />
                 </div>
+
+                <div class = "condQueryLabelDiv">开始时间：</div>
+                <div class="formCtrlDiv">
+                    <input type="text" class ="inputCommonSty" name="createTimeStart" id="createTimeStart" size="20" readonly="readonly" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="${model.createTimeStart}"/>
+                </div>
+                <div class = "condQueryLabelDiv">截止时间：</div>
+                <div class="formCtrlDiv">
+                    <input type="text" class ="inputCommonSty" name="createTimeEnd" id="createTimeEnd" size="20" readonly="readonly" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="${model.createTimeEnd}" />
+                </div>
+
                 <div class="searchdiv">
                     <input type = "button" id = "btnQuery" class = "buttonClass imginput" value = "搜索"  />
                 </div>

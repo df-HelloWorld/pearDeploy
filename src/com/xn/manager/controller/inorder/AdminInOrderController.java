@@ -9,6 +9,7 @@ import com.xn.common.util.HtmlUtil;
 import com.xn.manager.model.inorder.InOrderModel;
 import com.xn.manager.service.InOrderService;
 import com.xn.system.entity.Account;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -62,8 +63,11 @@ public class AdminInOrderController extends BaseController {
                 return;
             }
             if (model.getCurdayStart() ==0 || model.getCurdayEnd() == 0){
-                model.setCurdayStart(DateUtil.getDayNumber(new Date()));
-                model.setCurdayEnd(DateUtil.getDayNumber(new Date()));
+                if (StringUtils.isBlank(model.getCreateTimeStart()) && StringUtils.isBlank(model.getCreateTimeEnd())){
+                    model.setCurdayStart(DateUtil.getDayNumber(new Date()));
+                    model.setCurdayEnd(DateUtil.getDayNumber(new Date()));
+                }
+
             }
             dataList = inOrderService.queryByList(model);
         }
@@ -113,8 +117,10 @@ public class AdminInOrderController extends BaseController {
                 return;
             }
             if (model.getCurdayStart() ==0 || model.getCurdayEnd() == 0){
-                model.setCurdayStart(DateUtil.getDayNumber(new Date()));
-                model.setCurdayEnd(DateUtil.getDayNumber(new Date()));
+                if (StringUtils.isBlank(model.getCreateTimeStart()) && StringUtils.isBlank(model.getCreateTimeEnd())){
+                    model.setCurdayStart(DateUtil.getDayNumber(new Date()));
+                    model.setCurdayEnd(DateUtil.getDayNumber(new Date()));
+                }
             }
             List<InOrderModel> dataList = new ArrayList<InOrderModel>();
             dataList = inOrderService.queryAllList(model);

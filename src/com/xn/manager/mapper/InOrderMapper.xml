@@ -143,6 +143,9 @@
             <if test="curdayStart != 0 and curdayStart >0 and curdayEnd != 0 and curdayEnd >0 " >
                 and a.curday >= #{curdayStart} and a.curday &lt;= #{curdayEnd}
             </if>
+            <if test="createTimeStart != null and createTimeStart != '' and  createTimeEnd != null and createTimeEnd != '' " >
+                and a.create_time >= #{createTimeStart} and a.create_time &lt;= #{createTimeEnd}
+            </if>
             and a.yn = 0
 
         </trim>

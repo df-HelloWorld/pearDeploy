@@ -253,6 +253,11 @@ public class InOrderModel extends BasePage implements Serializable {
     private int curdayStart;
     private int curdayEnd;
 
+    private String createTimeStart;
+    private String createTimeEnd;
+
+
+
 
     private String orderStatusStr;// 订单状态：1初始化，2超时/失败，3有质疑，4成功
     private String pullOrderStatusStr;// 订单拉单状态：1拉单成功，2拉单失败
@@ -826,5 +831,21 @@ public class InOrderModel extends BasePage implements Serializable {
 
     public void setTotalNumRatio(String totalNumRatio) {
         this.totalNumRatio = totalNumRatio;
+    }
+
+    public String getCreateTimeStart() {
+        return createTimeStart;
+    }
+
+    public void setCreateTimeStart(String createTimeStart) {
+        this.createTimeStart = createTimeStart;
+    }
+
+    public String getCreateTimeEnd() {
+        return createTimeEnd;
+    }
+
+    public void setCreateTimeEnd(String createTimeEnd) {
+        this.createTimeEnd = createTimeEnd;
     }
 }

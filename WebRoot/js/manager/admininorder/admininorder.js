@@ -133,7 +133,9 @@ var account = {
         isProfit:0,
         sendStatus:0,
         curdayStart:0,
-        curdayEnd:0
+        curdayEnd:0,
+        createTimeStart:null,
+        createTimeEnd:null
     },
     //页面加载
     indexInit : function (){
@@ -163,6 +165,8 @@ var account = {
             account.condJsonData['sendStatus'] = $("#sendStatus").val();
             account.condJsonData['curdayStart'] = $("#curdayStart").val();
             account.condJsonData['curdayEnd'] = $("#curdayEnd").val();
+            account.condJsonData['createTimeStart'] = $("#createTimeStart").val();
+            account.condJsonData['createTimeEnd'] = $("#createTimeEnd").val();
             account.queryTotal();
             common.showDatas(account.condJsonData,account.list);
         });
@@ -197,6 +201,10 @@ var account = {
             $("#curdayStart").val("");
             account.condJsonData['curdayEnd'] = "";
             $("#curdayEnd").val("");
+            account.condJsonData['createTimeStart'] = "";
+            $("#createTimeStart").val("");
+            account.condJsonData['createTimeEnd'] = "";
+            $("#createTimeEnd").val("");
             common.showDatas(account.condJsonData,account.list);
         });
 
