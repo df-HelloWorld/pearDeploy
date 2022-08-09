@@ -71,6 +71,10 @@ public class AgentProfitController extends BaseController {
                 }
                 if (dataList.get(i).getAgentType() == 2){
                     dataList.get(i).setChannelName("xx渠道");
+                    dataList.get(i).setCodeName("xx平台");
+                }
+                if (dataList.get(i).getAgentType() == 3){
+                    dataList.get(i).setGewayCodeName("xx通道");
                 }
             }
         }else {
@@ -135,7 +139,12 @@ public class AgentProfitController extends BaseController {
                 }
                 if (paramO.getAgentType() == 2){
                     paramO.setChannelName("xx渠道");
+                    paramO.setCodeName("xx平台");
                 }
+                if (paramO.getAgentType() == 3){
+                    paramO.setGewayCodeName("xx通道");
+                }
+
                 Map<String,Object> map = BeanUtils.transBeanToMap(paramO);
                 paramList.add(map);
             }

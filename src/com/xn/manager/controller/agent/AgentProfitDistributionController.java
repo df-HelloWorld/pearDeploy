@@ -64,12 +64,14 @@ public class AgentProfitDistributionController extends BaseController {
             }
             dataList = agentProfitDistributionService.queryByList(model);
             for (int i = 0; i < dataList.size(); i++){
-                if (dataList.get(i).getAgentType() == 2){
-                    dataList.get(i).setChannelName("xx渠道");
-                }
                 if (dataList.get(i).getAgentType() == 1){
                     dataList.get(i).setGewayCodeName("xx通道");
                 }
+                if (dataList.get(i).getAgentType() == 2){
+                    dataList.get(i).setChannelName("xx渠道");
+                    dataList.get(i).setCodeName("xx平台");
+                }
+
                 if (dataList.get(i).getAgentType() == 3){
                     dataList.get(i).setGewayCodeName("xx通道");
                     if (StringUtils.isBlank(dataList.get(i).getChannelName())){

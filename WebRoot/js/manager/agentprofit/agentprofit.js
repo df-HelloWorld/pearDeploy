@@ -26,11 +26,29 @@ var account = {
                     html='<span><font color="red">xx渠道</font></span>';
                 }else if(oData.agentType==3){
                     html='<span>'+oData.channelName+'</span>';
+                }else if(oData.agentType==4){
+                    html='<span>'+oData.channelName+'</span>';
                 }
                 $(nTd).html(html);
             }
         },
-        {"data":"codeName",},
+        // {"data":"codeName",},
+
+        {"data":"agentType",
+            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                var html="";
+                if(oData.agentType==1){
+                    html='<span>'+oData.codeName+'</span>';
+                }else if(oData.agentType==2){
+                    html='<span><font color="red">xx平台</font></span>';
+                }else if(oData.agentType==3){
+                    html='<span>'+oData.codeName+'</span>';
+                }else if(oData.agentType==4){
+                    html='<span>'+oData.codeName+'</span>';
+                }
+                $(nTd).html(html);
+            }
+        },
 
         // {"data":"gewayCodeName",},
         {"data":"agentType",
@@ -41,6 +59,9 @@ var account = {
                 }else if(oData.agentType==2){
                     html='<span>'+oData.gewayCodeName+'</span>';
                 }else if(oData.agentType==3){
+                    // html='<span>'+oData.gewayCodeName+'</span>';
+                    html='<span><font color="red">xx通道</font></span>';
+                }else if(oData.agentType==4){
                     html='<span>'+oData.gewayCodeName+'</span>';
                 }
                 $(nTd).html(html);

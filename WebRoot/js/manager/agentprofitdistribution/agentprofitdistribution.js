@@ -15,6 +15,23 @@ var account = {
     //列表显示参数
     list:[
         {"data":"agentName",},
+
+        {"data":"agentType",
+            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                var html="";
+                if(oData.agentType==1){
+                    html='<span>'+oData.codeName+'</span>';
+                }else if(oData.agentType==2){
+                    html='<span><font color="red">xx平台</font></span>';
+                }else if(oData.agentType==3){
+                    html='<span>'+oData.codeName+'</span>';
+                }else if(oData.agentType==4){
+                    html='<span>'+oData.codeName+'</span>';
+                }
+                $(nTd).html(html);
+            }
+        },
+
         {"data":"agentType",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                 var html="";
@@ -23,6 +40,9 @@ var account = {
                 }else if(oData.agentType==2){
                     html='<span>'+oData.gewayCodeName+'</span>';
                 }else if(oData.agentType==3){
+                    // html='<span>'+oData.gewayCodeName+'</span>';
+                    html='<span><font color="red">xx通道</font></span>';
+                }else if(oData.agentType==4){
                     html='<span>'+oData.gewayCodeName+'</span>';
                 }
                 $(nTd).html(html);
@@ -36,6 +56,8 @@ var account = {
                 }else if(oData.agentType==2){
                     html='<span><font color="red">xx渠道</font></span>';
                 }else if(oData.agentType==3){
+                    html='<span>'+oData.channelName+'</span>';
+                }else if(oData.agentType==4){
                     html='<span>'+oData.channelName+'</span>';
                 }
                 $(nTd).html(html);
@@ -54,19 +76,19 @@ var account = {
                 $(nTd).html(html);
             }
         },
-        {"data":"serviceChargeType",
-            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                var html="";
-                if(oData.serviceChargeType==1){
-                    html='<span>固定费率</span>';
-                }else if(oData.serviceChargeType==2){
-                    html='<span><font color="red">额外费率</font></span>';
-                }
-                $(nTd).html(html);
-            }
-        },
+        // {"data":"serviceChargeType",
+        //     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+        //         var html="";
+        //         if(oData.serviceChargeType==1){
+        //             html='<span>固定费率</span>';
+        //         }else if(oData.serviceChargeType==2){
+        //             html='<span><font color="red">额外费率</font></span>';
+        //         }
+        //         $(nTd).html(html);
+        //     }
+        // },
         {"data":"serviceCharge",},
-        {"data":"extraServiceCharge",},
+        // {"data":"extraServiceCharge",},
         {"data":"createTime",}
     ],
     // 查询条件，aoData是必要的。其他的就是对应的实体类字段名，因为条件查询是把数据封装在实体类中的。

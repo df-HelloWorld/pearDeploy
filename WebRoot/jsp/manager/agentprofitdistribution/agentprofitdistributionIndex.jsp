@@ -19,12 +19,13 @@
         <thead>
         <tr>
             <th width="120">代理</th>
+            <th width="170">平台通道</th>
             <th width="150">通道码名</th>
             <th width="130">渠道</th>
             <th width="140">绑定类型</th>
-            <th width="140">利益类型</th>
+            <%--<th width="140">利益类型</th>--%>
             <th width="100">费率</th>
-            <th width="120">额外费率</th>
+            <%--<th width="120">额外费率</th>--%>
             <th width="200">创建时间</th>
         </tr>
         </thead>
