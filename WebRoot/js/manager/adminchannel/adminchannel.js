@@ -471,7 +471,7 @@ function agentServiceCharge(channelId,channelName){
 
                         shtml +="<td>";
 
-                        // shtml +="<a style='background-color:#00b7ee;' class='formBtn' href = 'javascript:void(0);' onclick='onclickAddServiceCharge("+pfGewayCodeDataList[i].id+","+channelId+",\""+channelName+"\")' >保存 </a>";
+                        // shtml +="<a style='background-color:#00b7ee;' class='formBtn' href = 'javascript:void(0);' onclick='onclickAddServiceCharge("+pfGewayCodeDataList[i].pfGewayCodeId+","+channelId+",\""+channelName+"\")' >保存 </a>";
 
 
                         shtml += "</td>";
@@ -593,7 +593,7 @@ function onclickAddServiceCharge(channelId,channelName){
     for (var i=0;i<pfGewayCodeDataList.length>0;i++) {
         var serviceCharge_for = $("#addAgentServiceCharge_" + pfGewayCodeDataList[i].id).val();
         if (serviceCharge_for != undefined && serviceCharge_for.length > 0){
-            pfGewayServiceChargeArr += pfGewayCodeDataList[i].id + "," + serviceCharge_for + "#";
+            pfGewayServiceChargeArr += pfGewayCodeDataList[i].pfGewayCodeId + "," + serviceCharge_for + "#";
         }
     }
 
