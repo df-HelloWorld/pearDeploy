@@ -5,10 +5,15 @@ import com.xn.common.controller.BaseController;
 import com.xn.common.util.DateUtil;
 import com.xn.common.util.HtmlUtil;
 import com.xn.common.util.MD5;
+import com.xn.manager.method.PublicMethod;
 import com.xn.manager.model.PrGewayCodeModel;
 import com.xn.manager.model.PrGewayModel;
+import com.xn.manager.model.PrPlatformGewayCodeLinkModel;
+import com.xn.manager.model.channel.ChannelPlatformGewayCodeLinkModel;
+import com.xn.manager.service.ChannelPlatformGewayCodeLinkService;
 import com.xn.manager.service.PrGewayCodeService;
 import com.xn.manager.service.PrGewayService;
+import com.xn.manager.service.PrPlatformGewayCodeLinkService;
 import com.xn.system.entity.Account;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -42,6 +47,13 @@ public class PrGewayCodeController extends BaseController {
 
     @Autowired
     private PrGewayService<PrGewayModel> prGewayService;
+
+    @Autowired
+    private PrPlatformGewayCodeLinkService<PrPlatformGewayCodeLinkModel> prPlatformGewayCodeLinkService;
+
+
+    @Autowired
+    private ChannelPlatformGewayCodeLinkService<ChannelPlatformGewayCodeLinkModel> channelPlatformGewayCodeLinkService;
 
 
     /**
@@ -146,6 +158,10 @@ public class PrGewayCodeController extends BaseController {
                     sendFailureMessage(response,"我方通道码不能为空!");
                     return;
                 }
+                if (StringUtils.isBlank(bean.getUpServiceCharge())){
+                    sendFailureMessage(response,"上游费率不能为空!");
+                    return;
+                }
                 bean.setIdentityKey(MD5.parseMD5(DateUtil.getNowPlusTimeMill()));
                 prGewayCodeService.add(bean);
                 sendSuccessMessage(response, "保存成功~");
@@ -197,6 +213,47 @@ public class PrGewayCodeController extends BaseController {
                     sendFailureMessage(response,"我方通道码不能为空!");
                     return;
                 }
+
+                if (!StringUtils.isBlank(bean.getUpServiceCharge())){
+                    if (!bean.getUpServiceCharge().matches("[+-]?[0-9]+(\\.[0-9]+)?")){
+                        sendFailureMessage(response,"请输入正确的上游费率!");
+                        return;
+                    }else {
+                        if (Double.parseDouble(bean.getUpServiceCharge()) >= 1){
+                            sendFailureMessage(response,"上游费率不能大于等于1!");
+                            return;
+                        }
+                    }
+                }else {
+                    sendFailureMessage(response,"上游费率不能为空!");
+                    return;
+                }
+
+                // 校验上游费率是否属于亏本运营 -start
+
+                // 查询所有包含次通道码的所有平台通道码
+                PrPlatformGewayCodeLinkModel prPlatformGewayCodeLinkQuery = PublicMethod.assemblePrPlatformGewayCodeLinkQueryByGewayCodeId(bean.getId());
+                List<PrPlatformGewayCodeLinkModel> prPlatformGewayCodeLinkList = prPlatformGewayCodeLinkService.queryAllList(prPlatformGewayCodeLinkQuery);
+                if (prPlatformGewayCodeLinkList != null && prPlatformGewayCodeLinkList.size() > 0){
+                    ChannelPlatformGewayCodeLinkModel channelPlatformGewayCodeLinkQuery = PublicMethod.assembleChannelPlatformGewayCodeLinkQueryByPlatformGewayCodeIdList(prPlatformGewayCodeLinkList, bean.getUpServiceCharge());
+
+                    List<ChannelPlatformGewayCodeLinkModel> channelPlatformGewayCodeLinkList = channelPlatformGewayCodeLinkService.getServiceChargeDeficitListByPlatformGewayCodeIdList(channelPlatformGewayCodeLinkQuery);
+                    if (channelPlatformGewayCodeLinkList != null && channelPlatformGewayCodeLinkList.size() > 0){
+                        String errMsg = "";
+                        for (ChannelPlatformGewayCodeLinkModel channelPlatformGewayCodeLinkModel : channelPlatformGewayCodeLinkList){
+                            errMsg += "《 渠道：" + channelPlatformGewayCodeLinkModel.getChannelName() + "， 平台通道：" + channelPlatformGewayCodeLinkModel.getCodeName()
+                                    + "， 渠道费率：" + channelPlatformGewayCodeLinkModel.getServiceCharge() + " 》 <br>";
+                        }
+                        errMsg += "上游费率《"+ bean.getUpServiceCharge() + "》；更改费率会早上以上配置属于亏本运营，请您先更新以上渠道与平台通道的费率之后，在更新通道的上游费率！";
+
+                        sendFailureMessage(response, errMsg);
+                        return;
+
+                    }
+                }
+
+                // 校验上游费率是否属于亏本运营 -end
+
                 prGewayCodeService.update(bean);
                 sendSuccessMessage(response, "保存成功~");
                 return;

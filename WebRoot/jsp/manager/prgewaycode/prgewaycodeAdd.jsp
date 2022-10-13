@@ -118,7 +118,7 @@
 
                 <li style="border-top: none;">
                     <div class="formTextDiv">
-                        <span class="require" >上游费率：</span>
+                        <span class="require" ><font color="red">*</font>上游费率：</span>
                     </div>
                     <div class="formCtrlDiv">
                         <input type="text" class="formInput" id="upServiceCharge" name="upServiceCharge"	maxlength="240" />
@@ -138,7 +138,7 @@
 
                 <li style="border-top: none;">
                     <div class="formTextDiv">
-                        <span class="require" >平台费率类型：</span>
+                        <span class="require" ><font color="red">*</font>平台费率类型：</span>
                     </div>
                     <div class="formCtrlDiv">
                         <select id="serviceChargeType" name="serviceChargeType" >
@@ -151,7 +151,7 @@
 
                 <li style="border-top: none;">
                     <div class="formTextDiv">
-                        <span class="require" >平台费率：</span>
+                        <span class="require" ><font color="red">*</font>平台费率：</span>
                     </div>
                     <div class="formCtrlDiv">
                         <input type="text" class="formInput" id="serviceCharge" name="serviceCharge"	maxlength="240" />
@@ -281,6 +281,14 @@
                 upServiceChargeType:{
                     required:true
                 },
+                upServiceCharge:{
+                    required:true,
+                    maxlength:10
+                },
+                serviceCharge:{
+                    required:true,
+                    maxlength:10
+                },
                 codeAttributeType:{
                     required:true
                 }
@@ -303,6 +311,14 @@
                 },
                 upServiceChargeType:{
                     required : "请选择上游费率类型!",
+                },
+                upServiceCharge:{
+                    required:"上游费率不能为空!",
+                    number:"上游费率长度最多是10个字符!"
+                },
+                serviceCharge:{
+                    required:"平台费率不能为空!",
+                    number:"平台费率长度最多是10个字符!"
                 },
                 codeAttributeType:{
                     required : "请选择属性类型!",

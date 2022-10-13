@@ -3,12 +3,12 @@ package com.xn.manager.controller.prplatformgewaycodelink;
 import com.xn.common.constant.ManagerConstant;
 import com.xn.common.controller.BaseController;
 import com.xn.common.util.HtmlUtil;
+import com.xn.manager.method.PublicMethod;
 import com.xn.manager.model.*;
-import com.xn.manager.service.PrGewayCodeService;
-import com.xn.manager.service.PrGewayService;
-import com.xn.manager.service.PrPlatformGewayCodeLinkService;
-import com.xn.manager.service.PrPlatformGewayCodeService;
+import com.xn.manager.model.channel.ChannelPlatformGewayCodeLinkModel;
+import com.xn.manager.service.*;
 import com.xn.system.entity.Account;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,9 +42,11 @@ public class PrPlatformGewayCodeLinkController extends BaseController {
     @Autowired
     private PrGewayCodeService<PrGewayCodeModel> prGewayCodeService;
 
-
     @Autowired
     private PrGewayService<PrGewayModel> prGewayService;
+
+    @Autowired
+    private ChannelPlatformGewayCodeLinkService<ChannelPlatformGewayCodeLinkModel> channelPlatformGewayCodeLinkService;
 
 
     /**
@@ -132,13 +134,54 @@ public class PrPlatformGewayCodeLinkController extends BaseController {
         Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
         if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
             if (account.getAcType() == ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
+                if (bean == null || bean.getPfGewayCodeId() <= 0){
+                    sendFailureMessage(response, "错误,请您重试!");
+                    return;
+                }
                 if(bean.getRelationType().equals("")){
-                    sendSuccessMessage(response, "请选择数据进行添加!");
+                    sendFailureMessage(response, "请选择数据进行添加!");
+                    return;
                 }else{
-                    String [] relationType=bean.getRelationType().split(",");
+                    String [] relationType = bean.getRelationType().split(",");
+                    if (relationType == null ){
+                        sendFailureMessage(response, "请选择通道进行添加!");
+                        return;
+                    }
 
-                    PrPlatformGewayCodeLinkModel  query =new  PrPlatformGewayCodeLinkModel();
-                    query.setPfGewayCodeId(bean.getPfGewayCodeId());
+                    // 查询选择的通道当中上游费率最大的费率值（最大成本）
+                    PrGewayCodeModel prGewayCodeQuery = PublicMethod.assemblePrGewayCodeQueryByIdList(relationType);
+                    String maxUpServiceCharge = prGewayCodeService.getMaxUpServiceCharge(prGewayCodeQuery);
+                    if (!StringUtils.isBlank(maxUpServiceCharge)){
+                        if (Double.parseDouble(maxUpServiceCharge) <= 0){
+                            sendFailureMessage(response, "被选中的通道码的上游费率小于0，请您重新配置通道码的上游费率!");
+                            return;
+                        }
+                    }else {
+                        sendFailureMessage(response, "被选中的通道码的上游费率为空,请您先配置通道码的上游费率!");
+                        return;
+                    }
+
+                    // 查询被选中的通道码是否亏本运营的数据集合
+                    ChannelPlatformGewayCodeLinkModel channelPlatformGewayCodeLinkQuery = PublicMethod.assembleChannelPlatformGewayCodeLinkQueryByServiceCharge(bean.getPfGewayCodeId(), maxUpServiceCharge);
+                    List<ChannelPlatformGewayCodeLinkModel> channelPlatformGewayCodeLinkList = channelPlatformGewayCodeLinkService.getServiceChargeDeficitList(channelPlatformGewayCodeLinkQuery);
+                    if (channelPlatformGewayCodeLinkList != null && channelPlatformGewayCodeLinkList.size() > 0){
+                        // 被选中的通道码会导致有亏本运营的数据存在
+                        String errMsg = "";
+                        for (ChannelPlatformGewayCodeLinkModel channelPlatformGewayCodeLinkModel : channelPlatformGewayCodeLinkList){
+                            errMsg += "《 渠道：" + channelPlatformGewayCodeLinkModel.getChannelName() + "， 平台通道：" + channelPlatformGewayCodeLinkModel.getCodeName()
+                                    + "， 渠道费率：" + channelPlatformGewayCodeLinkModel.getServiceCharge() + " 》 <br>";
+                        }
+
+                        errMsg += "被选中的里面最大的上游费率《"+ maxUpServiceCharge + "》；被选中会导致以上渠道跑量会亏本运营，请您重新配置以上渠道与平台通道的费率，再来绑定新通道码！";
+
+                        sendFailureMessage(response, errMsg);
+                        return;
+
+                    }
+
+
+//                    PrPlatformGewayCodeLinkModel  query =new  PrPlatformGewayCodeLinkModel();
+//                    query.setPfGewayCodeId(bean.getPfGewayCodeId());
 
                     for(int i=0;i<relationType.length;i++){
                         PrPlatformGewayCodeLinkModel prPlatformGewayCodeLinkModel =new PrPlatformGewayCodeLinkModel();

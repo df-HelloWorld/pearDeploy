@@ -130,6 +130,15 @@ public class ChannelWithdrawController extends BaseController {
                 sendFailureMessage(response,"请填写提现金额!");
                 return;
             }
+            if (!StringUtils.isBlank(bean.getMoney())){
+                // 校验提现金额是否合规
+                boolean flag = StringUtil.isNumber(bean.getMoney());
+                if (!flag){
+                    sendFailureMessage(response, "请您填写正确的提现金额，并检查是否有空格!~");
+                    return;
+                }
+            }
+
             if (bean.getMoney().indexOf("-") > -1 || bean.getServiceCharge().indexOf("-") > -1){
                 sendFailureMessage(response,"错误,请重试!");
                 return;

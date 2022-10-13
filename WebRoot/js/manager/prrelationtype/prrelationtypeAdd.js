@@ -40,7 +40,8 @@ function  queryselGewayCode(){
             let  ratio ="ratio"+dataList[i].id;
             shtml+="<td align='center'><strong style='font-size: 17px'>"+dataList[i].gewayName+"</strong></td>";
             shtml+="<td align='center'><strong style='font-size: 17px'>"+dataList[i].gewayCodeNames+"("+dataList[i].gewayCode+")=="+dataList[i].myGewayCode+"</strong></td>";
-            shtml+="<td align='center'><input type='text'id='"+ratio+"' name='"+ratio+"' value='"+dataList[i].ratio+"'></td>";
+            // shtml+="<td align='center'><input type='text'id='"+ratio+"' name='"+ratio+"' value='"+dataList[i].ratio+"'></td>";
+            shtml+="<td align='center'><input type='text'id='"+ratio+"' name='"+ratio+"' onkeyup=\"this.value=this.value.replace(/\\D/g,'')\" onafterpaste=\"this.value=this.value.replace(/\\D/g,'')\" value='"+dataList[i].ratio+"'></td>";
             shtml+="<td><a class = \"dataTableBtn dataTableDeleteBtn \" onclick='updateRatio("+dataList[i].id+")'> 保存 </a><a class = \"dataTableBtn dataTableDeleteBtn \" onclick='deletefrom("+dataList[i].id+")'> 删除 </a></td>";
             shtml+="</tr>";
         }
@@ -64,7 +65,12 @@ function  add(){
         relationType:s
     };
     common.ajax(url,data,function(data){
-        window.location.href = ctx + "/prrelationtype/jumpGewayCodeUpdate.do?id="+$("#pfGewayCodeId").val();
+        if (data.success) {
+            alert("添加成功！！！");
+            window.location.href = ctx + "/prrelationtype/jumpGewayCodeUpdate.do?id="+$("#pfGewayCodeId").val();
+        } else {
+            art.alert(data.msg);
+        }
     });
 }
 

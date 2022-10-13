@@ -253,6 +253,41 @@
 
 
 
+    <!-- 根据上游费率（成本）查询渠道与平台通道会亏本运营的数据 -->
+    <select id="getServiceChargeDeficitList"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_channel_platform_geway_code_link a
+        left join tb_pr_channel b on a.channel_id = b.id and b.yn = 0
+        left join tb_pr_platform_geway_code c on a.pf_geway_code_id = c.id and c.yn = 0
+        where 1=1
+        and a.pf_geway_code_id = #{pfGewayCodeId}
+        <!--and a.is_enable = 2 -->
+        and a.service_charge > 0
+        and a.service_charge &lt;= #{serviceCharge}
+    </select>
+
+
+
+    <!-- 根据平台通道码ID集合以及费率查出亏本运营的数据 -->
+    <select id="getServiceChargeDeficitListByPlatformGewayCodeIdList"  resultMap="dataMap" parameterType="Object">
+        select
+        <include refid="Base_Column_List" />
+        from tb_pr_channel_platform_geway_code_link a
+        left join tb_pr_channel b on a.channel_id = b.id and b.yn = 0
+        left join tb_pr_platform_geway_code c on a.pf_geway_code_id = c.id and c.yn = 0
+        where 1=1
+        <if test="pfGewayCodeIdList != null and pfGewayCodeIdList.size()>0">
+            and a.pf_geway_code_id in
+            <foreach item="item" index="index" collection="pfGewayCodeIdList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <!--and a.is_enable = 2 -->
+        and a.service_charge > 0
+        and a.service_charge &lt;= #{serviceCharge}
+    </select>
+
 
 
 

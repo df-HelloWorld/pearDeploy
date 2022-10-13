@@ -4,6 +4,7 @@ import com.xn.common.dao.BaseDao;
 import com.xn.common.service.impl.BaseServiceImpl;
 import com.xn.manager.dao.PrGewayCodeDao;
 import com.xn.manager.dao.PrGewayDao;
+import com.xn.manager.model.PrGewayCodeModel;
 import com.xn.manager.service.PrGewayCodeService;
 import com.xn.manager.service.PrGewayService;
 import org.apache.log4j.Logger;
@@ -26,5 +27,10 @@ public class PrGewayCodeServiceImpl<T> extends BaseServiceImpl<T> implements PrG
     public BaseDao<T> getDao() {
         // TODO Auto-generated method stub
         return prGewayCodeDao;
+    }
+
+    @Override
+    public String getMaxUpServiceCharge(PrGewayCodeModel model) {
+        return prGewayCodeDao.getMaxUpServiceCharge(model);
     }
 }

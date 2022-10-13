@@ -73,6 +73,12 @@
                     #{item}
                 </foreach>
             </if>
+            <if test="inIdList != null and inIdList.size()>0">
+                and a.id in
+                <foreach item="item" index="index" collection="inIdList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
             <if test="codeAttributeType != 0 and codeAttributeType >0 " >
                 and a.code_attribute_type = #{codeAttributeType}
             </if>
@@ -422,5 +428,13 @@
         and a.id = #{id}
         and a.yn = 0
     </update>
+
+
+    <!-- 根据条件查询通道码最大的费率值-->
+    <select id="getMaxUpServiceCharge" resultType="java.lang.String"  parameterType="Object">
+        select max(up_service_charge) as up_service_charge
+        from tb_pr_geway_code a
+        <include refid="Example_Where_Clause"/>
+    </select>
 
 </mapper>

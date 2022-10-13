@@ -233,6 +233,14 @@ public class PrGewayCodeModel extends BasePage {
      */
     private int yn;
 
+
+    /**
+     * ID集合
+     * SQL-查询条件
+     * @mbggenerated
+     */
+    private List<Long> inIdList;
+
     public long getId() {
         return id;
     }
@@ -512,5 +520,13 @@ public class PrGewayCodeModel extends BasePage {
 
     public void setGewayNameStr(String gewayNameStr) {
         this.gewayNameStr = gewayNameStr;
+    }
+
+    public List<Long> getInIdList() {
+        return inIdList;
+    }
+
+    public void setInIdList(List<Long> inIdList) {
+        this.inIdList = inIdList;
     }
 }

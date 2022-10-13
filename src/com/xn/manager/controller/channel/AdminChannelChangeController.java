@@ -4,11 +4,13 @@ import com.xn.common.constant.ManagerConstant;
 import com.xn.common.controller.BaseController;
 import com.xn.common.util.DateUtil;
 import com.xn.common.util.HtmlUtil;
+import com.xn.common.util.StringUtil;
 import com.xn.manager.model.channel.ChannelChangeModel;
 import com.xn.manager.model.channel.ChannelModel;
 import com.xn.manager.service.ChannelChangeService;
 import com.xn.manager.service.ChannelService;
 import com.xn.system.entity.Account;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -95,6 +97,20 @@ public class AdminChannelChangeController extends BaseController {
                 sendFailureMessage(response, "您无权操作!~");
                 return;
             }
+            if (bean == null || bean.getChannelId() <= 0){
+                sendFailureMessage(response, "错误,请您重试!~");
+                return;
+            }
+            if (!StringUtils.isBlank(bean.getMoney())){
+                boolean flag = StringUtil.isNumber(bean.getMoney());
+                if (!flag){
+                    sendFailureMessage(response, "请您填写正确的金额，并检查是否有空格!~");
+                    return;
+                }
+            }else {
+                sendFailureMessage(response, "请您填写变更的金额!~");
+                return;
+            }
             bean.setCreateRoleId(account.getRoleId());
             bean.setCreateUserId(account.getId());
             bean.setCurday(DateUtil.getDayNumber(new Date()));
@@ -106,6 +122,8 @@ public class AdminChannelChangeController extends BaseController {
             sendFailureMessage(response,"登录超时,请重新登录在操作!");
         }
     }
+
+
 
 
 

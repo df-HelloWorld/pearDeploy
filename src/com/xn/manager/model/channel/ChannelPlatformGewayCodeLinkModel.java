@@ -113,6 +113,12 @@ public class ChannelPlatformGewayCodeLinkModel extends BasePage implements Seria
      */
     private String serviceChargeIsOk;
 
+    /**
+     * 平台通道码ID集合
+     * SQL-查询
+     */
+    private List<Long> pfGewayCodeIdList;
+
     public long getId() {
         return id;
     }
@@ -248,5 +254,13 @@ public class ChannelPlatformGewayCodeLinkModel extends BasePage implements Seria
 
     public void setServiceChargeIsOk(String serviceChargeIsOk) {
         this.serviceChargeIsOk = serviceChargeIsOk;
+    }
+
+    public List<Long> getPfGewayCodeIdList() {
+        return pfGewayCodeIdList;
+    }
+
+    public void setPfGewayCodeIdList(List<Long> pfGewayCodeIdList) {
+        this.pfGewayCodeIdList = pfGewayCodeIdList;
     }
 }

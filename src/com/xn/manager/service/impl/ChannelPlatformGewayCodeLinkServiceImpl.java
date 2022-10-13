@@ -3,10 +3,13 @@ package com.xn.manager.service.impl;
 import com.xn.common.dao.BaseDao;
 import com.xn.common.service.impl.BaseServiceImpl;
 import com.xn.manager.dao.ChannelPlatformGewayCodeLinkDao;
+import com.xn.manager.model.channel.ChannelPlatformGewayCodeLinkModel;
 import com.xn.manager.service.ChannelPlatformGewayCodeLinkService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @ClassName:
@@ -27,5 +30,15 @@ public class ChannelPlatformGewayCodeLinkServiceImpl<T> extends BaseServiceImpl<
     public BaseDao<T> getDao() {
         // TODO Auto-generated method stub
         return channelPlatformGewayCodeLinkDao;
+    }
+
+    @Override
+    public List<ChannelPlatformGewayCodeLinkModel> getServiceChargeDeficitList(ChannelPlatformGewayCodeLinkModel model) {
+        return channelPlatformGewayCodeLinkDao.getServiceChargeDeficitList(model);
+    }
+
+    @Override
+    public List<ChannelPlatformGewayCodeLinkModel> getServiceChargeDeficitListByPlatformGewayCodeIdList(ChannelPlatformGewayCodeLinkModel model) {
+        return channelPlatformGewayCodeLinkDao.getServiceChargeDeficitListByPlatformGewayCodeIdList(model);
     }
 }

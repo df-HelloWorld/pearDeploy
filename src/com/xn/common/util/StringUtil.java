@@ -1133,4 +1133,24 @@ public class StringUtil {
 		return true;
 	}
 
+
+	/**
+	* @Description:判断字符串是否为金额
+	 * <p>小数点可保留4位：{1,4}</p>
+	 * <p>小数点可保留2位：{1,2}</p>
+	* @param str
+	* @return:
+	* @author: yoko
+	* @date: 2022/10/13 11:49
+	* @version 1.0.0
+	*/
+	public static boolean isNumber(String str) {
+		// 整数
+		Pattern pattern = Pattern.compile("^([0-9]+|[0-9]{1,3}(,[0-9]{3})*)(.[0-9]{1,4})?$");
+		// 包含负数
+//        Pattern pattern = Pattern.compile("^-?([0-9]+|[0-9]{1,3}(,[0-9]{3})*)(.[0-9]{1,2})?$");
+		Matcher match = pattern.matcher(str);
+		return  match.matches();
+	}
+
 }

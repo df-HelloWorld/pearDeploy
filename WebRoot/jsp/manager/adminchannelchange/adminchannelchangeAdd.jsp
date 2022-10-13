@@ -69,11 +69,11 @@
 
                 <li style="border-top: none;">
                     <div class="formTextDiv">
-                        <span class="require" >金额类型：</span>
+                        <span class="require" ><font color="red">*</font>金额类型：</span>
                     </div>
                     <div class="formCtrlDiv">
                         <select id="changeType" name="changeType">
-                            <option value="0">===请选择===</option>
+                            <option value="">===请选择===</option>
                             <option value="1">核减金额</option>
                             <option value="2">加金额</option>
                         </select>
@@ -81,11 +81,11 @@
                 </li>
                 <li style="border-top: none;">
                     <div class="formTextDiv">
-                        <span class="require" >是否展现：</span>
+                        <span class="require" ><font color="red">*</font>是否展现：</span>
                     </div>
                     <div class="formCtrlDiv">
                         <select id="isShow" name="isShow">
-                            <option value="0">===请选择===</option>
+                            <option value="">===请选择===</option>
                             <option value="1">展现</option>
                             <option value="2">不展现</option>
                         </select>
@@ -94,11 +94,11 @@
 
                 <li style="border-top: none;">
                     <div class="formTextDiv">
-                        <span class="require" >是否是充值：</span>
+                        <span class="require" ><font color="red">*</font>是否是充值：</span>
                     </div>
                     <div class="formCtrlDiv">
                         <select id="isRecharge" name="isRecharge">
-                            <option value="0">===请选择===</option>
+                            <option value="">===请选择===</option>
                             <option value="1">不是充值</option>
                             <option value="2">是充值</option>
                         </select>
@@ -151,6 +151,15 @@
                 },
                 money:{
                     required:true
+                },
+                changeType:{
+                    required:true
+                },
+                isShow:{
+                    required:true
+                },
+                isRecharge:{
+                    required:true
                 }
 
             },
@@ -163,7 +172,16 @@
                     required : "渠道不能为空!"
                 },
                 money:{
-                    required : "通道不能为空!"
+                    required : "修改金额不能为空!"
+                },
+                changeType:{
+                    required : "金额类型不能为空!"
+                },
+                isShow:{
+                    required : "是否展现不能为空!"
+                },
+                isRecharge:{
+                    required : "是否是充值不能为空!"
                 }
             },
 

@@ -6,6 +6,7 @@ import com.xn.common.util.MD5;
 import com.xn.manager.model.*;
 import com.xn.manager.model.agent.AgentBalanceDeductModel;
 import com.xn.manager.model.channel.ChannelBalanceDeductModel;
+import com.xn.manager.model.channel.ChannelPlatformGewayCodeLinkModel;
 import com.xn.manager.model.inorder.InOrderModel;
 import com.xn.manager.model.replenish.ReplenishModel;
 import com.xn.manager.model.strategy.StrategyData;
@@ -19,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URLDecoder;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -806,6 +809,73 @@ public class PublicMethod {
 
     }
 
+    /**
+    * @Description: 组装根据通道码集合查询通道的查询条件
+    * @param idArr
+    * @author: yoko
+    * @date: 2022/10/12 14:46
+    * @version 1.0.0
+    */
+    public static PrGewayCodeModel assemblePrGewayCodeQueryByIdList(String [] idArr){
+        PrGewayCodeModel resBean = new PrGewayCodeModel();
+        List<Long> inIdList = new ArrayList<>();
+        for (String str : idArr){
+            inIdList.add(Long.parseLong(str));
+        }
+        resBean.setInIdList(inIdList);
+        return resBean;
+    }
+
+    /**
+     * @Description: 组装查询渠道绑定平台通道码亏本运营的查询条件
+     * @param pfGewayCodeId - 平台通道码ID
+     * @param maxUpServiceCharge - 被选中的通道码的最大费率（成本）
+     * @return: com.xn.manager.model.channel.ChannelPlatformGewayCodeLinkModel
+     * @author: yoko
+     * @date: 2022/10/12 15:32
+     * @version 1.0.0
+     */
+    public static ChannelPlatformGewayCodeLinkModel assembleChannelPlatformGewayCodeLinkQueryByServiceCharge(long pfGewayCodeId, String maxUpServiceCharge){
+        ChannelPlatformGewayCodeLinkModel resBean = new ChannelPlatformGewayCodeLinkModel();
+        resBean.setPfGewayCodeId(pfGewayCodeId);
+        resBean.setServiceCharge(maxUpServiceCharge);
+        return resBean;
+    }
+
+    /**
+    * @Description:组装根据通道码ID查询平台通道码的查询条件
+    * @param gewayCodeId - 通道码ID
+    * @author: yoko
+    * @date: 2022/10/13 9:17
+    * @version 1.0.0
+    */
+    public static PrPlatformGewayCodeLinkModel assemblePrPlatformGewayCodeLinkQueryByGewayCodeId(long gewayCodeId){
+        PrPlatformGewayCodeLinkModel resBean = new PrPlatformGewayCodeLinkModel();
+        resBean.setGewayCodeId(gewayCodeId);
+        return resBean;
+    }
+
+
+    /**
+     * @Description: 组装查询渠道与平台码关联的查询条件
+     * <p>
+     *     查出更改通道码费率后，会导致亏本运营的数据的查询条件
+     * </p>
+     * @param prPlatformGewayCodeLinkList - 平台通道集合
+     * @param upServiceCharge - 通道码的费率
+     * @return: com.xn.manager.model.channel.ChannelPlatformGewayCodeLinkModel
+     * @author: yoko
+     * @date: 2022/10/13 10:28
+     * @version 1.0.0
+     */
+    public static ChannelPlatformGewayCodeLinkModel assembleChannelPlatformGewayCodeLinkQueryByPlatformGewayCodeIdList(List<PrPlatformGewayCodeLinkModel> prPlatformGewayCodeLinkList, String upServiceCharge){
+        ChannelPlatformGewayCodeLinkModel resBean = new ChannelPlatformGewayCodeLinkModel();
+        List<Long> pfGewayCodeIdList = prPlatformGewayCodeLinkList.stream().map(PrPlatformGewayCodeLinkModel::getPfGewayCodeId).collect(Collectors.toList());
+        resBean.setPfGewayCodeIdList(pfGewayCodeIdList);
+        resBean.setServiceCharge(upServiceCharge);
+        return resBean;
+    }
+
 
 //    /**
 //    * @Description: 根据条件查询策略数据，把json策略返回集合数据
@@ -837,10 +907,32 @@ public class PublicMethod {
 
 
 
-
+    public static boolean isNumber(String str) {
+        // 整数
+        Pattern pattern = Pattern.compile("^([0-9]+|[0-9]{1,3}(,[0-9]{3})*)(.[0-9]{1,4})?$");
+        // 包含负数
+//        Pattern pattern = Pattern.compile("^-?([0-9]+|[0-9]{1,3}(,[0-9]{3})*)(.[0-9]{1,2})?$");
+        Matcher match = pattern.matcher(str);
+        return  match.matches();
+    }
 
     public static void main(String[] args) throws Exception {
         String str = assembleAppKey(3);
         log.info("str:"+str);
+
+
+        System.out.println(isNumber("-100007777777777777777777777777000.11"));
+        System.out.println(isNumber("100,000, 007,777.11"));
+        System.out.println(isNumber("-100000007777.11"));
+        System.out.println(isNumber("100000007777.11"));
+        System.out.println(isNumber("-10000000.1"));
+        System.out.println(isNumber("0.0"));
+        System.out.println(isNumber("0.01"));
+        System.out.println(isNumber("0."));
+        System.out.println(isNumber(".0"));
+        System.out.println(isNumber("100000007777.11  "));
+        System.out.println(isNumber(" 100000007777.11"));
+        System.out.println(isNumber("100000007777.111"));
+
     }
 }
