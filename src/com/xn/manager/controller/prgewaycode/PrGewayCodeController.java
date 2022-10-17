@@ -229,30 +229,30 @@ public class PrGewayCodeController extends BaseController {
                     return;
                 }
 
-                // 校验上游费率是否属于亏本运营 -start
-
-                // 查询所有包含次通道码的所有平台通道码
-                PrPlatformGewayCodeLinkModel prPlatformGewayCodeLinkQuery = PublicMethod.assemblePrPlatformGewayCodeLinkQueryByGewayCodeId(bean.getId());
-                List<PrPlatformGewayCodeLinkModel> prPlatformGewayCodeLinkList = prPlatformGewayCodeLinkService.queryAllList(prPlatformGewayCodeLinkQuery);
-                if (prPlatformGewayCodeLinkList != null && prPlatformGewayCodeLinkList.size() > 0){
-                    ChannelPlatformGewayCodeLinkModel channelPlatformGewayCodeLinkQuery = PublicMethod.assembleChannelPlatformGewayCodeLinkQueryByPlatformGewayCodeIdList(prPlatformGewayCodeLinkList, bean.getUpServiceCharge());
-
-                    List<ChannelPlatformGewayCodeLinkModel> channelPlatformGewayCodeLinkList = channelPlatformGewayCodeLinkService.getServiceChargeDeficitListByPlatformGewayCodeIdList(channelPlatformGewayCodeLinkQuery);
-                    if (channelPlatformGewayCodeLinkList != null && channelPlatformGewayCodeLinkList.size() > 0){
-                        String errMsg = "";
-                        for (ChannelPlatformGewayCodeLinkModel channelPlatformGewayCodeLinkModel : channelPlatformGewayCodeLinkList){
-                            errMsg += "《 渠道：" + channelPlatformGewayCodeLinkModel.getChannelName() + "， 平台通道：" + channelPlatformGewayCodeLinkModel.getCodeName()
-                                    + "， 渠道费率：" + channelPlatformGewayCodeLinkModel.getServiceCharge() + " 》 <br>";
-                        }
-                        errMsg += "上游费率《"+ bean.getUpServiceCharge() + "》；更改费率会早上以上配置属于亏本运营，请您先更新以上渠道与平台通道的费率之后，在更新通道的上游费率！";
-
-                        sendFailureMessage(response, errMsg);
-                        return;
-
-                    }
-                }
-
-                // 校验上游费率是否属于亏本运营 -end
+//                // 校验上游费率是否属于亏本运营 -start
+//
+//                // 查询所有包含次通道码的所有平台通道码
+//                PrPlatformGewayCodeLinkModel prPlatformGewayCodeLinkQuery = PublicMethod.assemblePrPlatformGewayCodeLinkQueryByGewayCodeId(bean.getId());
+//                List<PrPlatformGewayCodeLinkModel> prPlatformGewayCodeLinkList = prPlatformGewayCodeLinkService.queryAllList(prPlatformGewayCodeLinkQuery);
+//                if (prPlatformGewayCodeLinkList != null && prPlatformGewayCodeLinkList.size() > 0){
+//                    ChannelPlatformGewayCodeLinkModel channelPlatformGewayCodeLinkQuery = PublicMethod.assembleChannelPlatformGewayCodeLinkQueryByPlatformGewayCodeIdList(prPlatformGewayCodeLinkList, bean.getUpServiceCharge());
+//
+//                    List<ChannelPlatformGewayCodeLinkModel> channelPlatformGewayCodeLinkList = channelPlatformGewayCodeLinkService.getServiceChargeDeficitListByPlatformGewayCodeIdList(channelPlatformGewayCodeLinkQuery);
+//                    if (channelPlatformGewayCodeLinkList != null && channelPlatformGewayCodeLinkList.size() > 0){
+//                        String errMsg = "";
+//                        for (ChannelPlatformGewayCodeLinkModel channelPlatformGewayCodeLinkModel : channelPlatformGewayCodeLinkList){
+//                            errMsg += "《 渠道：" + channelPlatformGewayCodeLinkModel.getChannelName() + "， 平台通道：" + channelPlatformGewayCodeLinkModel.getCodeName()
+//                                    + "， 渠道费率：" + channelPlatformGewayCodeLinkModel.getServiceCharge() + " 》 <br>";
+//                        }
+//                        errMsg += "上游费率《"+ bean.getUpServiceCharge() + "》；更改费率会早上以上配置属于亏本运营，请您先更新以上渠道与平台通道的费率之后，在更新通道的上游费率！";
+//
+//                        sendFailureMessage(response, errMsg);
+//                        return;
+//
+//                    }
+//                }
+//
+//                // 校验上游费率是否属于亏本运营 -end
 
                 prGewayCodeService.update(bean);
                 sendSuccessMessage(response, "保存成功~");
@@ -334,5 +334,26 @@ public class PrGewayCodeController extends BaseController {
             return;
         }
         sendSuccessMessage(response, "", prGewayCodeModel);
+    }
+
+
+
+    /**
+     *
+     * 获取有效通道码集合-无分页
+     */
+    @RequestMapping("/validGewayCodeList")
+    public void validGewayCodeList(HttpServletRequest request, HttpServletResponse response, PrGewayCodeModel model) throws Exception {
+        List<PrGewayCodeModel> dataList = new ArrayList<PrGewayCodeModel>();
+        Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
+        if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
+            if (account.getAcType() == ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
+            }else {
+                HtmlUtil.writerJson(response, model.getPage(), dataList);
+                return;
+            }
+            dataList = prGewayCodeService.getValidGewayCode(model);
+        }
+        HtmlUtil.writerJson(response, dataList);
     }
 }

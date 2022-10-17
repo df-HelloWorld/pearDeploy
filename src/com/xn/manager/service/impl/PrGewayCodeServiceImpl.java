@@ -11,6 +11,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @Description 通道表的Service层的实现层
  * @Date 2020/9/18 19:10
@@ -32,5 +34,10 @@ public class PrGewayCodeServiceImpl<T> extends BaseServiceImpl<T> implements PrG
     @Override
     public String getMaxUpServiceCharge(PrGewayCodeModel model) {
         return prGewayCodeDao.getMaxUpServiceCharge(model);
+    }
+
+    @Override
+    public List<PrGewayCodeModel> getValidGewayCode(PrGewayCodeModel model) {
+        return prGewayCodeDao.getValidGewayCode(model);
     }
 }

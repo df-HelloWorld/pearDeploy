@@ -1,19 +1,45 @@
 
 function  querygewayCode(){
-    var url = ctx + "/prgewaycode/dataAllList.do";
+    var url = ctx + "/prgewaycode/validGewayCodeList.do";
     var data = {
     };
     common.ajax(url,data,function(data){
         var dataList=data;
         var shtml="";
-        shtml+="<table>"
-        for(let i =0;i<dataList.length;i++) {
-            if (i != 0 && i % 4 === 0) {
-                shtml += "<br>";
-            }
-            shtml += "&nbsp;&nbsp;&nbsp;<input type='checkbox'  name='gewayCodeId' id='gewayCodeId' value=" + dataList[i].id + "> <span style='font-size: 20px'>" + dataList[i].gewayCodeName +"（"+ dataList[i].gewayCode+"）--"+dataList[i].myGewayCode+"</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+        // shtml+="<table>"
+        // for(let i =0;i<dataList.length;i++) {
+        //     if (i != 0 && i % 4 === 0) {
+        //         shtml += "<br>";
+        //     }
+        //     shtml += "&nbsp;&nbsp;&nbsp;<input type='checkbox'  name='gewayCodeId' id='gewayCodeId' value=" + dataList[i].id + "> <span style='font-size: 20px'>" + dataList[i].gewayCodeName +"（"+ dataList[i].gewayCode+"）--"+dataList[i].myGewayCode+"</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+        // }
+        // shtml+="</table>"
+
+        shtml+="<table class='datatable tables' id='dataDayTable' name='dataDayTable'>"
+        shtml +="<thead>";
+        shtml +="<tr>";
+        shtml +="<th>选择</th>";
+        shtml +="<th>通道</th>";
+        shtml +="<th>通道名称</th>";
+        shtml +="<th>通道码</th>";
+        shtml +="<th>上游费率</th>";
+        shtml +="</tr>";
+        shtml +="</thead>";
+
+        shtml +="<tbody>";
+        for (var i=0;i<dataList.length>0;i++) {
+            shtml +="<tr>";
+            shtml +="<td><input type='checkbox'  name='gewayCodeId' id='gewayCodeId' value=" + dataList[i].id + " /> </td>";
+            shtml +="<td>"+dataList[i].gewayName+"</td>";
+            shtml +="<td>"+dataList[i].gewayCodeName+"</td>";
+            shtml +="<td>"+dataList[i].gewayCode+"</td>";
+            shtml +="<td>"+dataList[i].upServiceCharge+"</td>";
+            shtml +="</tr>";
         }
-        shtml+="</table>"
+        shtml +="<tbody>";
+
+        shtml+="</table>";
+
         $("#divGewayCodeId").html(shtml);
     });
 }

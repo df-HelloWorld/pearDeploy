@@ -275,6 +275,10 @@ public class PrRelationTypeController extends BaseController {
     public String jumpGewayCodeUpdate(Model model, long id) {
 //        model.addAttribute("platformGewayCode", prGewayCodeService.queryAllList());
         model.addAttribute("pfGewayCodeId", id);
+        // 根据平台码ID查询平台信息
+        PrPlatformGewayCodeModel atModel = new PrPlatformGewayCodeModel();
+        atModel.setId(id);
+        model.addAttribute("prPlatformGewayCodeData", prPlatformGewayCodeService.queryById(atModel));
         return "manager/prrelationtype/prrelationtypeAddLink";
     }
 

@@ -45,7 +45,8 @@
         a.extra_service_charge, a.money_type, a.money_range, a.open_time, a.day_limit_money,
         a.code_attribute_type, a.white_list_ip, a.identity_key, a.send_identity,
         a.is_enable,
-        a.create_time, a.update_time, a.ts_time, a.yn,b.geway_name
+        a.create_time, a.update_time, a.ts_time, a.yn,
+        b.geway_name
     </sql>
 
     <!-- 查询条件 -->
@@ -435,6 +436,20 @@
         select max(up_service_charge) as up_service_charge
         from tb_pr_geway_code a
         <include refid="Example_Where_Clause"/>
+    </select>
+
+
+
+    <!-- 获取有效的通道码集合 -->
+    <select id="getValidGewayCode" resultMap="dataMap"  parameterType="Object">
+        select <include refid="Base_Column_List" />
+        from tb_pr_geway_code a left join tb_pr_geway b on a.geway_id = b.id
+        where 1=1
+        and a.is_enable =2
+        and a.geway_id in(
+          select id from tb_pr_geway bb where bb.yn = 0 and bb.is_enable = 2)
+        and a.yn = 0
+        order by a.create_time desc
     </select>
 
 </mapper>

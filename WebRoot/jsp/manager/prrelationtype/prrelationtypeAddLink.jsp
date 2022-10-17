@@ -18,6 +18,11 @@
 </head>
 <body>
 <div class="col_main">
+
+    <div class="formHeadDiv">
+        <h1><font color="red">${prPlatformGewayCodeData.codeName} > ${prPlatformGewayCodeData.pfGewayCode}</font></h1>
+    </div>
+
     <div class="formHeadDiv">
         <h2>通道编码</h2>
     </div>

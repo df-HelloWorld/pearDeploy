@@ -161,23 +161,23 @@ public class PrPlatformGewayCodeLinkController extends BaseController {
                         return;
                     }
 
-                    // 查询被选中的通道码是否亏本运营的数据集合
-                    ChannelPlatformGewayCodeLinkModel channelPlatformGewayCodeLinkQuery = PublicMethod.assembleChannelPlatformGewayCodeLinkQueryByServiceCharge(bean.getPfGewayCodeId(), maxUpServiceCharge);
-                    List<ChannelPlatformGewayCodeLinkModel> channelPlatformGewayCodeLinkList = channelPlatformGewayCodeLinkService.getServiceChargeDeficitList(channelPlatformGewayCodeLinkQuery);
-                    if (channelPlatformGewayCodeLinkList != null && channelPlatformGewayCodeLinkList.size() > 0){
-                        // 被选中的通道码会导致有亏本运营的数据存在
-                        String errMsg = "";
-                        for (ChannelPlatformGewayCodeLinkModel channelPlatformGewayCodeLinkModel : channelPlatformGewayCodeLinkList){
-                            errMsg += "《 渠道：" + channelPlatformGewayCodeLinkModel.getChannelName() + "， 平台通道：" + channelPlatformGewayCodeLinkModel.getCodeName()
-                                    + "， 渠道费率：" + channelPlatformGewayCodeLinkModel.getServiceCharge() + " 》 <br>";
-                        }
-
-                        errMsg += "被选中的里面最大的上游费率《"+ maxUpServiceCharge + "》；被选中会导致以上渠道跑量会亏本运营，请您重新配置以上渠道与平台通道的费率，再来绑定新通道码！";
-
-                        sendFailureMessage(response, errMsg);
-                        return;
-
-                    }
+//                    // 查询被选中的通道码是否亏本运营的数据集合
+//                    ChannelPlatformGewayCodeLinkModel channelPlatformGewayCodeLinkQuery = PublicMethod.assembleChannelPlatformGewayCodeLinkQueryByServiceCharge(bean.getPfGewayCodeId(), maxUpServiceCharge);
+//                    List<ChannelPlatformGewayCodeLinkModel> channelPlatformGewayCodeLinkList = channelPlatformGewayCodeLinkService.getServiceChargeDeficitList(channelPlatformGewayCodeLinkQuery);
+//                    if (channelPlatformGewayCodeLinkList != null && channelPlatformGewayCodeLinkList.size() > 0){
+//                        // 被选中的通道码会导致有亏本运营的数据存在
+//                        String errMsg = "";
+//                        for (ChannelPlatformGewayCodeLinkModel channelPlatformGewayCodeLinkModel : channelPlatformGewayCodeLinkList){
+//                            errMsg += "《 渠道：" + channelPlatformGewayCodeLinkModel.getChannelName() + "， 平台通道：" + channelPlatformGewayCodeLinkModel.getCodeName()
+//                                    + "， 渠道费率：" + channelPlatformGewayCodeLinkModel.getServiceCharge() + " 》 <br>";
+//                        }
+//
+//                        errMsg += "被选中的里面最大的上游费率《"+ maxUpServiceCharge + "》；被选中会导致以上渠道跑量会亏本运营，请您重新配置以上渠道与平台通道的费率，再来绑定新通道码！";
+//
+//                        sendFailureMessage(response, errMsg);
+//                        return;
+//
+//                    }
 
 
 //                    PrPlatformGewayCodeLinkModel  query =new  PrPlatformGewayCodeLinkModel();
