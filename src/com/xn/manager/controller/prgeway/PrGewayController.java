@@ -188,4 +188,30 @@ public class PrGewayController extends BaseController {
             return;
         }
     }
+
+
+    /**
+     *
+     * 获取表格数据列表-无分页
+     * <p>
+     *     有效的通道
+     * </p>
+     */
+    @RequestMapping("/validGewayList")
+    public void validGewayList(HttpServletRequest request, HttpServletResponse response, PrGewayModel model) throws Exception {
+        List<PrGewayModel> dataList = new ArrayList<PrGewayModel>();
+        Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
+        if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
+            if (account.getAcType() == ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
+            }else {
+                HtmlUtil.writerJson(response, model.getPage(), dataList);
+            }
+            model.setIsEnable(2);
+            dataList = prGewayService.queryAllList(model);
+        }
+        HtmlUtil.writerJson(response, dataList);
+    }
+
+
+
 }

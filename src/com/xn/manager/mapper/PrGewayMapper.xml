@@ -44,6 +44,9 @@
             <if test="attributeType != 0 and attributeType >0 " >
                 and a.attribute_type = #{attributeType}
             </if>
+            <if test="isEnable != 0 and isEnable >0 " >
+                and a.is_enable = #{isEnable}
+            </if>
             and a.yn = 0
         </trim>
     </sql>

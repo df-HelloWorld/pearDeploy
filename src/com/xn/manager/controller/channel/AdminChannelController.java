@@ -292,6 +292,9 @@ public class AdminChannelController extends BaseController {
 
     /**
      * 重置秘钥
+     * <p>
+     *     同时重置商户秘钥跟谷歌秘钥
+     * </p>
      */
     @RequestMapping("/resetSecretKey")
     public void resetSecretKey(HttpServletRequest request, HttpServletResponse response, ChannelModel bean) throws Exception {
@@ -300,6 +303,7 @@ public class AdminChannelController extends BaseController {
             if (account.getAcType() == ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
                 if (bean != null && bean.getId() > 0){
                     bean.setSecretKey(MD5.parseMD5(bean.getId() + DateUtil.getNowLongTime()));
+                    bean.setGoogleKey(GoogleAuthenticator.generateSecretKey());
                     channelService.updateSecretKey(bean);
                     sendSuccessMessage(response, "重置成功");
                     return;

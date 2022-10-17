@@ -53,7 +53,7 @@ var account = {
     //下拉框数据填充
     //查询所有通道-无分页-下拉框选项:
     queryGewayAll:function(){
-        var url = basePath + "prgeway/dataAllList.do";
+        var url = basePath + "prgeway/validGewayList.do";
         var data = {
         };
         common.ajax(url,data,function(data){
@@ -88,7 +88,7 @@ var account = {
     //单选框数据填充
     //查询所有通道码-无分页-单选框选项:
     queryGewayCodeAll:function(){
-        var url = basePath + "prgewaycode/dataAllList.do";
+        var url = basePath + "prgewaycode/validGewayCodeList.do";
         var data = {
         };
         common.ajax(url,data,function(data){

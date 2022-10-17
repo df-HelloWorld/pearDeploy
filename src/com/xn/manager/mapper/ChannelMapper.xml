@@ -405,6 +405,7 @@
     <!--更新渠道的秘钥 -->
     <update id="updateSecretKey" parameterType="Object">
         UPDATE tb_pr_channel a set a.secret_key = #{secretKey},
+        a.google_key = #{googleKey},
         a.update_time = now()
         where 1=1
         and a.id = #{id}
