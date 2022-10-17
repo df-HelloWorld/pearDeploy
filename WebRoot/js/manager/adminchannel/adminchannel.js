@@ -13,7 +13,9 @@ var account = {
         update_url : ctx+ "/adminchannel/update.do",
         queryId_url: ctx+ "/adminchannel/getId.do",
         delete_url: ctx+ "/adminchannel/delete.do",
-        manyOperation_url: ctx+ "/adminchannel/manyOperation.do"
+        manyOperation_url: ctx+ "/adminchannel/manyOperation.do",
+        reset_secret_key_url: ctx+ "/adminchannel/resetSecretKey.do"
+
     },
     //列表显示参数
     list:[
@@ -63,13 +65,13 @@ var account = {
         {"data":"id",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                 var html = '';
-                var isEnableHtml = '';
-                html = html = '<a class = "dataTableBtn dataEditServiceChargeBtn " id = "editServiceCharge" directkey="' + oData.id + '" directName="'+oData.channelName+'" href = "javascript:void(0);"> 费率 </a>'
-                    +'<a class = "dataTableBtn dataShowBtn " directkey="'+oData.id+'" directName="'+oData.channelName+'" href = "javascript:void(0);"> 分润 </a>'
-                    +'<a class = "dataTableBtn dataTableDeleteBtn " href="'+ctx+'/adminchannel/jumpUpdate.do?op=1&id='+oData.id+'"> 编辑 </a>'
-                    +'<a class = "dataTableBtn dataTableDeleteBtn" href="'+ctx+'/adminchannel/jumpUpdate.do?op=2&id='+oData.id+'">重置密码 </a>'
-                    +isEnableHtml
-                    +' <a class = "dataTableBtn dataTableResetBtn"  directkey="' + oData.id + '" href = "javascript:void(0);">删除 </a>';
+                html += '<a class = "dataTableBtn dataEditServiceChargeBtn " id = "editServiceCharge" directkey="' + oData.id + '" directName="'+oData.channelName+'" href = "javascript:void(0);"> 费率 </a>'
+                html += '<a class = "dataTableBtn dataShowBtn " directkey="'+oData.id+'" directName="'+oData.channelName+'" href = "javascript:void(0);"> 分润 </a>'
+                html += '<a class = "dataTableBtn dataTableDeleteBtn " href="'+ctx+'/adminchannel/jumpUpdate.do?op=1&id='+oData.id+'"> 编辑 </a>'
+                html += '<a class = "dataTableBtn dataTableDeleteBtn" href="'+ctx+'/adminchannel/jumpUpdate.do?op=2&id='+oData.id+'">重置密码 </a>'
+                html += ' <a class = "dataTableBtn dataTableEnableBtn"  directkey="' + oData.id + '" href = "javascript:void(0);">重置秘钥</a>';
+                    // +isEnableHtml
+                html += ' <a class = "dataTableBtn dataTableResetBtn"  directkey="' + oData.id + '" href = "javascript:void(0);">删除 </a>';
                 $(nTd).html(html);
             }
         }
@@ -118,15 +120,24 @@ var account = {
             common.updateStatus(data);
         });
 
-        //启用/禁用
+        // //启用/禁用
+        // $(".dataTableEnableBtn").live("click",function(){
+        //     var id = $(this).attr('directkey');
+        //     var isEnable = $(this).attr('directValue');
+        //     var data = {
+        //         id:id,
+        //         isEnable:isEnable
+        //     }
+        //     common.manyOperation(data);
+        // });
+
+        //重置秘钥
         $(".dataTableEnableBtn").live("click",function(){
             var id = $(this).attr('directkey');
-            var isEnable = $(this).attr('directValue');
             var data = {
-                id:id,
-                isEnable:isEnable
+                id:id
             }
-            common.manyOperation(data);
+            common.resetSecretKey(data);
         });
 
         // 费率编辑

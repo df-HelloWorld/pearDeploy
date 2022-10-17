@@ -8,6 +8,7 @@ var common = {
 		delete_url : "",
         manyOperation_url : "",
         delete_field_url : "",
+        reset_secret_key_url : "",
 	}, 
 	indexInit:function(){
 		//输入控制
@@ -78,6 +79,22 @@ var common = {
         this.ajax(this.url.delete_field_url,data,function(data){
             if (data.success) {
                 promptMessage ('删除成功！','success',false);
+                common.goList();
+            } else {
+                art.alert(data.msg);
+            }
+        });
+
+    },
+
+    //重置秘钥-重置秘钥，单独写的方法无法公用
+    resetSecretKey: function(data){
+        if(!confirm("确认要重置秘钥吗？")){
+            return;
+        }
+        this.ajax(this.url.reset_secret_key_url,data,function(data){
+            if (data.success) {
+                promptMessage ('重置成功！','success',false);
                 common.goList();
             } else {
                 art.alert(data.msg);

@@ -287,4 +287,35 @@ public class AdminChannelController extends BaseController {
         }
         HtmlUtil.writerJson(response, data);
     }
+
+
+
+    /**
+     * 重置秘钥
+     */
+    @RequestMapping("/resetSecretKey")
+    public void resetSecretKey(HttpServletRequest request, HttpServletResponse response, ChannelModel bean) throws Exception {
+        Account account = (Account) WebUtils.getSessionAttribute(request, ManagerConstant.PUBLIC_CONSTANT.ACCOUNT);
+        if(account !=null && account.getId() > ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ZERO){
+            if (account.getAcType() == ManagerConstant.PUBLIC_CONSTANT.SIZE_VALUE_ONE){
+                if (bean != null && bean.getId() > 0){
+                    bean.setSecretKey(MD5.parseMD5(bean.getId() + DateUtil.getNowLongTime()));
+                    channelService.updateSecretKey(bean);
+                    sendSuccessMessage(response, "重置成功");
+                    return;
+                }else{
+                    sendFailureMessage(response, "错误,请重试!");
+                    return;
+                }
+
+            }else {
+                sendFailureMessage(response, "您无权操作!");
+                return;
+            }
+
+        }else{
+            sendFailureMessage(response, "登录超时,请重新登录在操作!");
+            return;
+        }
+    }
 }

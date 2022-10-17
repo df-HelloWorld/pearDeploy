@@ -34,4 +34,9 @@ public class ChannelServiceImpl<T> extends BaseServiceImpl<T> implements Channel
     public ChannelModel getTotalData(ChannelModel model) {
         return channelDao.getTotalData(model);
     }
+
+    @Override
+    public int updateSecretKey(ChannelModel model) {
+        return channelDao.updateSecretKey(model);
+    }
 }

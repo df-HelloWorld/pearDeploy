@@ -31,4 +31,15 @@ public interface ChannelService<T> extends BaseService<T> {
      */
     public ChannelModel getTotalData(ChannelModel model);
 
+
+    /**
+    * @Description:更新渠道的秘钥
+    * @param model
+    * @return:
+    * @author: yoko
+    * @date: 2022/10/17 10:59
+    * @version 1.0.0
+    */
+    public int updateSecretKey(ChannelModel model);
+
 }
